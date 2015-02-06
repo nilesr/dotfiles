@@ -103,6 +103,3 @@
 [submodule ".vim/bundle/vim-lazy-obsession"]
 	path = .vim/bundle/vim-lazy-obsession
 	url = https://github.com/monokrome/vim-lazy-obsession.git
-[submodule ".vim/bundle/CoVim"]
-	path = .vim/bundle/CoVim
-	url = https://github.com/FredKSchott/CoVim.git
