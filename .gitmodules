@@ -105,4 +105,4 @@
 	url = https://github.com/monokrome/vim-lazy-obsession.git
 [submodule ".vim/bundle/CoVim"]
 	path = .vim/bundle/CoVim
-	url = git@github.com:FredKSchott/CoVim.git
+	url = https://github.com/FredKSchott/CoVim.git
