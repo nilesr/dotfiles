@@ -12,6 +12,7 @@ rm -rf ~/.vim ~/.vimrc ~/.bashrc ~/.bash_profile ~/.inputrc ~/.gitconfig ~/.shel
 echo Creating symlinks in your home directory that point to this dotfiles repository.
 ln -s "$PWD/.vim" ~/.vim
 ln -s "$PWD/.vim/vimrc" ~/.vimrc
+mkdir -p ~/.config/fish
 ln -s "$PWD/.config.fish" ~/.config/fish/config.fish
 ln -s "$PWD/.bashrc" ~/.bashrc
 ln -s "$PWD/.bash_profile" ~/.bash_profile
