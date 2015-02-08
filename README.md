@@ -28,6 +28,10 @@ $ ./install.sh
 
 ---
 
+### Recommneded Configuration:
+- Background color of rgb 20 20 20
+- Text color of rgb 187 187 187
+
 ### Screenshots:
 
 ##### Dircolors
@@ -44,4 +48,5 @@ $ ./install.sh
 
 ##### Vim with plugins configured.
 ![](http://i.imgur.com/jgluvdK.png)
+![](http://i.imgur.com/fV1gYY2.png)
 
