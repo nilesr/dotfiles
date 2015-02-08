@@ -1,6 +1,9 @@
 "*******************************************************
 " SETTINGS
 
+" Fix for syntastic
+set shell=/bin/bash
+
 " Set mouse mode.
 set mouse=a
 
