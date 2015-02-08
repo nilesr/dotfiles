@@ -30,6 +30,9 @@ $ ./install.sh
 
 ### Screenshots:
 
+##### Dircolors
+![](https://i.imgur.com/G5e7fYq.png)
+
 ##### Fish.
 ![](http://i.imgur.com/jyqOPxU.png)
 
