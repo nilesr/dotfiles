@@ -23,3 +23,17 @@ set fish_greeting ''
 set --global --export TERM xterm
 # Always run tmux in 256color mode
 alias tmux tmux\ -2
+
+
+function fuck
+    eval (thefuck $history[1])
+end
+
+
+function sudo
+    if test "$argv" = !!
+        eval command sudo $history[1]
+    else
+        command sudo $argv
+    end
+end
