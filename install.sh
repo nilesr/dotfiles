@@ -22,6 +22,8 @@ ln -s "$PWD/.shell_prompt.sh" ~/.shell_prompt.sh
 ln -s "$PWD/.tmux.conf" ~/.tmux.conf
 ln -s "$PWD/.tmux_theme" ~/.tmux_theme
 ln -s "$PWD/.tmux" ~/.tmux
-
+ln -s "$PWD/.putty.sh" ~/.putty.sh
+echo Enabling apt progress bar
+echo 'Dpkg::Progress-Fancy "1";' | sudo tee /etc/apt/apt.conf.d/99progressbar
 # Finished.
 echo Dotfiles installation complete.
