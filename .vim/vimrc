@@ -167,7 +167,7 @@ let g:localvimrc_ask = 0
 "-=-=-= AIRLINE/LIGHTLINE/PROMPTLINE =-=-=-
 
 " Populate powerline symbols.
-"let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 1
 
 let g:promptline_preset = {
     \'a' : [ promptline#slices#user() ],
@@ -367,3 +367,11 @@ noremap <C-n> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 "*******************************************************
+
+
+
+
+set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
+
+" map control-backspace to delete the previous word
+:imap <C-BS> <C-W>
