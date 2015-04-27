@@ -27,7 +27,8 @@ case "$choice" in
         ;;
     *)
         read rest
-        total=$choice"$rest"
+        read -p "Username: " user
+        total="$user"@$choice"$rest"
         ssh $total
         ;;
 esac

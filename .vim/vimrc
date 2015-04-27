@@ -77,7 +77,8 @@ set shiftwidth=4
 set tabstop=4
 
 " Set expandtab by default.
-set expandtab
+"set expandtab
+set noexpandtab
 
 " Show statusline always.
 set laststatus=2
@@ -95,8 +96,8 @@ command! LN set nonumber!
 " RC will re-source this .vimrc file.
 command! RC :source $MYVIMRC
 
-" W will force a write to a file you do not have permissions to modify.
-command! W w !sudo tee % > /dev/null
+" WR will force a write to a file you do not have permissions to modify.
+command! WR w !sudo tee % > /dev/null
 
 "*******************************************************
 
@@ -375,3 +376,7 @@ set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
 
 " map control-backspace to delete the previous word
 :imap <C-BS> <C-W>
+
+
+
+set smartindent
