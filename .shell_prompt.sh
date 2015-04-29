@@ -56,6 +56,7 @@ function __promptline_cwd {
 
   # remove leading tilde
   cwd="${cwd#\~}"
+  #formatted_cwd="$dir_sep"λ
 
   while [[ "$cwd" == */* && "$cwd" != "/" ]]; do
     # pop off last part of cwd
@@ -67,7 +68,15 @@ function __promptline_cwd {
 
     [[ $part_count -eq $dir_limit ]] && first_char="$truncation" && break
   done
-
+  mu="μ"
+  lambda="λ"
+  if test $(whoami) == "root"; then
+	  shell_char="$lambda"
+  else
+	  shell_char="$mu"
+  fi
+  shell_char="$shell_char$dir_sep"
+  printf "%s" "$shell_char"
   printf "%s" "$first_char$formatted_cwd"
 }
 function __promptline_left_prompt {
@@ -78,6 +87,7 @@ function __promptline_left_prompt {
   # section "a" slices
   #__promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print %n; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$USER@$(hostname)"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
   __promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print %n; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$(hostname)"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+  __promptline_wrapper "$(whoami)" "$slice_prefix" "$slice_suffix"
 
   # section "c" header
   slice_prefix="${c_bg}${sep}${c_fg}${c_bg}${space}" slice_suffix="$space${c_sep_fg}" slice_joiner="${c_fg}${c_bg}${alt_sep}${space}" slice_empty_prefix="${c_fg}${c_bg}${space}"
@@ -172,7 +182,8 @@ function __promptline {
   local space=" "
   local sep=""
   local rsep=""
-  local alt_sep="|"
+  #local alt_sep="|"
+  local alt_sep=""
   local alt_rsep=""
   local reset="${wrap}0${end_wrap}"
   local reset_bg="${wrap}49${end_wrap}"
