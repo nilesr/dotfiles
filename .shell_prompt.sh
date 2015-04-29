@@ -70,7 +70,7 @@ function __promptline_cwd {
   done
   mu="μ"
   lambda="λ"
-  if test $(whoami) == "root"; then
+  if test "$(whoami)" == "root"; then
 	  shell_char="$lambda"
   else
 	  shell_char="$mu"
