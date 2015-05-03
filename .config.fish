@@ -49,4 +49,4 @@ function fuck-resolvconf
 	command nmcli n on
 end
 
-
+alias ptpy="ptpython --vi"
