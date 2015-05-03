@@ -3,6 +3,9 @@ function printnum {
     tput setaf 5; echo -n "["; tput setaf 6; echo -n "$1"; tput setaf 5; echo -n "] "; tput setaf 3; echo "$2"
 }
 i=0
+port=$(($(($RANDOM%20000))+1025))
+echo "SSH"|toilet -t -f mono12 --metal
+echo "Select Host"|toilet -t -f mono12 --metal
 printnum 0 Spice-Birch
 printnum 1 Silver-Birch
 printnum 2 Archbishop
@@ -14,13 +17,13 @@ if test "$choice" -lt 9 &> /dev/null; then
 fi
 case "$choice" in 
     0)
-        ssh root@niles.mooo.com -p 24
+        autossh -M "$port" root@niles.mooo.com -p 24
         ;;
     1)
-        ssh root@niles.mooo.com -p 23
+        autossh -M "$port" root@niles.mooo.com -p 23
         ;;
     2)
-        ssh root@10.8.0.3
+        autossh -M "$port" root@10.8.0.3
         ;;
     3)
         :
@@ -28,8 +31,8 @@ case "$choice" in
     *)
         read rest
         read -p "Username: " user
-        total="$user"@$choice"$rest"
-        ssh $total
+        total="$user"@"$choice$rest"
+        autossh -M "$port" $total
         ;;
 esac
 if test 0 -eq "$?"; then

@@ -20,7 +20,7 @@ set --global --export LANG en_US.UTF-8
 # Remove the "friendly" (dumb) fish greeting
 set fish_greeting ''
 # Set termcap
-set --global --export TERM xterm
+set --global --export TERM xterm-256color
 # Always run tmux in 256color mode
 alias tmux tmux\ -2
 
@@ -37,3 +37,16 @@ function sudo
         command sudo $argv
     end
 end
+
+
+set -x GOROOT /usr/lib/go
+set -x GOPATH ~/.gocode
+set -x GOBIN $GOPATH/bin
+set -x PATH $PATH $GOROOT/bin $GOPATH/bin
+
+function fuck-resolvconf
+	command nmcli n off
+	command nmcli n on
+end
+
+

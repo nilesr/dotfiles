@@ -380,3 +380,8 @@ set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
 
 
 set smartindent
+
+
+let CoVim_default_name = "Niles"
+let CoVim_default_port = "8802"  
+
