@@ -23,9 +23,11 @@ set autochdir
 " Enable syntax highlighting.
 syntax on
 
-" Set startup colorscheme.
 colorscheme seoul256
-
+" Set startup colorscheme.
+if has("gui_running")
+	colorscheme vizuki
+endif
 " Don't have vim store backup or swap files.
 set nobackup
 set noswapfile
@@ -175,9 +177,12 @@ let g:promptline_preset = {
     \'c' : [ promptline#slices#cwd() ],
     \'y' : [ promptline#slices#vcs_branch(), promptline#slices#git_status() ]}
     "\'b' : [ promptline#slices#host() ],
-
+let lightline_theme = 'jellybeans'
+if has("gui_running")
+	let lightline_theme = 'solarized_light'
+endif
 let g:lightline = {
-      \ 'colorscheme': 'jellybeans',
+      \ 'colorscheme': lightline_theme,
       \ 'component': {
       \   'readonly': '%{&readonly?"":""}',
       \ },
@@ -209,7 +214,7 @@ function! MyModified()
 endfunction
 
 function! MyReadonly()
-  return &ft !~? 'help' && &readonly ? 'RO' : ''
+  return &ft !~? 'help' && &readonly ? '' : ''
 endfunction
 
 function! MyFilename()

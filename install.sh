@@ -23,6 +23,7 @@ ln -s "$PWD/.tmux.conf" ~/.tmux.conf
 ln -s "$PWD/.tmux_theme" ~/.tmux_theme
 ln -s "$PWD/.tmux" ~/.tmux
 ln -s "$PWD/.putty.sh" ~/.putty.sh
+ln -s "$PWD/.vizuki.vim" ~/.vim/colors/vizuki.vim
 echo Enabling apt progress bar
 echo 'Dpkg::Progress-Fancy "1";' | sudo tee /etc/apt/apt.conf.d/99progressbar
 # Finished.
