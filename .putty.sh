@@ -10,6 +10,7 @@ printnum 0 Spice-Birch
 printnum 1 Silver-Birch
 printnum 2 Archbishop
 printnum 3 Ubuntubishop
+printnum 4 macmini
 tput sgr0
 read -n 1 -p "Select: " choice
 if test "$choice" -lt 9 &> /dev/null; then
@@ -28,6 +29,9 @@ case "$choice" in
     3)
         :
         ;;
+	4)
+		autossh -M "$port" root@10.8.0.10
+		;;
     *)
         read rest
         read -p "Username: " user
