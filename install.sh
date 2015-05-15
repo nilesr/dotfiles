@@ -26,5 +26,7 @@ ln -s "$PWD/.putty.sh" ~/.putty.sh
 ln -s "$PWD/.vizuki.vim" ~/.vim/colors/vizuki.vim
 echo Enabling apt progress bar
 echo 'Dpkg::Progress-Fancy "1";' | sudo tee /etc/apt/apt.conf.d/99progressbar
+echo Fixing nautilus
+gsettings set org.gnome.nautilus.preferences enable-interactive-search true
 # Finished.
 echo Dotfiles installation complete.
