@@ -12,6 +12,9 @@ $ cd ./dotfiles
 $ ./install.sh
 ```
 
+### Configuration
+If you don't like the mu (or lambda, if you're root) comment out line 79 of `.shell_prompt.sh`
+
 ---
 
 ### Included Configurations:
