@@ -35,7 +35,7 @@ $ ./install.sh
 ### Screenshots:
 
 ##### Dircolors
-![](https://i.imgur.com/G5e7fYq.png)
+![](https://i.imgur.com/TDFks6F.png)
 
 ##### Fish.
 ![](http://i.imgur.com/jyqOPxU.png)
