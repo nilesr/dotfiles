@@ -20,9 +20,7 @@ If you don't like the μ (or λ, if you're root) comment out line 79 of `.shell_
 ### Included Configurations:
 
 - Vim, complete with [plugins](https://github.com/nilesr/dotfiles/blob/master/.vim/bundle) and [.vimrc](https://github.com/nilesr/dotfiles/blob/master/.vim/vimrc).
-- [.bash_profile](https://github.com/nilesr/dotfiles/blob/master/.bash_profile) which sources `.bashrc` for cross-system interoperability.
-- [.bashrc](https://github.com/nilesr/dotfiles/blob/master/.bashrc) containing a few aliases and various configurations.
-- [.config/fish/config.fish](https://github.com/nilesr/dotfiles/blob/master/.config.fish) containing a few aliases and various configurationsr
+- [.config/fish/config.fish](https://github.com/nilesr/dotfiles/blob/master/.config.fish) containing a few aliases and various configurations
 - [.gitconfig](https://github.com/nilesr/dotfiles/blob/master/.gitconfig) with aliases.
 - [.inputrc](https://github.com/nilesr/dotfiles/blob/master/.inputrc) to put bash in vi mode.
 - [.shell_prompt.sh](https://github.com/nilesr/dotfiles/blob/master/.shell_prompt.sh) which is sourced by `.bash_profile` for a stylized bash prompt.

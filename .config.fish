@@ -25,20 +25,6 @@ set --global --export TERM xterm-256color
 alias tmux tmux\ -2
 
 
-function fuck
-    eval (thefuck $history[1])
-end
-
-
-function sudo
-    if test "$argv" = !!
-        eval command sudo $history[1]
-    else
-        command sudo $argv
-    end
-end
-
-
 set -x GOROOT /usr/lib/go
 set -x GOPATH ~/.gocode
 set -x GOBIN $GOPATH/bin
