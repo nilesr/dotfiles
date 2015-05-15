@@ -38,13 +38,13 @@ $ ./install.sh
 ![](https://i.imgur.com/TDFks6F.png)
 
 ##### Fish.
-![](http://i.imgur.com/jyqOPxU.png)
+Screenshot coming soon
 
 ##### Git integration with git aliases.
 ![](https://i.imgur.com/0Tz91aF.png)
 
 ##### Tmux status line.
-![](http://i.imgur.com/jyqOPxU.png)
+![](http://i.imgur.com/WL0shy8.png)
 
 ##### Vim with plugins configured.
 ![](http://i.imgur.com/fu6vrTL.png)
