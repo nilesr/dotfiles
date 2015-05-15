@@ -41,12 +41,12 @@ $ ./install.sh
 ![](http://i.imgur.com/jyqOPxU.png)
 
 ##### Git integration with git aliases.
-![](http://i.imgur.com/pJ4YWQx.png)
+![](https://i.imgur.com/0Tz91aF.png)
 
 ##### Tmux status line.
 ![](http://i.imgur.com/jyqOPxU.png)
 
 ##### Vim with plugins configured.
-![](http://i.imgur.com/jgluvdK.png)
-![](http://i.imgur.com/fV1gYY2.png)
+![](http://i.imgur.com/fu6vrTL.png)
+![](http://i.imgur.com/wfmXDSv.png)
 
