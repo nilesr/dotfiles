@@ -28,5 +28,13 @@ echo Enabling apt progress bar
 echo 'Dpkg::Progress-Fancy "1";' | sudo tee /etc/apt/apt.conf.d/99progressbar
 echo Fixing nautilus
 gsettings set org.gnome.nautilus.preferences enable-interactive-search true
+echo Backing up /etc/issue
+sudo mv /etc/issue /etc/issue.bac
+echo Installing banner
+cat "$PWD"/.issue|sudo tee /etc/issue >/dev/null
+cat /etc/ssh/sshd_config|grep -v Banner|sudo tee /etc/ssh/sshd_config_new >/dev/null
+sudo mv /etc/ssh/sshd_config /etc/ssh/sshd_config.bac
+sudo mv /etc/ssh/sshd_config_new /etc/ssh/sshd_config
+echo "Banner /etc/issue" | sudo tee -a /etc/ssh/sshd_config
 # Finished.
 echo Dotfiles installation complete.
