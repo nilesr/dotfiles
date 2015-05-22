@@ -11,6 +11,7 @@ $ git clone git@github.com:nilesr/dotfiles.git
 $ cd ./dotfiles
 $ ./install.sh
 ```
+---
 
 ### Configuration
 If you don't like the μ (or λ, if you're root) comment out line 79 of `.shell_prompt.sh`
@@ -33,6 +34,8 @@ If you don't like the μ (or λ, if you're root) comment out line 79 of `.shell_
 - Background color of rgb 20 20 20
 - Text color of rgb 187 187 187
 
+---
+
 ### Screenshots:
 
 ##### Dircolors
@@ -50,4 +53,12 @@ Screenshot coming soon
 ##### Vim with plugins configured.
 ![](http://i.imgur.com/fu6vrTL.png)
 ![](http://i.imgur.com/wfmXDSv.png)
+
+##### gvim
+![](http://i.imgur.com/ViZ49jn.png)
+![](http://i.imgur.com/YheKQjI.png)
+
+##### Apt status bar
+##### FIXME
+![](https://i.imgur.com/Rwhfpw5.png)
 
