@@ -41,7 +41,7 @@ alias ptpy="ptpython --vi"
 #eval (lesspipe|while read line; echo "$line"|tr '=' ' '|sed 's/export/set -x/'; end)
 set -x fish_color_normal ""
 set -x fish_color_command 808090 grey
-set -x fish_color_quote brown
+set -x fish_color_quote 40a040 green
 set -x fish_color_redirection normal
 set -x fish_color_end ""
 #set -x fish_color_error red --bold
