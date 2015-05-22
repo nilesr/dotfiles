@@ -14,6 +14,8 @@ setenv LS_COLORS 'no=00;38;5;244:rs=0:di=00;38;5;33:ln=00;38;5;37:mh=00:pi=48;5;
 
 # Ignore duplicate commands and commands starting with a space
 set HISTCONTROL 'ignoreboth'
+# Print disk usage
+printf "%s " (df -h|grep --color=never '/$'|awk '{print $5}'|tr -d '%')
 # Display users on login
 who -q|head -n 1|tr ' ' '\n'|uniq -c|awk '{print $2 ": " $1 " " }'|while read line; printf "%s" "$line"; end; echo
 # Set locale, workaround for arch linux
