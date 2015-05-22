@@ -11,6 +11,7 @@ $ git clone git@github.com:nilesr/dotfiles.git
 $ cd ./dotfiles
 $ ./install.sh
 ```
+---
 
 ### Configuration
 If you don't like the μ (or λ, if you're root) comment out line 79 of `.shell_prompt.sh`
@@ -31,6 +32,8 @@ If you don't like the μ (or λ, if you're root) comment out line 79 of `.shell_
 ### Recommneded Configuration:
 - Background color of #121222
 - Text color of #808090
+
+---
 
 ### Screenshots:
 
@@ -56,6 +59,8 @@ Screenshot coming soon
 
 ##### Apt status bar
 ![](https://i.imgur.com/Rwhfpw5.png)
+
+---
 
 ### Old (get from branch `old`)
 
