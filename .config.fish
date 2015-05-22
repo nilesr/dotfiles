@@ -39,3 +39,22 @@ end
 alias ptpy="ptpython --vi"
 
 #eval (lesspipe|while read line; echo "$line"|tr '=' ' '|sed 's/export/set -x/'; end)
+set -x fish_color_normal ""
+set -x fish_color_command 808090 grey
+set -x fish_color_quote brown
+set -x fish_color_redirection normal
+set -x fish_color_end ""
+#set -x fish_color_error red --bold
+set -x fish_color_error red
+set -x fish_color_param 808090 grey
+set -x fish_color_comment 808090 grey
+set -x fish_color_match 808090 grey
+set -x fish_color_search_match yellow
+set -x fish_color_operator 808090 grey
+set -x fish_color_escape 808090 grey
+set -x fish_color_cwd green
+set -x fish_pager_color_prefix 808090 grey
+set -x fish_pager_color_completion normal
+set -x fish_pager_color_description 555 yellow
+set -x fish_pager_color_progress red
+set -x fish_pager_color_secondary ""
