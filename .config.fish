@@ -15,7 +15,7 @@ setenv LS_COLORS 'no=00;38;5;244:rs=0:di=00;38;5;33:ln=00;38;5;37:mh=00:pi=48;5;
 # Ignore duplicate commands and commands starting with a space
 set HISTCONTROL 'ignoreboth'
 # Display users on login
-for x in (who -q|head -n 1|tr ' ' '\n'|uniq -c|awk '{print $2 ": " $1 " "}'); printf "%s" "$x"; end; echo
+who -q|head -n 1|tr ' ' '\n'|uniq -c|awk '{print $2 ": " $1 " " }'|while read line; printf "%s" "$line"; end; echo
 # Set locale, workaround for arch linux
 set --global --export LANG en_US.UTF-8
 # Remove the "friendly" (dumb) fish greeting
@@ -37,3 +37,5 @@ function fuck-resolvconf
 end
 
 alias ptpy="ptpython --vi"
+
+#eval (lesspipe|while read line; echo "$line"|tr '=' ' '|sed 's/export/set -x/'; end)
