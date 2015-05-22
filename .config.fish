@@ -49,7 +49,7 @@ set -x fish_color_error red
 set -x fish_color_param 808090 grey
 set -x fish_color_comment 808090 grey
 set -x fish_color_match 808090 grey
-set -x fish_color_search_match --background=purple
+set -x fish_color_search_match yellow
 set -x fish_color_operator 808090 grey
 set -x fish_color_escape 808090 grey
 set -x fish_color_cwd green
