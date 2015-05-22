@@ -36,18 +36,28 @@ If you don't like the μ (or λ, if you're root) comment out line 79 of `.shell_
 ### Screenshots:
 
 ##### Dircolors
-![](https://i.imgur.com/TDFks6F.png)
+![](https://i.imgur.com/JOg7zLv.png)
 
 ##### Fish.
 Screenshot coming soon
 
-##### Git integration with git aliases.
-![](https://i.imgur.com/0Tz91aF.png)
+##### Git integration with git aliases
+![](https://i.imgur.com/lK6kS7c.png)
 
 ##### Tmux status line.
-![](http://i.imgur.com/WL0shy8.png)
+![](https://i.imgur.com/VXdy8sw.png)
 
 ##### Vim with plugins configured.
 ![](http://i.imgur.com/fu6vrTL.png)
 ![](http://i.imgur.com/wfmXDSv.png)
 
+### Old (get from branch `old`)
+
+##### Dircolors
+![](https://i.imgur.com/TDFks6F.png)
+
+##### Tmux status line.
+![](http://i.imgur.com/WL0shy8.png)
+
+##### Git integration with git aliases.
+![](https://i.imgur.com/0Tz91aF.png)
