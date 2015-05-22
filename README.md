@@ -48,6 +48,7 @@ Screenshot coming soon
 ![](https://i.imgur.com/VXdy8sw.png)
 
 ##### Vim with plugins configured.
+![](https://i.imgur.com/TjuJuXj.png)
 ![](http://i.imgur.com/fu6vrTL.png)
 ![](http://i.imgur.com/wfmXDSv.png)
 
