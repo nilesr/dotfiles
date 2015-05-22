@@ -22,8 +22,7 @@ If you don't like the μ (or λ, if you're root) comment out line 79 of `.shell_
 - Vim, complete with [plugins](https://github.com/nilesr/dotfiles/blob/master/.vim/bundle) and [.vimrc](https://github.com/nilesr/dotfiles/blob/master/.vim/vimrc).
 - [.config/fish/config.fish](https://github.com/nilesr/dotfiles/blob/master/.config.fish) containing a few aliases and various configurations
 - [.gitconfig](https://github.com/nilesr/dotfiles/blob/master/.gitconfig) with aliases.
-- [.inputrc](https://github.com/nilesr/dotfiles/blob/master/.inputrc) to put bash in vi mode.
-- [.shell_prompt.sh](https://github.com/nilesr/dotfiles/blob/master/.shell_prompt.sh) which is sourced by `.bash_profile` for a stylized bash prompt.
+- [.shell_prompt.sh](https://github.com/nilesr/dotfiles/blob/master/.shell_prompt.sh) which is used by config.fish for a stylized promptline
 - [.tmux.conf](https://github.com/nilesr/dotfiles/blob/master/.tmux.conf) which enables mouse support and maps some keys.
 - [.tmux_theme](https://github.com/nilesr/dotfiles/blob/master/.tmux_theme) which is sourced by `.tmux.conf` for a stylized tmux status line.
 
@@ -50,7 +49,9 @@ Screenshot coming soon
 ##### Vim with plugins configured.
 ![](https://i.imgur.com/TjuJuXj.png)
 ![](http://i.imgur.com/fu6vrTL.png)
-![](http://i.imgur.com/wfmXDSv.png)
+
+##### Apt status bar
+![](https://i.imgur.com/Rwhfpw5.png)
 
 ### Old (get from branch `old`)
 
