@@ -50,6 +50,10 @@ Screenshot coming soon
 ![](https://i.imgur.com/TjuJuXj.png)
 ![](http://i.imgur.com/fu6vrTL.png)
 
+##### gvim
+![](http://i.imgur.com/ViZ49jn.png)
+![](http://i.imgur.com/YheKQjI.png)
+
 ##### Apt status bar
 ![](https://i.imgur.com/Rwhfpw5.png)
 
