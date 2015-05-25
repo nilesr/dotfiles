@@ -73,7 +73,7 @@ while true; do
 	fi
 	sleep 1
 	monitor=$(cat ~/.wp-show/hack)
-	echo x: $x monitor: $monitor bit: $bit
+	#echo x: $x monitor: $monitor bit: $bit
 	x=$(($x+1))
 done
 
