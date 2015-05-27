@@ -330,37 +330,6 @@ let g:indent_guides_auto_colors = 0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=237
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=236
 
-"-=-=-= CTRLP =-=-=-
-
-" Setup ctrlp (& vim) to use ag search.
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-endif
-
-" Don't update the ctrlp window until I'm done typing.
-let g:ctrlp_lazy_update = 1
-
-" Tell ctrlp plugin to ignore the specified patterns.
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|dist/*'
-
-" Tell ctrlp plugin to start in filename matching mode instead of path
-" matching mode. This makes the plugin faster and I don't care about path
-" matching anyway.
-let g:ctrlp_by_filename = 1
-
-" Increase the max_files limit for ctrlp.
-let g:ctrlp_max_files = 0 " Zero means unlimited.
-
-" Increase the maximum depth that ctrlp will search through the directory tree.
-let g:ctrlp_max_depth = 100
-
 "-=-=-= NERDTree =-=-=-
 
 " Ctrl+n will toggle NERDTree window.
@@ -380,7 +349,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
 
 " map control-backspace to delete the previous word
-:imap <C-BS> <C-W>
+imap <C-BS> <C-W>
 
 
 
