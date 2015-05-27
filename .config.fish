@@ -26,6 +26,7 @@ set fish_greeting ''
 set --global --export TERM xterm-256color
 # Always run tmux in 256color mode
 alias tmux tmux\ -2
+alias sbcl "rlwrap sbcl --noinform"
 
 
 set -x GOROOT /usr/lib/go
