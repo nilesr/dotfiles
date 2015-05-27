@@ -42,7 +42,7 @@ while true; do
 		bit=0
 		if test "$x" -ge 60; then
 			x=0
-			if test "$(date +%H)" -le 6; then
+			if test "$(date +%H|sed 's/^0//')" -le 6; then
 				base="$HOME/Pictures/Morning"
 			else
 				base="$HOME/Pictures/Backgrounds"
@@ -53,7 +53,7 @@ while true; do
 			DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.screensaver picture-options "scaled"
 			DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-options "scaled"
 			DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri "$uri"
-			if test $(($(date +%H)%4)) -lt 2; then
+			if test $(($(date +%H|sed 's/^0//')%4)) -lt 2; then
 				lockscreen="file:///usr/share/backgrounds/gnome/Road.jpg"
 			else
 				lockscreen="file:///usr/share/backgrounds/gnome/Stones.jpg"
