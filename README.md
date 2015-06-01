@@ -30,8 +30,8 @@ If you don't like the μ (or λ, if you're root) comment out line 79 of `.shell_
 ---
 
 ### Recommneded Configuration:
-- Background color of #121222
-- Text color of #808090
+- Background color of #061106
+- Text color of #809080
 
 ---
 
