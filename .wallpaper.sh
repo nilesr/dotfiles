@@ -40,12 +40,13 @@ done &
 while true; do
 	if test "$monitor" -eq 0; then
 		bit=0
-		if test "$x" -ge 60; then
+		if test "$x" -ge 10; then
 			x=0
 			if test "$(date +%H|sed 's/^0//')" -le 6; then
 				base="$HOME/Pictures/Morning"
 			else
-				base="$HOME/Pictures/Backgrounds"
+				#base="$HOME/Pictures/Backgrounds"
+				base="$HOME/Documents/projects/Python/dish/dish"
 			fi
 			echo setting picture
 			photo=$(find "$base" -maxdepth $depth -iregex ".*\(jpg\|jpeg\|gif\|png\|bmp\)$" -type f | shuf -n1)
