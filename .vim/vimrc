@@ -378,3 +378,9 @@ filetype plugin on
 au FileType html,xhtml setl ofu=htmlcomplete#CompleteTags
 au FileType css setl ofu=csscomplete#CompleteCSS
 
+" Set pastetoggle to F5
+" So you can paste things without it going berserk
+set pastetoggle=<F5>
+
+" Fixes tmux
+set t_ut=
