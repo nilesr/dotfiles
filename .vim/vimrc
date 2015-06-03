@@ -384,3 +384,16 @@ set pastetoggle=<F5>
 
 " Fixes tmux
 set t_ut=
+" Map control + T to new tab
+map <C-t> :tabnew<CR>
+" These work for gvim, not so much for in the terminal
+" Map control + Tab to next tab
+map <C-Tab> gt
+" Map control + shift + tab to last tab
+map <C-S-Tab> gT
+" Map (not in insert mode) Control+W to close a tab
+noremap <C-w> :tabclose<CR>
+
+"Testing
+nnoremap <C-Left> :tabprevious<CR>
+nnoremap <C-Right> :tabnext<CR>
