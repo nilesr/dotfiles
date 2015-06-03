@@ -35,7 +35,7 @@ case "$choice" in
     *)
         read rest
         read -p "Username: " user
-        total="$user"@"$choice$rest"
+		test "$choice" == " " && total="$user"@"$rest" || total="$user"@"$choice$rest"
         autossh -M "$port" $total
         ;;
 esac
