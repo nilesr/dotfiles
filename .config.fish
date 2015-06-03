@@ -41,6 +41,7 @@ function fuck-resolvconf
 end
 
 alias ptpy="ptpython --vi"
+alias f=fg
 
 #eval (lesspipe|while read line; echo "$line"|tr '=' ' '|sed 's/export/set -x/'; end)
 set -x fish_color_normal ""
