@@ -35,6 +35,8 @@ set -x GOPATH ~/.gocode
 set -x GOBIN $GOPATH/bin
 set -x PATH $PATH $GOROOT/bin $GOPATH/bin
 
+set -x PATH $PATH ~/.bin
+
 function fuck-resolvconf
 	command nmcli n off
 	command nmcli n on
