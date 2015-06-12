@@ -53,10 +53,12 @@ while true; do
 			DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.screensaver picture-options "scaled"
 			DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-options "scaled"
 			DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri "$uri"
-			if test $(($(date +%H|sed 's/^0//')%4)) -lt 2; then
-				lockscreen="file:///usr/share/backgrounds/gnome/Road.jpg"
+			if test $(date +%M|sed 's/^0//') -lt 20; then
+				lockscreen="file:///home/niles/Documents/lock.jpg"
+			elif test $(date +%M|sed 's/^0//') -lt 40; then
+				lockscreen="file:///home/niles/Documents/lock2.jpg"
 			else
-				lockscreen="file:///usr/share/backgrounds/gnome/Stones.jpg"
+				lockscreen="file:///home/niles/Documents/lock3.fixed.jpg"
 			fi
 			DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.screensaver picture-uri "$lockscreen"
 		fi

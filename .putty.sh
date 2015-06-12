@@ -11,8 +11,16 @@ printnum 1 Silver-Birch
 printnum 2 Archbishop
 printnum 3 Ubuntubishop
 printnum 4 macmini
+printnum 5 umd
 tput sgr0
-read -n 1 -p "Select: " choice
+if test "$#" == "0"; then 
+	echo -n "Select: "
+	tput bold
+	read -n 1 choice
+	tput sgr0
+else
+	choice=$@
+fi
 if test "$choice" -lt 9 &> /dev/null; then
     echo
 fi
@@ -31,6 +39,9 @@ case "$choice" in
         ;;
 	4)
 		autossh -M "$port" root@10.8.0.10
+		;;
+	5)
+		autossh -M "$port" nilesr@openlab.umiacs.umd.edu
 		;;
     *)
         read rest
