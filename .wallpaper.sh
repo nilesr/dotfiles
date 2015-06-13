@@ -1,14 +1,18 @@
 #! /bin/bash 
 enabled=
-#Dhananjay Sathe : dhananjaysathe@gmail.com
-#http://dsathe.blogspot.com/
+# Original code credit to:
+# Dhananjay Sathe : dhananjaysathe@gmail.com
+# http://dsathe.blogspot.com/
+# Heavily adapted by Niles Rogoff
 wide="file:///home/niles/Documents/mirror.jpg"
 depth=2 # set as required
 x=61
+lockindex=0
 bit=0
 rm /tmp/background
 mkfifo /tmp/background
 monitor=0
+lockbase="$HOME/Pictures/lock"
 cat /tmp/background|while read f; do
 	x=61
 done &
@@ -21,6 +25,9 @@ function check() {
 	fi
 }
 check
+function getpics() {
+	find "$1" -maxdepth $depth -type f -iregex ".*\(jpg\|jpeg\|gif\|png\|bmp\)$"
+}
 monitor=$? # Set monitor to the return value of check
 echo "$monitor"|tee ~/.wp-show/hack # See comment below
 stdbuf -i0 -o0 udevadm monitor -k --env|grep --line-buffered -i HOTPLUG|while read -r line; do	
@@ -48,18 +55,15 @@ while true; do
 				base="$HOME/Pictures/Backgrounds"
 			fi
 			echo setting picture
-			photo=$(find "$base" -maxdepth $depth -iregex ".*\(jpg\|jpeg\|gif\|png\|bmp\)$" -type f | shuf -n1)
+			photo=$(getpics "$base" | shuf -n1)
 			uri="file://$photo"
 			DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.screensaver picture-options "scaled"
 			DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-options "scaled"
 			DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri "$uri"
-			if test $(date +%M|sed 's/^0//') -lt 20; then
-				lockscreen="file:///home/niles/Documents/lock.jpg"
-			elif test $(date +%M|sed 's/^0//') -lt 40; then
-				lockscreen="file:///home/niles/Documents/lock2.jpg"
-			else
-				lockscreen="file:///home/niles/Documents/lock3.fixed.jpg"
-			fi
+			lockindex=$(($lockindex+1))
+			lockindex=$(($lockindex%$(getpics "$lockbase"|wc -l)))
+			lockscreen="file://"$(getpics "$lockbase"|head -n "$lockindex"|tail -n 1)
+			echo $lockindex $lockscreen
 			DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.screensaver picture-uri "$lockscreen"
 		fi
 	else
