@@ -4,8 +4,8 @@ function printnum {
 }
 i=0
 port=$(($(($RANDOM%20000))+1025))
-echo "SSH"|toilet -t -f mono12 --metal
-echo "Select Host"|toilet -t -f mono12 --metal
+#echo "SSH"|toilet -t -f mono12 --metal
+#echo "Select Host"|toilet -t -f mono12 --metal
 printnum 0 Spice-Birch
 printnum 1 Silver-Birch
 printnum 2 Archbishop
