@@ -60,8 +60,8 @@ while true; do
 			DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.screensaver picture-options "scaled"
 			DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-options "scaled"
 			DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri "$uri"
-			lockindex=$(($lockindex+1))
 			lockindex=$(($lockindex%$(getpics "$lockbase"|wc -l)))
+			lockindex=$(($lockindex+1))
 			lockscreen="file://"$(getpics "$lockbase"|head -n "$lockindex"|tail -n 1)
 			DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.screensaver picture-uri "$lockscreen"
 		fi
