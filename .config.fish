@@ -63,3 +63,7 @@ set -x fish_pager_color_completion normal
 set -x fish_pager_color_description 555 yellow
 set -x fish_pager_color_progress red
 set -x fish_pager_color_secondary ""
+function irc
+	toilet --gay -t -f mono9 --irc $argv|head -n 6|tail -n 5|xsel -b
+	echo copied "$argv" to clipboard, 5 lines
+end
