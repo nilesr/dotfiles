@@ -107,14 +107,14 @@ command! WW w !sudo tee % > /dev/null
 
 " Map ctrl+movement keys to ctrl+w followed by the movement key.
 " Makes switching between split windows extremely simple.
-"map <C-Down> <C-W>j
-"map <C-Up> <C-W>k
-"map <C-Left> <C-W>h
-"map <C-Right> <C-W>l
-map [A 10k
+map <C-Down> 10j
+map <C-Up> 10k
+"map <C-Left> 10h
+"map <C-Right> 10l
 map [B 10j
-map [D 10h
-map [C 10l
+map [A 10k
+"map [D 10h
+"map [C 10l
 " Map alt+movement keys to ctrl+w followed by the movement key.
 " Makes moving windows much simpler.
 map ∆ <C-W>J
@@ -398,5 +398,9 @@ map <C-Tab> gt
 map <C-S-Tab> gT
 
 "Testing
+nnoremap [D :tabprevious<CR>
+nnoremap [C :tabnext<CR>
 nnoremap <C-Left> :tabprevious<CR>
 nnoremap <C-Right> :tabnext<CR>
+
+set noshowmode
