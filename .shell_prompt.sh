@@ -190,7 +190,7 @@ function __promptline {
   local a_fg="${wrap}38;5;232${end_wrap}"
   local a_bg="${wrap}48;5;239${end_wrap}"
   local a_sep_fg="${wrap}38;5;239${end_wrap}"
-  local c_fg="${wrap}38;5;102${end_wrap}"
+  local c_fg="${wrap}38;5;244${end_wrap}"
   local c_bg="${wrap}48;5;236${end_wrap}"
   local c_sep_fg="${wrap}38;5;236${end_wrap}"
   local y_fg="${wrap}38;5;102${end_wrap}"
