@@ -397,10 +397,13 @@ map <C-Tab> gt
 " Map control + shift + tab to last tab
 map <C-S-Tab> gT
 
-"Testing
 nnoremap [D :tabprevious<CR>
 nnoremap [C :tabnext<CR>
 nnoremap <C-Left> :tabprevious<CR>
 nnoremap <C-Right> :tabnext<CR>
 
+" The theme shows the current mode, no need to display it twice
 set noshowmode
+
+" Yanking and pasting will always use the X11 clipboard
+set clipboard=unnamedplus
