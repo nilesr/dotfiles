@@ -194,7 +194,7 @@ function __promptline {
   local c_fg="${wrap}38;5;244${end_wrap}"
   local c_bg="${wrap}48;5;236${end_wrap}"
   local c_sep_fg="${wrap}38;5;236${end_wrap}"
-  local y_fg="${wrap}38;5;248${end_wrap}"
+  local y_fg="${wrap}38;5;253${end_wrap}"
   local y_bg="${wrap}48;5;239${end_wrap}"
   local y_sep_fg="${wrap}38;5;239${end_wrap}"
   if [[ -n ${ZSH_VERSION-} ]]; then
