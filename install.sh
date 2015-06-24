@@ -4,6 +4,8 @@
 echo Initializing git submodules.
 git submodule init && git submodule update
 
+test -f "$PWD"/.config.fish || (echo "Please run this inside the dotfiles directory"; exit 1) || exit 1
+
 # Remove all dotfiles from the home directory if present.
 echo Removing any existing dotfiles from your home directory.
 rm -rf ~/.vim ~/.vimrc ~/.bashrc ~/.bash_profile ~/.inputrc ~/.gitconfig ~/.shell_prompt.sh ~/.tmux.conf ~/.tmux_theme ~/.tmux ~/.config/fish/config.fish ~/.putty.sh
@@ -26,6 +28,8 @@ ln -s "$PWD/.tmux" ~/.tmux
 ln -s "$PWD/.putty.sh" ~/.putty.sh
 echo Enabling apt progress bar
 echo 'Dpkg::Progress-Fancy "1";' | sudo tee /etc/apt/apt.conf.d/99progressbar
+echo Changing lightline vim theme
+cat "$PWD/.vim/bundle/lightline.vim/autoload/lightline/colorscheme/jellybeans.vim"|sed 's/107/108/' > "$PWD/.vim/bundle/lightline.vim/autoload/lightline/colorscheme/jellybeans.vim"
 echo Fixing nautilus
 gsettings set org.gnome.nautilus.preferences enable-interactive-search true
 echo Backing up /etc/issue
