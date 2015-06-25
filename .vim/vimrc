@@ -408,5 +408,5 @@ set noshowmode
 " Yanking and pasting will always use the X11 clipboard
 set clipboard=unnamedplus
 
-" For quick and dirty things, like tab+x tab+r, tab+s (or tab+.)
-nnoremap <Tab> 10
+nmap <Tab> :tabnext<CR>
+nmap [Z :tabprev<CR>
