@@ -18,6 +18,8 @@ set HISTCONTROL 'ignoreboth'
 printf "%s " (df -h|grep --color=never '/$'|awk '{print $5}'|tr -d '%')
 # Display users on login
 who -q|head -n 1|tr ' ' '\n'|uniq -c|awk '{print $2 ": " $1 " " }'|while read line; printf "%s" "$line"; end; echo
+# Display todo item
+cat ~/Documents/todo.txt|head -n 1 2>/dev/null
 # Set locale, workaround for arch linux
 set --global --export LANG en_US.UTF-8
 # Remove the "friendly" (dumb) fish greeting
