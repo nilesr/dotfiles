@@ -19,6 +19,12 @@ printf "%s " (df -h|grep --color=never '/$'|awk '{print $5}'|tr -d '%')
 # Display users on login
 who -q|head -n 1|tr ' ' '\n'|uniq -c|awk '{print $2 ": " $1 " " }'|while read line; printf "%s" "$line"; end; echo
 # Display todo item
+function color
+	set colors "110 192 190 180 140 65 10 25 30 95 105 135 210 225"
+	set len (echo $colors|wc -w)
+	echo $colors |awk '{print $'(bash -c 'echo $(($(($RANDOM%'$len'))+1))')'}'
+end
+tput setaf (color)
 cat ~/Documents/todo.txt|head -n 1 2>/dev/null
 # Set locale, workaround for arch linux
 set --global --export LANG en_US.UTF-8
