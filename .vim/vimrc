@@ -109,8 +109,8 @@ command! WW w !sudo tee % > /dev/null
 " Makes switching between split windows extremely simple.
 map <C-Down> 10j
 map <C-Up> 10k
-"map <C-Left> 10h
-"map <C-Right> 10l
+map  10h
+map  10l
 map [B 10j
 map [A 10k
 "map [D 10h
