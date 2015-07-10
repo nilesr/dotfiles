@@ -25,7 +25,7 @@ function color
 	echo $colors |awk '{print $'(bash -c 'echo $(($(($RANDOM%'$len'))+1))')'}'
 end
 tput setaf (color)
-cat ~/Documents/todo.txt|head -n 1 2>/dev/null
+head -n 1 ~/Documents/todo.txt 2>/dev/null
 # Set locale, workaround for arch linux
 set --global --export LANG en_US.UTF-8
 # Remove the "friendly" (dumb) fish greeting
