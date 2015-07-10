@@ -109,3 +109,6 @@
 [submodule ".vim/bundle/bufexplorer"]
 	path = .vim/bundle/bufexplorer
 	url = https://github.com/corntrace/bufexplorer.git
+[submodule ".vim/bundle/hexmode"]
+	path = .vim/bundle/hexmode
+	url = https://github.com/fidian/hexmode.git
