@@ -26,6 +26,7 @@ function color
 end
 tput setaf (color)
 head -n 1 ~/Documents/todo.txt 2>/dev/null
+tput sgr0
 # Set locale, workaround for arch linux
 set --global --export LANG en_US.UTF-8
 # Remove the "friendly" (dumb) fish greeting
