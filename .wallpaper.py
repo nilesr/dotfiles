@@ -1,5 +1,5 @@
 import subprocess, queue, threading, random, select, os, time
-wide = "file:///home/niles/Documents/mirror.jpg"
+wide = "file:///home/niles/Documents/mirror2.png"
 base = "/home/niles/Pictures/dnd-Backgrounds"
 morning_base = "/home/niles/Pictures/Morning"
 depth = 3
@@ -53,6 +53,7 @@ listener2.start()
 
 x=0
 while True:
+    #print(multi_monitor)
     while not q.empty():
         pulled_value = q.get()
         if pulled_value == "hotplug event":
