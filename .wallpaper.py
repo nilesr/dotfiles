@@ -1,5 +1,5 @@
 import subprocess, queue, threading, random, select, os, time
-wide = "file:///home/niles/Documents/mirror2.png"
+wide = "file:///home/niles/Documents/mirror3.png"
 base = "/home/niles/Pictures/dnd-Backgrounds"
 morning_base = "/home/niles/Pictures/Morning"
 depth = 3
@@ -25,7 +25,7 @@ def getpic():
     return "file://" + random.choice(subprocess.check_output(["find", current_base, "-maxdepth", str(depth), "-type", "f", "-iregex", '.*\(jpg\|jpeg\|gif\|png\|bmp\)$']).decode("utf-8").split("\n")[:-1])
 
 def l1function(q):
-    # stdbuf -i0 -o0 udevadm monitor -k --env|grep --line-buffered -i HOTPLUG|while read -r line
+    # stdbuf -i0 -o0 udevadm monitor -k --env|grep --line-buffered -i HOTPLUG|while read -r line; do x=61; done
     p = subprocess.Popen(["stdbuf", "-i0", "-o0", "udevadm", "monitor", "-k", "--env"], stdout=subprocess.PIPE)
     while True:
         rlist, wlist, xlist = select.select([p.stdout], [], [])
@@ -57,7 +57,7 @@ while True:
     while not q.empty():
         pulled_value = q.get()
         if pulled_value == "hotplug event":
-            time.sleep(5)
+            time.sleep(2)
             if check() != 1:
                 multi_monitor = True
             else:
@@ -72,7 +72,9 @@ while True:
             subprocess.call(["env", "DISPLAY=:0", "GSETTINGS_BACKEND=dconf", "gsettings", "set", "org.gnome.desktop.background", "picture-options", "scaled"])
             subprocess.call(["env", "DISPLAY=:0", "GSETTINGS_BACKEND=dconf", "gsettings", "set", "org.gnome.desktop.background", "picture-uri", getpic()])
         else:
-            subprocess.call(["env", "DISPLAY=:0", "GSETTINGS_BACKEND=dconf", "gsettings", "set", "org.gnome.desktop.background", "picture-options", "spanned"])
-            subprocess.call(["env", "DISPLAY=:0", "GSETTINGS_BACKEND=dconf", "gsettings", "set", "org.gnome.desktop.background", "picture-uri", wide])
+            subprocess.call(["env", "DISPLAY=:0", "GSETTINGS_BACKEND=dconf", "gsettings", "set", "org.gnome.desktop.background", "picture-options", "zoom"])
+            subprocess.call(["env", "DISPLAY=:0", "GSETTINGS_BACKEND=dconf", "gsettings", "set", "org.gnome.desktop.background", "picture-uri", getpic()])
+            #subprocess.call(["env", "DISPLAY=:0", "GSETTINGS_BACKEND=dconf", "gsettings", "set", "org.gnome.desktop.background", "picture-options", "spanned"])
+            #subprocess.call(["env", "DISPLAY=:0", "GSETTINGS_BACKEND=dconf", "gsettings", "set", "org.gnome.desktop.background", "picture-uri", wide])
         x = 0
     time.sleep(1)
