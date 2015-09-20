@@ -89,6 +89,19 @@ function __promptline_left_prompt {
   __promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print %n; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$(hostname)"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
   __promptline_wrapper "$(whoami)" "$slice_prefix" "$slice_suffix"
 
+  # section "b" header
+  slice_prefix="${b_bg}${sep}${b_fg}${b_bg}${space}" slice_suffix="$space${b_sep_fg}" slice_joiner="${b_fg}${b_bg}${alt_sep}${space}" slice_empty_prefix="${b_fg}${b_bg}${space}"
+  [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
+  # section "b" slices
+  # Does not currently work
+  local jobs=$(jobs|wc -l)
+  if test "$jobs" -ne 0; then 
+	  if test "$jobs" -gt 1; then
+		 __promptline_wrapper "$jobs"⚙ "$slice_prefix" "$slice_suffix"
+	 else
+		 __promptline_wrapper ⚙ "$slice_prefix" "$slice_suffix"
+	 fi
+ fi
   # section "c" header
   slice_prefix="${c_bg}${sep}${c_fg}${c_bg}${space}" slice_suffix="$space${c_sep_fg}" slice_joiner="${c_fg}${c_bg}${alt_sep}${space}" slice_empty_prefix="${c_fg}${c_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
@@ -112,7 +125,8 @@ function __promptline_git_status {
   local unmerged_symbol="✖"
   #local modified_symbol="✚"
   #local modified_symbol="+"
-  local modified_symbol="Δ"
+  #local modified_symbol="Δ"
+  local modified_symbol=±
   local clean_symbol="✔"
   local has_untracked_files_symbol="…"
 
@@ -191,6 +205,9 @@ function __promptline {
   local a_fg="${wrap}38;5;232${end_wrap}"
   local a_bg="${wrap}48;5;239${end_wrap}"
   local a_sep_fg="${wrap}38;5;239${end_wrap}"
+  local b_fg="${wrap}38;5;232${end_wrap}"
+  local b_bg="${wrap}48;5;220${end_wrap}"
+  local b_sep_fg="${wrap}38;5;220${end_wrap}"
   local c_fg="${wrap}38;5;244${end_wrap}"
   local c_bg="${wrap}48;5;236${end_wrap}"
   local c_sep_fg="${wrap}38;5;236${end_wrap}"
