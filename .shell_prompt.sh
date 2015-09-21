@@ -93,8 +93,8 @@ function __promptline_left_prompt {
   slice_prefix="${b_bg}${sep}${b_fg}${b_bg}${space}" slice_suffix="$space${b_sep_fg}" slice_joiner="${b_fg}${b_bg}${alt_sep}${space}" slice_empty_prefix="${b_fg}${b_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
   # section "b" slices
-  # Does not currently work
-  local jobs=$(jobs|wc -l)
+  #local jobs=$(jobs|wc -l)
+  local jobs="$JOBS"
   if test "$jobs" -ne 0; then 
 	  if test "$jobs" -gt 1; then
 		 __promptline_wrapper "$jobs"⚙ "$slice_prefix" "$slice_suffix"
