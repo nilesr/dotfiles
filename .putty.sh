@@ -12,6 +12,7 @@ printnum 2 Archbishop
 printnum 3 Ubuntubishop
 printnum 4 macmini
 printnum 5 umd
+printnum 6 digitalocean
 tput sgr0
 if test "$#" == "0"; then 
 	echo -n "Select: "
@@ -42,6 +43,9 @@ case "$choice" in
 		;;
 	5)
 		autossh -M "$port" nilesr@openlab.umiacs.umd.edu
+		;;
+	6)
+		autossh -M "$port" root@104.236.4.51
 		;;
     *)
         read rest

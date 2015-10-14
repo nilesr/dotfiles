@@ -410,3 +410,7 @@ set clipboard=unnamedplus
 
 nmap <Tab> :tabnext<CR>
 nmap [Z :tabprev<CR>
+
+nmap ñ ;
+nmap Ñ :
+cnoreabbrev t tabnew
