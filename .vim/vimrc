@@ -405,3 +405,4 @@ nmap [Z :tabprev<CR>
 
 nmap ñ ;
 nmap Ñ :
+cnoreabbrev t tabnew
