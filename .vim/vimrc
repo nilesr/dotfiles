@@ -389,20 +389,28 @@ map <C-Tab> gt
 " Map control + shift + tab to last tab
 map <C-S-Tab> gT
 
+" Map control left and control right to forward and back through the tabs.
+" Alt left and right move through tmux windows
 nnoremap [D :tabprevious<CR>
 nnoremap [C :tabnext<CR>
 nnoremap <C-Left> :tabprevious<CR>
 nnoremap <C-Right> :tabnext<CR>
 
-" The theme shows the current mode, no need to display it twice
+" Lightline shows the current mode, no need to display it twice
 set noshowmode
 
 " Yanking and pasting will always use the X11 clipboard
 set clipboard=unnamedplus
 
+" Binds tab and shift-tab to tabnext and tabprev. Holding control while
+" pressing these doesn't affect it.
 nmap <Tab> :tabnext<CR>
 nmap [Z :tabprev<CR>
 
+" Winkeys
 nmap ñ ;
 nmap Ñ :
+" Bind :t to new tab
 cnoreabbrev t tabnew
+" Word wrap will not break up words. Useful for editing text, not code
+set linebreak

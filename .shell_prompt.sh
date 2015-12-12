@@ -89,6 +89,13 @@ function __promptline_left_prompt {
   __promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print %n; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$(hostname)"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
   __promptline_wrapper "$(whoami)" "$slice_prefix" "$slice_suffix"
 
+  # section "d" header
+  slice_prefix="${d_bg}${sep}${d_fg}${d_bg}${space}" slice_suffix="$space${d_sep_fg}" slice_joiner="${d_fg}${d_bg}${alt_sep}${space}" slice_empty_prefix="${d_fg}${d_bg}${space}"
+  [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
+  # section "b" slices
+  if mount|grep -q '/dev/mapper/sd'; then
+	 __promptline_wrapper ! "$slice_prefix" "$slice_suffix"
+  fi
   # section "b" header
   slice_prefix="${b_bg}${sep}${b_fg}${b_bg}${space}" slice_suffix="$space${b_sep_fg}" slice_joiner="${b_fg}${b_bg}${alt_sep}${space}" slice_empty_prefix="${b_fg}${b_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
@@ -211,6 +218,11 @@ function __promptline {
   local c_fg="${wrap}38;5;244${end_wrap}"
   local c_bg="${wrap}48;5;236${end_wrap}"
   local c_sep_fg="${wrap}38;5;236${end_wrap}"
+
+  local d_fg="${wrap}38;5;254${end_wrap}"
+  local d_bg="${wrap}48;5;196${end_wrap}"
+  local d_sep_fg="${wrap}38;5;196${end_wrap}"
+
   local y_fg="${wrap}38;5;253${end_wrap}"
   local y_bg="${wrap}48;5;239${end_wrap}"
   local y_sep_fg="${wrap}38;5;239${end_wrap}"

@@ -13,6 +13,7 @@ printnum 3 Ubuntubishop
 printnum 4 macmini
 printnum 5 umd
 printnum 6 digitalocean
+printnum 7 Smokewood
 tput sgr0
 if test "$#" == "0"; then 
 	echo -n "Select: "
@@ -47,9 +48,14 @@ case "$choice" in
 	6)
 		autossh -M "$port" root@104.236.4.51
 		;;
+	7)
+		autossh -M "$port" root@10.8.0.6
+		;;
     *)
+		tput bold
         read rest
         read -p "Username: " user
+		tput sgr0
 		test "$choice" == " " && total="$user"@"$rest" || total="$user"@"$choice$rest"
         autossh -M "$port" $total
         ;;
