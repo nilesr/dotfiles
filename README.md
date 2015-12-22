@@ -31,8 +31,8 @@ If you don't like the μ (or λ, if you're root) comment out line 79 of `.shell_
 ---
 
 ### Recommneded Configuration:
-- Background color of rgb 20 20 20
-- Text color of rgb 187 187 187
+- Background color of rgb 20 20 20 or #141414
+- Text color of rgb 135 135 135 or #878787
 
 ---
 

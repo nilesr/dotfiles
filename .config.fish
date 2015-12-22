@@ -60,20 +60,20 @@ alias f=fg
 
 #eval (lesspipe|while read line; echo "$line"|tr '=' ' '|sed 's/export/set -x/'; end)
 set -x fish_color_normal ""
-set -x fish_color_command 808090 grey
+set -x fish_color_command 878787 grey
 set -x fish_color_quote 40a040 green
 set -x fish_color_redirection normal
 set -x fish_color_end ""
 #set -x fish_color_error red --bold
 set -x fish_color_error red
-set -x fish_color_param 808090 grey
-set -x fish_color_comment 808090 grey
-set -x fish_color_match 808090 grey
+set -x fish_color_param 878787 grey
+set -x fish_color_comment 878787 grey
+set -x fish_color_match 878787 grey
 set -x fish_color_search_match yellow
-set -x fish_color_operator 808090 grey
-set -x fish_color_escape 808090 grey
+set -x fish_color_operator 878787 grey
+set -x fish_color_escape 878787 grey
 set -x fish_color_cwd green
-set -x fish_pager_color_prefix 808090 grey
+set -x fish_pager_color_prefix 878787 grey
 set -x fish_pager_color_completion normal
 set -x fish_pager_color_description 555 yellow
 set -x fish_pager_color_progress red
@@ -82,3 +82,19 @@ function irc
 	toilet --gay -t -f mono9 --irc $argv|head -n 6|tail -n 5|xsel -b
 	echo copied "$argv" to clipboard, 5 lines
 end
+
+
+set -x LANG en_US.UTF-8
+set -x LC_CTYPE en_US.UTF-8
+set -x LC_NUMERIC en_US.UTF-8
+set -x LC_TIME en_US.UTF-8
+set -x LC_COLLATE en_US.UTF-8
+set -x LC_MONETARY en_US.UTF-8
+set -x LC_MESSAGES en_US.UTF-8
+set -x LC_PAPER en_US.UTF-8
+set -x LC_NAME en_US.UTF-8
+set -x LC_ADDRESS en_US.UTF-8
+set -x LC_TELEPHONE en_US.UTF-8
+set -x LC_MEASUREMENT en_US.UTF-8
+set -x LC_IDENTIFICATION en_US.UTF-8
+set -x LC_ALL en_US.UTF-8
