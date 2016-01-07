@@ -18,7 +18,7 @@ if test -t 0
 	# Print disk usage
 	printf "%s " (df -h|grep --color=never '/$'|awk '{print $5}'|tr -d '%')
 	# Display users on login
-	who -q|head -n 1|tr ' ' '\n'|uniq -c|awk '{print $2 ": " $1 " " }'|while read line; printf "%s" "$line"; end; echo
+	who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }'|while read line; printf "%s" "$line"; end; echo
 end
 # Display todo item
 function color
