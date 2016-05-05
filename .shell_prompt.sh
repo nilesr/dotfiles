@@ -70,7 +70,7 @@ function __promptline_cwd {
   done
   mu="μ"
   lambda="λ"
-  if test "$(whoami)" == "root"; then
+  if test "$EUID" == 0; then
 	  shell_char="$lambda"
   else
 	  shell_char="$mu"
@@ -86,14 +86,25 @@ function __promptline_left_prompt {
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
   # section "a" slices
   #__promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print %n; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$USER@$(hostname)"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+  # test "$STATUS" -ne 0 && __promptline_wrapper "$STATUS" "$slice_prefix" "$slice_suffix"
   __promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print %n; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$(hostname)"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
   __promptline_wrapper "$(whoami)" "$slice_prefix" "$slice_suffix"
+
+
+  # section "e" header
+  slice_prefix="${e_bg}${sep}${e_fg}${e_bg}${space}" slice_suffix="$space${e_sep_fg}" slice_joiner="${e_fg}${e_bg}${alt_sep}${space}" slice_empty_prefix="${e_fg}${e_bg}${space}"
+  [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
+  # section "b" slices
+  if grep -q 'gdfs(/home/niles/.ssh/gdfs.creds)' /etc/mtab; then
+	 __promptline_wrapper ! "$slice_prefix" "$slice_suffix"
+  fi
+
 
   # section "d" header
   slice_prefix="${d_bg}${sep}${d_fg}${d_bg}${space}" slice_suffix="$space${d_sep_fg}" slice_joiner="${d_fg}${d_bg}${alt_sep}${space}" slice_empty_prefix="${d_fg}${d_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
-  # section "b" slices
-  if cat /etc/mtab|grep -q '/dev/mapper/sd'; then
+  # section "d" slices
+  if grep -q '/dev/mapper/sd' /etc/mtab; then
 	 __promptline_wrapper ! "$slice_prefix" "$slice_suffix"
   fi
   # section "b" header
@@ -220,8 +231,12 @@ function __promptline {
   local c_sep_fg="${wrap}38;5;236${end_wrap}"
 
   local d_fg="${wrap}38;5;254${end_wrap}"
-  local d_bg="${wrap}48;5;196${end_wrap}"
-  local d_sep_fg="${wrap}38;5;196${end_wrap}"
+  local d_bg="${wrap}48;5;160${end_wrap}"
+  local d_sep_fg="${wrap}38;5;160${end_wrap}"
+
+  local e_fg="${wrap}38;5;254${end_wrap}"
+  local e_bg="${wrap}48;5;24${end_wrap}"
+  local e_sep_fg="${wrap}38;5;24${end_wrap}"
 
   local y_fg="${wrap}38;5;253${end_wrap}"
   local y_bg="${wrap}48;5;239${end_wrap}"

@@ -14,6 +14,7 @@ printnum 4 macmini
 printnum 5 umd
 printnum 6 digitalocean
 printnum 7 Smokewood
+printnum 8 Quaking-Aspen
 tput sgr0
 if test "$#" == "0"; then 
 	echo -n "Select: "
@@ -50,6 +51,9 @@ case "$choice" in
 		;;
 	7)
 		autossh -M "$port" root@10.8.0.6
+		;;
+	8)
+		autossh -M "$port" root@10.8.0.7
 		;;
     *)
 		tput bold

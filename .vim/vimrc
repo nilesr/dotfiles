@@ -1,4 +1,4 @@
-"*******************************************************
+" *******************************************************
 " SETTINGS
 
 " Fix for syntastic
@@ -301,28 +301,12 @@ let g:indent_guides_auto_colors = 0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=237
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=236
 
-"-=-=-= NERDTree =-=-=-
-
-" Ctrl+n will toggle NERDTree window.
-noremap <C-n> :NERDTreeToggle<CR>
-
-" Open NERDTree window at startup if no file is open.
-"autocmd vimenter * if !argc() | NERDTree | endif
-
-" Close VIM if NERDTree is the only window left open.
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-"*******************************************************
-
-
-
 
 set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
 
 " map control-backspace to delete the previous word
 imap <C-BS> <C-W>
-
-
+imap  <C-W>
 
 set smartindent
 

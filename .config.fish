@@ -1,12 +1,12 @@
-# in .config.fish
-#
 # Prompt
-function fish_prompt
-  env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) bash ~/.shell_prompt.sh left
-end
+if test -t 0
+	function fish_prompt
+	  env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) STATUS=$status bash ~/.shell_prompt.sh left
+	end
 
-function fish_right_prompt
-  env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status bash ~/.shell_prompt.sh right
+	function fish_right_prompt
+	  env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status bash ~/.shell_prompt.sh right
+	end
 end
 
 # Solarized Dark 256 dircolors
@@ -16,7 +16,7 @@ setenv LS_COLORS 'no=00;38;5;244:rs=0:di=00;38;5;33:ln=00;38;5;37:mh=00:pi=48;5;
 set HISTCONTROL 'ignoreboth'
 if test -t 0
 	# Print disk usage
-	printf "%s " (df -h|grep --color=never '/$'|awk '{print $5}'|tr -d '%')
+	printf "%s " (df -h|grep --color=never -E '/$|/home$'|sort|awk '{print $5}'|tr -d '%')
 	# Display users on login
 	who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }'|while read line; printf "%s" "$line"; end; echo
 end
@@ -39,7 +39,10 @@ set fish_greeting ''
 set --global --export TERM xterm-256color
 # Always run tmux in 256color mode
 alias tmux tmux\ -2
+# Always run sbcl inside rlwrap and without the header
 alias sbcl "rlwrap sbcl --noinform"
+# Never put single quotes around names with spaces in them
+#alias ls='ls --quoting-style=literal'
 # Machine specific instructions, not on dotfiles repo
 test -f "$HOME"/.fishrc; and source "$HOME"/.fishrc
 
@@ -98,3 +101,6 @@ set -x LC_TELEPHONE en_US.UTF-8
 set -x LC_MEASUREMENT en_US.UTF-8
 set -x LC_IDENTIFICATION en_US.UTF-8
 set -x LC_ALL en_US.UTF-8
+
+
+alias . 'eval $history[1]'
