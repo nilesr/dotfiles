@@ -70,7 +70,7 @@ function __promptline_cwd {
   done
   mu="μ"
   lambda="λ"
-  if test "$EUID" == 0; then
+  if test "$EUID" = 0; then
 	  shell_char="$lambda"
   else
 	  shell_char="$mu"
@@ -87,7 +87,7 @@ function __promptline_left_prompt {
   # section "a" slices
   #__promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print %n; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$USER@$(hostname)"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
   # test "$STATUS" -ne 0 && __promptline_wrapper "$STATUS" "$slice_prefix" "$slice_suffix"
-  __promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print %n; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$(hostname)"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+  __promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print $(hostname); elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$(hostname)"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
   __promptline_wrapper "$(whoami)" "$slice_prefix" "$slice_suffix"
 
 

@@ -29,10 +29,10 @@ if test "$choice" -lt 9 &> /dev/null; then
 fi
 case "$choice" in 
     0)
-        autossh -M "$port" root@niles.mooo.com -p 24
+        autossh -M "$port" root@10.8.0.8
         ;;
     1)
-        autossh -M "$port" root@niles.mooo.com -p 23
+		autossh -M "$port" root@10.8.0.9	
         ;;
     2)
         autossh -M "$port" root@10.8.0.3

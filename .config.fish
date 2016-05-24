@@ -14,23 +14,33 @@ setenv LS_COLORS 'no=00;38;5;244:rs=0:di=00;38;5;33:ln=00;38;5;37:mh=00:pi=48;5;
 
 # Ignore duplicate commands and commands starting with a space
 set HISTCONTROL 'ignoreboth'
-if test -t 0
-	# Print disk usage
-	printf "%s " (df -h|grep --color=never -E '/$|/home$'|sort|awk '{print $5}'|tr -d '%')
-	# Display users on login
-	who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }'|while read line; printf "%s" "$line"; end; echo
-end
 # Display todo item
 function color
 	set colors "110 192 190 180 140 65 10 25 30 95 105 135 210 225"
 	set len (echo $colors|wc -w)
 	echo $colors |awk '{print $'(bash -c 'echo $(($(($RANDOM%'$len'))+1))')'}'
 end
-if test -t 0
-	tput setaf (color)
-	head -n 1 ~/Documents/todo.txt 2>/dev/null
-	tput sgr0
+ps aux|grep -v grep|grep -v root|grep -q vmstat; or nohup bash -c 'touch /tmp/cpu; ( vmstat 2|stdbuf -oL awk \'{print 100-$15}\'|while read line; do echo "$line"|tee /tmp/cpu ;done)& disown' > /dev/null &
+function login_message
+	if test -t 0
+		# Print cpu usage
+		printf '%s ' (cat /tmp/cpu)
+		# print ram usage
+		set total (free|grep Mem|awk '{print $2}')
+		set used (free|grep Mem|awk '{print $3}')
+		printf '%s ' (echo 100\*$used/$total|bc)
+		# Print disk usage
+		printf "%s " (df -h|grep --color=never -E '/$|/home$'|sort|awk '{print $5}'|tr -d '%')
+		# Display users on login
+		who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }'|while read line; printf "%s" "$line"; end; echo
+		set temp (head -n 1 ~/Documents/todo/todo.txt 2>/dev/null)
+		tput setaf (color)
+		tput cup 0 (math (tput cols) - (echo "$temp"|wc -c) + 1)
+		echo $temp
+		tput sgr0
+	end
 end
+login_message
 # Set locale, workaround for arch linux
 set --global --export LANG en_US.UTF-8
 # Remove the "friendly" (dumb) fish greeting
