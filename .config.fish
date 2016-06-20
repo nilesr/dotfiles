@@ -20,17 +20,18 @@ function color
 	set len (echo $colors|wc -w)
 	echo $colors |awk '{print $'(bash -c 'echo $(($(($RANDOM%'$len'))+1))')'}'
 end
-ps aux|grep -v grep|grep -v root|grep -q vmstat; or nohup bash -c 'touch /tmp/cpu; ( vmstat 2|stdbuf -oL awk \'{print 100-$15}\'|while read line; do echo "$line"|tee /tmp/cpu ;done)& disown' > /dev/null &
+#ps aux|grep -v grep|grep -v root|grep -q vmstat; or nohup bash -c 'touch /tmp/cpu; ( vmstat 2|stdbuf -oL awk \'{print 100-$15}\'|while read line; do echo "$line"|tee /tmp/cpu ;done)& disown' > /dev/null &
 function login_message
 	if test -t 0
+		/usr/bin/clear
 		# Print cpu usage
-		printf '%s ' (cat /tmp/cpu)
+		#printf '%s ' (cat /tmp/cpu)
 		# print ram usage
 		set total (free|grep Mem|awk '{print $2}')
 		set used (free|grep Mem|awk '{print $3}')
 		printf '%s ' (echo 100\*$used/$total|bc)
 		# Print disk usage
-		printf "%s " (df -h|grep --color=never -E '/$|/home$'|sort|awk '{print $5}'|tr -d '%')
+		printf "%s " ( df -h / /home|grep --color=never -E '/$|/home$'|sort|awk '{print $5}'|tr -d '%')
 		# Display users on login
 		who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }'|while read line; printf "%s" "$line"; end; echo
 		set temp (head -n 1 ~/Documents/todo/todo.txt 2>/dev/null)

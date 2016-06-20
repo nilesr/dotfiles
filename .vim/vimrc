@@ -8,7 +8,7 @@ set shell=/bin/bash
 set mouse=a
 
 if has('mouse_sgr')
-  set ttymouse=sgr
+	set ttymouse=sgr
 endif
 
 " Allow backspace to remove lines.
@@ -64,7 +64,7 @@ set nofoldenable
 
 " Set left and right option/alt keys to be meta keys
 if has("gui_macvim")
-    set macmeta
+	set macmeta
 endif
 
 " Whenever a buffer is written to a file run the syn script to synchronize with VM.
@@ -140,15 +140,10 @@ nnoremap <CR> :noh<CR>
 "nnoremap gh H
 "nnoremap gl L
 
-" Force sync current file to vm
-noremap <F4> :!~/bin/syn %<CR>
-
 " F2 will use the current tab settings to retab the whole file.
 noremap <F2> :retab!<CR>
 
 noremap gw :Autoformat<CR><CR>
-
-imap <C-c> <CR><Esc>O
 
 "*******************************************************
 
@@ -168,86 +163,85 @@ let g:localvimrc_ask = 0
 let g:airline_powerline_fonts = 1
 
 let g:promptline_preset = {
-    \'a' : [ promptline#slices#user() ],
-    \'c' : [ promptline#slices#cwd() ],
-    \'y' : [ promptline#slices#vcs_branch(), promptline#slices#git_status() ]}
-    "\'b' : [ promptline#slices#host() ],
+			\'a' : [ promptline#slices#user() ],
+			\'c' : [ promptline#slices#cwd() ],
+			\'y' : [ promptline#slices#vcs_branch(), promptline#slices#git_status() ]}
+"\'b' : [ promptline#slices#host() ],
 let lightline_theme = 'jellybeans'
 if has("gui_running")
 	let lightline_theme = 'solarized_light'
 endif
 let g:lightline = {
-      \ 'colorscheme': lightline_theme,
-      \ 'component': {
-      \   'readonly': '%{&readonly?"":""}',
-      \ },
-      \ 'separator': { 'left': '', 'right': '' },
-      \ 'subseparator': { 'left': '', 'right': '' },
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ]],
-      \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
-      \ },
-      \ 'component_function': {
-      \   'fugitive': 'MyFugitive',
-      \   'filename': 'MyFilename',
-      \   'fileformat': 'MyFileformat',
-      \   'filetype': 'MyFiletype',
-      \   'fileencoding': 'MyFileencoding',
-      \   'mode': 'MyMode',
-      \ },
-      \ 'component_expand': {
-      \   'syntastic': 'SyntasticStatuslineFlag',
-      \ },
-      \ 'component_type': {
-      \   'syntastic': 'error',
-      \ },
-      \ }
+			\ 'colorscheme': lightline_theme,
+			\ 'component': {
+			\   'readonly': '%{&readonly?"":""}',
+			\ },
+			\ 'separator': { 'left': '', 'right': '' },
+			\ 'subseparator': { 'left': '', 'right': '' },
+			\ 'active': {
+			\   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ]],
+			\   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+			\ },
+			\ 'component_function': {
+			\   'fugitive': 'MyFugitive',
+			\   'filename': 'MyFilename',
+			\   'fileformat': 'MyFileformat',
+			\   'filetype': 'MyFiletype',
+			\   'fileencoding': 'MyFileencoding',
+			\   'mode': 'MyMode',
+			\ },
+			\ 'component_expand': {
+			\   'syntastic': 'SyntasticStatuslineFlag',
+			\ },
+			\ 'component_type': {
+			\   'syntastic': 'error',
+			\ },
+			\ }
 
 function! MyModified()
-  return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+	return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfunction
 
 function! MyReadonly()
-  return &ft !~? 'help' && &readonly ? '' : ''
+	return &ft !~? 'help' && &readonly ? '' : ''
 endfunction
 
 function! MyFilename()
-  let fname = expand('%:t')
-  return fname == 'ControlP' ? g:lightline.ctrlp_item :
-        \ fname == '__Tagbar__' ? g:lightline.fname :
-        \ fname =~ '__Gundo\|NERD_tree' ? '' :
-        \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
-        \ &ft == 'unite' ? unite#get_status_string() :
-        \ &ft == 'vimshell' ? vimshell#get_status_string() :
-        \ ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-        \ ('' != fname ? fname : '[No Name]') .
-        \ ('' != MyModified() ? ' ' . MyModified() : '')
+	let fname = expand('%:t')
+	return fname == 'ControlP' ? g:lightline.ctrlp_item :
+				\ fname == '__Tagbar__' ? g:lightline.fname :
+				\ fname =~ '__Gundo\|NERD_tree' ? '' :
+				\ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+				\ &ft == 'unite' ? unite#get_status_string() :
+				\ &ft == 'vimshell' ? vimshell#get_status_string() :
+				\ ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+				\ ('' != fname ? fname : '[No Name]') .
+				\ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 
 function! MyFugitive()
-  try
-    if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-      let mark = ''  " edit here for cool mark
-      let _ = fugitive#head()
-      return strlen(_) ? mark._ : ''
-    endif
-  catch
-  endtry
-  return ''
+	try
+		if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+			let mark = ''  " edit here for cool mark
+			let _ = fugitive#head()
+			return strlen(_) ? mark._ : ''
+		endif
+	catch
+	endtry
+	return ''
 endfunction
 
 function! MyFileformat()
-  return winwidth(0) > 70 ? &fileformat : ''
+	return winwidth(0) > 70 ? &fileformat : ''
 endfunction
 
 function! MyFiletype()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+	return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
 endfunction
 
 function! MyFileencoding()
-  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+	return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
 endfunction
-
 function! MyMode()
   let fname = expand('%:t')
   return fname == '__Tagbar__' ? 'Tagbar' :
@@ -262,23 +256,23 @@ function! MyMode()
 endfunction
 
 function! CtrlPStatusFunc_2(str)
-  return lightline#statusline(0)
+	return lightline#statusline(0)
 endfunction
 
 let g:tagbar_status_func = 'TagbarStatusFunc'
 
 function! TagbarStatusFunc(current, sort, fname, ...) abort
-    let g:lightline.fname = a:fname
-  return lightline#statusline(0)
+	let g:lightline.fname = a:fname
+	return lightline#statusline(0)
 endfunction
 
 augroup AutoSyntastic
-  autocmd!
-  autocmd BufWritePost *.c,*.cpp call s:syntastic()
+	autocmd!
+	autocmd BufWritePost *.c,*.cpp call s:syntastic()
 augroup END
 function! s:syntastic()
-  SyntasticCheck
-  call lightline#update()
+	SyntasticCheck
+	call lightline#update()
 endfunction
 
 let g:unite_force_overwrite_statusline = 0
@@ -310,7 +304,6 @@ imap  <C-W>
 
 set smartindent
 
-
 let CoVim_default_name = "Niles"
 let CoVim_default_port = "8802"  
 
@@ -325,11 +318,11 @@ nnoremap <leader><leader> <c-^>
 " Indent if we're at the beginning of a line. Else, do completion.
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-            return "\<tab>"
-    else
-        return "\<C-P>"
+	let col = col('.') - 1
+	if !col || getline('.')[col - 1] !~ '\k'
+		return "\<tab>"
+	else
+		return "\<C-P>"
 	endif
 endfunction
 inoremap <expr> <tab> InsertTabWrapper()
@@ -340,15 +333,15 @@ inoremap <s-tab> <c-n>
 " Remove smart quotes, etc.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! RemoveFancyCharacters()
-    let typo = {}
-    let typo["“"] = '"'
-    let typo["”"] = '"'
-    let typo["‘"] = "'"
-    let typo["’"] = "'"
-    let typo["–"] = '--'
-    let typo["—"] = '---'
-    let typo["…"] = '...'
-    :exe ":%s/".join(keys(typo), '\|').'/\=typo[submatch(0)]/ge'
+	let typo = {}
+	let typo["“"] = '"'
+	let typo["”"] = '"'
+	let typo["‘"] = "'"
+	let typo["’"] = "'"
+	let typo["–"] = '--'
+	let typo["—"] = '---'
+	let typo["…"] = '...'
+	:exe ":%s/".join(keys(typo), '\|').'/\=typo[submatch(0)]/ge'
 endfunction
 command! RemoveFancyCharacters :call RemoveFancyCharacters()
 
