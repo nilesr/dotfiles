@@ -81,6 +81,8 @@ function __promptline_cwd {
 }
 function __promptline_left_prompt {
   local slice_prefix slice_empty_prefix slice_joiner slice_suffix is_prompt_empty=1
+
+
   # section "a" header
   slice_prefix="${a_bg}${sep}${a_fg}${a_bg}${space}" slice_suffix="$space${a_sep_fg}" slice_joiner="${a_fg}${a_bg}${alt_sep}${space}" slice_empty_prefix="${a_fg}${a_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
@@ -89,6 +91,15 @@ function __promptline_left_prompt {
   # test "$STATUS" -ne 0 && __promptline_wrapper "$STATUS" "$slice_prefix" "$slice_suffix"
   __promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print $(hostname); elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$(hostname)"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
   __promptline_wrapper "$(whoami)" "$slice_prefix" "$slice_suffix"
+
+
+  # section "d" header
+  slice_prefix="${d_bg}${sep}${d_fg}${d_bg}${space}" slice_suffix="$space${d_sep_fg}" slice_joiner="${d_fg}${d_bg}${alt_sep}${space}" slice_empty_prefix="${d_fg}${d_bg}${space}"
+  [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
+  # section "d" slices
+  if grep -q '/dev/mapper/sd' /etc/mtab; then
+	 __promptline_wrapper ! "$slice_prefix" "$slice_suffix"
+  fi
 
 
   # section "e" header
@@ -100,13 +111,7 @@ function __promptline_left_prompt {
   fi
 
 
-  # section "d" header
-  slice_prefix="${d_bg}${sep}${d_fg}${d_bg}${space}" slice_suffix="$space${d_sep_fg}" slice_joiner="${d_fg}${d_bg}${alt_sep}${space}" slice_empty_prefix="${d_fg}${d_bg}${space}"
-  [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
-  # section "d" slices
-  if grep -q '/dev/mapper/sd' /etc/mtab; then
-	 __promptline_wrapper ! "$slice_prefix" "$slice_suffix"
-  fi
+
   # section "b" header
   slice_prefix="${b_bg}${sep}${b_fg}${b_bg}${space}" slice_suffix="$space${b_sep_fg}" slice_joiner="${b_fg}${b_bg}${alt_sep}${space}" slice_empty_prefix="${b_fg}${b_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
@@ -120,6 +125,14 @@ function __promptline_left_prompt {
 		 __promptline_wrapper ⚙ "$slice_prefix" "$slice_suffix"
 	 fi
  fi
+  # section "f" header
+  slice_prefix="${f_bg}${sep}${f_fg}${f_bg}${space}" slice_suffix="$space${f_sep_fg}" slice_joiner="${f_fg}${f_bg}${alt_sep}${space}" slice_empty_prefix="${f_fg}${f_bg}${space}"
+  [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
+  # section "f" slices
+  if test "$PROMPTLINE_LAST_EXIT_CODE" -ne 0; then
+	 __promptline_wrapper $PROMPTLINE_LAST_EXIT_CODE "$slice_prefix" "$slice_suffix"
+  fi
+
   # section "c" header
   slice_prefix="${c_bg}${sep}${c_fg}${c_bg}${space}" slice_suffix="$space${c_sep_fg}" slice_joiner="${c_fg}${c_bg}${alt_sep}${space}" slice_empty_prefix="${c_fg}${c_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
@@ -237,6 +250,10 @@ function __promptline {
   local e_fg="${wrap}38;5;254${end_wrap}"
   local e_bg="${wrap}48;5;24${end_wrap}"
   local e_sep_fg="${wrap}38;5;24${end_wrap}"
+
+  local f_fg="${wrap}38;5;236${end_wrap}"
+  local f_bg="${wrap}48;5;208${end_wrap}"
+  local f_sep_fg="${wrap}38;5;208${end_wrap}"
 
   local y_fg="${wrap}38;5;253${end_wrap}"
   local y_bg="${wrap}48;5;239${end_wrap}"
