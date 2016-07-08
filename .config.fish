@@ -3,10 +3,38 @@ if test -t 0
 	function fish_prompt
 	  env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) STATUS=$status bash ~/.shell_prompt.sh left
 	end
-
 	function fish_right_prompt
 	  env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status bash ~/.shell_prompt.sh right
 	end
+	function moron # For use in public. Combine with a white theme with non-monospaced black text background
+		function fish_prompt
+		  env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) STATUS=$status bash ~/.shell_prompt.sh moron
+		end
+		function fish_right_prompt
+		end
+		set -x fish_color_error black
+		set -x fish_color_param black
+		set -x fish_color_comment black
+		set -x fish_color_match black
+		set -x fish_color_search_match black
+		set -x fish_color_operator black
+		set -x fish_color_escape black
+		set -x fish_color_cwd black
+		set -x fish_pager_color_prefix black
+		set -x fish_pager_color_completion black
+		set -x fish_pager_color_description black
+		set -x fish_pager_color_progress black
+		set -x fish_pager_color_secondary ""
+		alias ls=ls\ --color=never
+		function clear
+			/usr/bin/env clear
+		end
+		function login_message
+			clear
+		end
+		clear
+	end
+
 end
 
 # Solarized Dark 256 dircolors
@@ -114,4 +142,29 @@ set -x LC_IDENTIFICATION en_US.UTF-8
 set -x LC_ALL en_US.UTF-8
 
 
-alias . 'eval $history[1]'
+alias ping=ping\ -s\ 8
+alias clear='/usr/bin/clear; login_message'
+function read_confirm
+  while true
+    read -p 'echo "This will delete a source file. Sure? (y/n):"' -l confirm
+    switch $confirm
+      case Y y
+        return 0
+      case '' N n
+        return 1
+    end
+  end
+end
+function rm
+	if echo $argv | grep -Eiq '*\.py|*\.c|*\.java|*\.rb|*\.html|*\.css|*\.js|*\.pl'
+		read_confirm; and /usr/bin/rm $argv
+	else
+		/usr/bin/rm $argv
+	end
+end
+alias putty=~/.putty.sh
+alias proxy=~/.proxy.sh
+alias :q exit
+alias :e vim
+alias vi=vim
+

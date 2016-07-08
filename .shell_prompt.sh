@@ -263,7 +263,13 @@ function __promptline {
     RPROMPT="$(__promptline_right_prompt)"
   elif [[ -n ${FISH_VERSION-} ]]; then
     if [[ -n "$1" ]]; then
-      [[ "$1" = "left" ]] && __promptline_left_prompt || __promptline_right_prompt
+      if [[ "$1" = "left" ]]; then
+		  __promptline_left_prompt 
+	  elif test "$1" = "moron"; then
+		  echo -n "  "
+	  else
+		  __promptline_right_prompt
+	  fi
     else
       __promptline_ps1
     fi
