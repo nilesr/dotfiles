@@ -59,7 +59,7 @@ function login_message
 		set used (free|grep Mem|awk '{print $3}')
 		printf '%s ' (echo 100\*$used/$total|bc)
 		# Print disk usage
-		printf "%s " ( df -h / /home|grep --color=never -E '/$|/home$'|sort|awk '{print $5}'|tr -d '%')
+		printf "%s " ( df -h / /home|grep --color=never -P '/$|/home$'|sort|awk '{print $5}'|tr -d '%')
 		# Display users on login
 		who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }'|while read line; printf "%s" "$line"; end; echo
 		set temp (head -n 1 ~/Documents/todo/todo.txt 2>/dev/null)
@@ -67,6 +67,12 @@ function login_message
 		tput cup 0 (math (tput cols) - (echo "$temp"|wc -c) + 1)
 		echo $temp
 		tput sgr0
+		# If the date has changed since the last login
+		if not test -e /tmp/date; touch /tmp/date; end
+		date +%x > /tmp/newdate
+		# Print the current weather
+		diff /tmp/date /tmp/newdate > /dev/null; or curl -s wttr.in|head -n 17; and mv /tmp/newdate /tmp/date
+		#diff /tmp/date /tmp/newdate > /dev/null; or curl -s wttr.in|grep -v 'Check new Feature'|grep -v 'Follow'; and mv /tmp/newdate /tmp/date
 	end
 end
 login_message
@@ -156,7 +162,7 @@ function read_confirm
   end
 end
 function rm
-	if echo $argv | grep -Eiq '*\.py|*\.c|*\.java|*\.rb|*\.html|*\.css|*\.js|*\.pl'
+	if echo $argv | grep -Piq '.*\.py|.*\.c|.*\.java|.*\.rb|.*\.html|.*\.css|.*\.js|.*\.pl'
 		read_confirm; and /usr/bin/rm $argv
 	else
 		/usr/bin/rm $argv

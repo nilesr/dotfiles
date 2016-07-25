@@ -97,7 +97,8 @@ function __promptline_left_prompt {
   slice_prefix="${d_bg}${sep}${d_fg}${d_bg}${space}" slice_suffix="$space${d_sep_fg}" slice_joiner="${d_fg}${d_bg}${alt_sep}${space}" slice_empty_prefix="${d_fg}${d_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
   # section "d" slices
-  if grep -q '/dev/mapper/sd' /etc/mtab; then
+  #if grep -q '/dev/mapper/sd' /etc/mtab; then
+  if test -e /dev/mapper/sd; then
 	 __promptline_wrapper ! "$slice_prefix" "$slice_suffix"
   fi
 

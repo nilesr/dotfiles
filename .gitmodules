@@ -112,3 +112,6 @@
 [submodule ".vim/bundle/hexmode"]
 	path = .vim/bundle/hexmode
 	url = https://github.com/fidian/hexmode.git
+[submodule "haskell-vim-now"]
+	path = haskell-vim-now
+	url = /home/niles/.dotfiles/.vim/bundle/haskell-vim-now/
