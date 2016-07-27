@@ -72,6 +72,7 @@ function login_message
 		date +%x > /tmp/newdate
 		# Print the current weather
 		diff /tmp/date /tmp/newdate > /dev/null; or curl -s wttr.in|head -n 17; and mv /tmp/newdate /tmp/date
+		chmod 777 /tmp/date
 		#diff /tmp/date /tmp/newdate > /dev/null; or curl -s wttr.in|grep -v 'Check new Feature'|grep -v 'Follow'; and mv /tmp/newdate /tmp/date
 	end
 end
