@@ -43,10 +43,43 @@ setenv LS_COLORS 'no=00;38;5;244:rs=0:di=00;38;5;33:ln=00;38;5;37:mh=00:pi=48;5;
 # Ignore duplicate commands and commands starting with a space
 set HISTCONTROL 'ignoreboth'
 # Display todo item
+function irc
+	toilet --gay -t -f mono9 --irc $argv|head -n 6|tail -n 5|xsel -b
+	echo copied "$argv" to clipboard, 5 lines
+end
+function bigtwitch
+    toilet -t -f mono9 "$argv"|head -n 6|sed 's/ /░/g;'|head -n 6
+    toilet -t -f mono9 "$argv"|head -n 6|sed 's/ /░/g;'|head -n 6|xsel -b
+end
+function twitch
+    echo (toilet -t -f pagga "$argv"|head -n 1|sed 's/./░/g;'|head -n 6) (toilet -t -f pagga "$argv"|sed 's/ /░/g;'|head -n 6)|xsel -b
+    echo (toilet -t -f pagga "$argv"|head -n 1|sed 's/./░/g;'|head -n 6) (toilet -t -f pagga "$argv"|sed 's/ /░/g;'|head -n 6)|tr ' ' '\n'
+end
+
 function color
 	set colors "110 192 190 180 140 65 10 25 30 95 105 135 210 225"
 	set len (echo $colors|wc -w)
 	echo $colors |awk '{print $'(bash -c 'echo $(($(($RANDOM%'$len'))+1))')'}'
+end
+function display
+    set level (echo $argv|awk '{print $1}')
+    set temp (echo "$argv"|cut -c 3-)
+    tput setaf (color)
+    tput cup $level (math (tput cols) - (echo "$temp"|wc -c) + 1)
+    echo $temp
+    tput sgr0
+end
+function weather
+    curl -s wttr.in|head -n 17
+end
+function alert
+    # We need all these headers because otherwise it comes out garbled, some encoding error or something. We probably only need the Accept header because that specifies latin 1 or utf-8 as valid encodings, but I'm keeping them all just in case
+    set level (curl -s 'https://isc.sans.edu/infocon.txt' -H 'Host: isc.sans.edu' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0' -H 'Accept: text/html, */* ISO-8859-1,utf-8;q=0.7,*;q=0.7 gzip,deflate en- us,en;q=0.5' -H 'Accept-Language: en' --compressed -H 'Referer: https://isc.sans.edu/infocon.html' -H 'Connection: close' -H 'Upgrade-Insecure-Requests: 1')
+    if test "$level" != "green";
+        toilet -t -f mono9 ALERT LEVEL $level
+    else
+        display 1 Alert Level $level
+    end
 end
 #ps aux|grep -v grep|grep -v root|grep -q vmstat; or nohup bash -c 'touch /tmp/cpu; ( vmstat 2|stdbuf -oL awk \'{print 100-$15}\'|while read line; do echo "$line"|tee /tmp/cpu ;done)& disown' > /dev/null &
 function login_message
@@ -63,17 +96,24 @@ function login_message
 		# Display users on login
 		who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }'|while read line; printf "%s" "$line"; end; echo
 		set temp (head -n 1 ~/Documents/todo/todo.txt 2>/dev/null)
-		tput setaf (color)
-		tput cup 0 (math (tput cols) - (echo "$temp"|wc -c) + 1)
-		echo $temp
-		tput sgr0
+        display 0 $temp
 		# If the date has changed since the last login
 		if not test -e /tmp/date; touch /tmp/date; end
+		if not test -e /tmp/hour; touch /tmp/hour; end
+        date +%H > /tmp/newhour
 		date +%x > /tmp/newdate
 		# Print the current weather
-		diff /tmp/date /tmp/newdate > /dev/null; or curl -s wttr.in|head -n 17; and mv /tmp/newdate /tmp/date
+		diff /tmp/hour /tmp/newhour > /dev/null; or set newhour true;
+		diff /tmp/date /tmp/newdate > /dev/null; or set newday true;
 		chmod 777 /tmp/date
-		#diff /tmp/date /tmp/newdate > /dev/null; or curl -s wttr.in|grep -v 'Check new Feature'|grep -v 'Follow'; and mv /tmp/newdate /tmp/date
+        if test "$newhour" = "true";
+            alert
+            mv /tmp/newhour /tmp/hour
+        end
+        if test "$newday" = "true"; 
+            weather
+            mv /tmp/newdate /tmp/date
+        end
 	end
 end
 login_message
@@ -127,11 +167,6 @@ set -x fish_pager_color_completion normal
 set -x fish_pager_color_description 555 yellow
 set -x fish_pager_color_progress red
 set -x fish_pager_color_secondary ""
-function irc
-	toilet --gay -t -f mono9 --irc $argv|head -n 6|tail -n 5|xsel -b
-	echo copied "$argv" to clipboard, 5 lines
-end
-
 
 set -x LANG en_US.UTF-8
 set -x LC_CTYPE en_US.UTF-8
