@@ -75,6 +75,8 @@ end
 function alert
     # We need all these headers because otherwise it comes out garbled, some encoding error or something. We probably only need the Accept header because that specifies latin 1 or utf-8 as valid encodings, but I'm keeping them all just in case
     set level (curl -s 'https://isc.sans.edu/infocon.txt' -H 'Host: isc.sans.edu' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0' -H 'Accept: text/html, */* ISO-8859-1,utf-8;q=0.7,*;q=0.7 gzip,deflate en- us,en;q=0.5' -H 'Accept-Language: en' --compressed -H 'Referer: https://isc.sans.edu/infocon.html' -H 'Connection: close' -H 'Upgrade-Insecure-Requests: 1')
+    echo "$level" > /tmp/alert
+    chmod 777 /tmp/alert
     if test "$level" != "green";
         toilet -t -f mono9 ALERT LEVEL $level
     else
@@ -106,6 +108,12 @@ function login_message
 		diff /tmp/hour /tmp/newhour > /dev/null; or set newhour true;
 		diff /tmp/date /tmp/newdate > /dev/null; or set newday true;
 		chmod 777 /tmp/date
+        touch /tmp/alert
+        #if test x(cat /tmp/alert) != x"green"; # THIS DOESN'T WORK IF /tmp/alert IS EMPTY BECAUSE FISH SUCKS. It works in bash
+        set lastalert (cat /tmp/alert)
+        if test "$lastalert" != "green";
+            alert
+        end
         if test "$newhour" = "true";
             alert
             mv /tmp/newhour /tmp/hour
