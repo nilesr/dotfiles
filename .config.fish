@@ -70,17 +70,17 @@ function display
     tput sgr0
 end
 function weather
-    curl -s wttr.in|head -n 17
+    curl -s wttr.in/24061|head -n 17
 end
 function alert
     # We need all these headers because otherwise it comes out garbled, some encoding error or something. We probably only need the Accept header because that specifies latin 1 or utf-8 as valid encodings, but I'm keeping them all just in case
-    set level (curl -s 'https://isc.sans.edu/infocon.txt' -H 'Host: isc.sans.edu' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0' -H 'Accept: text/html, */* ISO-8859-1,utf-8;q=0.7,*;q=0.7 gzip,deflate en- us,en;q=0.5' -H 'Accept-Language: en' --compressed -H 'Referer: https://isc.sans.edu/infocon.html' -H 'Connection: close' -H 'Upgrade-Insecure-Requests: 1')
+    set level (curl -s 'https://isc.sans.edu/infocon.txt' -H 'Host: isc.sans.edu' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0' -H 'Accept: text/html, */* ISO-8859-1,utf-8;q=0.7,*;q=0.7 gzip,deflate en- us,en;q=0.5' -H 'Accept-Language: en' --compressed -H 'Referer: https://isc.sans.edu/infocon.html' -H 'Connection: close' -H 'Upgrade-Insecure-Requests: 1'); or return
     echo "$level" > /tmp/alert
     chmod 777 /tmp/alert
-    if test "$level" != "green";
+    if not test -z "$level"; and test "$level" != "green";
         toilet -t -f mono9 ALERT LEVEL $level
     else
-        display 1 Alert Level $level
+        display $argv Alert Level $level
     end
 end
 #ps aux|grep -v grep|grep -v root|grep -q vmstat; or nohup bash -c 'touch /tmp/cpu; ( vmstat 2|stdbuf -oL awk \'{print 100-$15}\'|while read line; do echo "$line"|tee /tmp/cpu ;done)& disown' > /dev/null &
@@ -98,7 +98,9 @@ function login_message
 		# Display users on login
 		who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }'|while read line; printf "%s" "$line"; end; echo
 		set temp (head -n 1 ~/Documents/todo/todo.txt 2>/dev/null)
-        display 0 $temp
+        set line 0
+        display $line $temp
+        set line (math $line + 1)
 		# If the date has changed since the last login
 		if not test -e /tmp/date; touch /tmp/date; end
 		if not test -e /tmp/hour; touch /tmp/hour; end
@@ -111,17 +113,25 @@ function login_message
         touch /tmp/alert
         #if test x(cat /tmp/alert) != x"green"; # THIS DOESN'T WORK IF /tmp/alert IS EMPTY BECAUSE FISH SUCKS. It works in bash
         set lastalert (cat /tmp/alert)
+        set alerted false
         if test "$lastalert" != "green";
-            alert
+            alert $line
+            set line (math $line + 1)
+            set alerted true
         end
         if test "$newhour" = "true";
-            alert
-            mv /tmp/newhour /tmp/hour
+            if test "$alerted" = "false"; 
+                alert $line
+                set line (math $line + 1)
+                mv /tmp/newhour /tmp/hour
+            end
         end
         if test "$newday" = "true"; 
             weather
             mv /tmp/newdate /tmp/date
         end
+        cat /etc/resolv.conf|grep -v 127.0.0.1|grep -v '^#.*'|grep -iq nameserver; and display $line NON-LOCAL NAMESERVERS
+        set line (math $line + 1)
 	end
 end
 login_message
@@ -218,3 +228,8 @@ alias :q exit
 alias :e vim
 alias vi=vim
 
+function image
+    set count (find ~/Pictures -maxdepth 1 -type f|wc -l)
+    set count (math (random) '%' $count)
+    find ~/Pictures -maxdepth 1 -type f|head -n $count|tail -n 1 | tee ~/.image.txt
+end
