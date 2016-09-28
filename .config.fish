@@ -1,4 +1,5 @@
 # Prompt
+alias grep=/usr/bin/grep\ -P\ --color=always
 if test -t 0
 	function fish_prompt
 	  env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) STATUS=$status bash ~/.shell_prompt.sh left
@@ -144,7 +145,7 @@ set --global --export TERM xterm-256color
 # Always run tmux in 256color mode
 alias tmux tmux\ -2
 # Always run sbcl inside rlwrap and without the header
-alias sbcl "rlwrap sbcl --noinform"
+alias sbcl "rlwrap sbcl --noinform --load ~/.quicklisp/setup.lisp"
 # Never put single quotes around names with spaces in them
 #alias ls='ls --quoting-style=literal'
 # Machine specific instructions, not on dotfiles repo
@@ -232,4 +233,29 @@ function image
     set count (find ~/Pictures -maxdepth 1 -type f|wc -l)
     set count (math (random) '%' $count)
     find ~/Pictures -maxdepth 1 -type f|head -n $count|tail -n 1 | tee ~/.image.txt
+end
+
+function commit
+    git add -A
+    git commit -am "$argv"
+end
+function rb
+    if test "$argv" = "root"
+        git rebase --interactive --root
+    else if not test -z "$argv"
+        git rebase --interactive HEAD~"$argv"
+    else
+        git rebase --interactive HEAD~3
+    end
+end
+alias todo "vi ~/Documents/todo/todo.txt"
+function destroy
+    if test -z "$argv"
+        echo "Safety kicking in, not recursively shredding the current working directory. Please specify path(s) as arguments"
+        return
+    end
+    echo "This will permenantly erase files. Press enter to confirm"
+    read nothing
+    find "$argv" -type f -print0|xargs -0 shred -vfuz
+    /usr/bin/env rm -rf "$argv"
 end
