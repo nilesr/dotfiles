@@ -259,3 +259,7 @@ function destroy
     find "$argv" -type f -print0|xargs -0 shred -vfuz
     /usr/bin/env rm -rf "$argv"
 end
+
+
+# NILES THIS FIXES LYX DON'T FUCKING TOUCH IT
+set -x --global QT_QPA_PLATFORMTHEME qt5ct
