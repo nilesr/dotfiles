@@ -169,7 +169,7 @@ let g:promptline_preset = {
 "\'b' : [ promptline#slices#host() ],
 let lightline_theme = 'jellybeans'
 if has("gui_running")
-	let lightline_theme = 'solarized_light'
+	let lightline_theme = 'solarized'
 endif
 let g:lightline = {
 			\ 'colorscheme': lightline_theme,
@@ -433,7 +433,7 @@ autocmd FileType ruby    call Settings_script()
 autocmd FileType rust    call Settings_rust()
 autocmd FileType scss    call Settings_css()
 autocmd FileType sh      call Settings_script()
-"autocmd FileType text    call Settings_text()
+autocmd FileType text    call Settings_text()
 autocmd FileType vim     call Settings_vim()
 autocmd FileType zsh     call Settings_script()
 
@@ -564,7 +564,7 @@ function! Settings_tex()
 endfunction
 
 function! Settings_text()
-	setlocal formatoptions+=ta
+	"setlocal formatoptions+=ta
 	setlocal noautoindent
 	setlocal nocindent
 	setlocal nosmartindent

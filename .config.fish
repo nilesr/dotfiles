@@ -218,7 +218,7 @@ function read_confirm
 end
 function rm
 	if echo $argv | grep -Piq '.*\.py|.*\.c|.*\.java|.*\.rb|.*\.html|.*\.css|.*\.js|.*\.pl'
-		read_confirm; and /usr/bin/rm $argv
+		read_confirm; and /usr/bin/rm -iv $argv
 	else
 		/usr/bin/rm $argv
 	end
@@ -260,6 +260,8 @@ function destroy
     /usr/bin/env rm -rf "$argv"
 end
 
+alias watch='watch --color'
+alias promise='watch -g'
 
 # NILES THIS FIXES LYX DON'T FUCKING TOUCH IT
 set -x --global QT_QPA_PLATFORMTHEME qt5ct
