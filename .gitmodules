@@ -114,8 +114,8 @@
 	url = https://github.com/fidian/hexmode.git
 [submodule ".vim/bundle/haskell-vim-now"]
 	path = .vim/bundle/haskell-vim-now
-	url = /home/niles/.dotfiles/.vim/bundle/haskell-vim-now/
+	url = https://github.com/begriffs/haskell-vim-now.git
 [submodule ".vim/bundle/vim-matlab"]
 	path = .vim/bundle/vim-matlab
-	url = /home/niles/.dotfiles/.vim/bundle/vim-matlab/
+	url = https://github.com/sgeb/vim-matlab.git
 
