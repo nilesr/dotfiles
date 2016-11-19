@@ -1,5 +1,5 @@
 # Prompt
-alias grep=/usr/bin/grep\ -P\ --color=always
+alias grep=/usr/bin/env\ grep\ -P\ --color=always
 if test -t 0
 	function fish_prompt
 	  env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) STATUS=$status bash ~/.shell_prompt.sh left
@@ -218,9 +218,9 @@ function read_confirm
 end
 function rm
 	if echo $argv | grep -Piq '.*\.py|.*\.c|.*\.java|.*\.rb|.*\.html|.*\.css|.*\.js|.*\.pl'
-		read_confirm; and /usr/bin/rm -iv $argv
+		read_confirm; and /usr/bin/env rm -iv $argv
 	else
-		/usr/bin/rm $argv
+		/usr/bin/env rm $argv
 	end
 end
 alias putty=~/.putty.sh
