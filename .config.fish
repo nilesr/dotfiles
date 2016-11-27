@@ -1,5 +1,7 @@
 # Prompt
 alias grep=/usr/bin/env\ grep\ -P\ --color=always
+set line 0
+set online true
 if test -t 0
 	function fish_prompt
 	  env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) STATUS=$status bash ~/.shell_prompt.sh left
@@ -63,17 +65,23 @@ function color
 	echo $colors |awk '{print $'(bash -c 'echo $(($(($RANDOM%'$len'))+1))')'}'
 end
 function display
-    set level (echo $argv|awk '{print $1}')
-    set temp (echo "$argv"|cut -c 3-)
     tput setaf (color)
-    tput cup $level (math (tput cols) - (echo "$temp"|wc -c) + 1)
-    echo $temp
+    tput cup $line (math (tput cols) - (echo "$argv"|wc -c) + 1)
+    echo $argv
     tput sgr0
+    set line (math $line + 1)
 end
 function weather
-    curl -s wttr.in/24061|head -n 17
+    if test "$online" = "false"
+        return
+    end
+    #curl -s wttr.in/24061|head -n 17
+    curl -s wttr.in|head -n 17
 end
 function alert
+    if test "$online" = "false"
+        return
+    end
     # We need all these headers because otherwise it comes out garbled, some encoding error or something. We probably only need the Accept header because that specifies latin 1 or utf-8 as valid encodings, but I'm keeping them all just in case
     set level (curl -s 'https://isc.sans.edu/infocon.txt' -H 'Host: isc.sans.edu' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0' -H 'Accept: text/html, */* ISO-8859-1,utf-8;q=0.7,*;q=0.7 gzip,deflate en- us,en;q=0.5' -H 'Accept-Language: en' --compressed -H 'Referer: https://isc.sans.edu/infocon.html' -H 'Connection: close' -H 'Upgrade-Insecure-Requests: 1'); or return
     echo "$level" > /tmp/alert
@@ -81,13 +89,19 @@ function alert
     if not test -z "$level"; and test "$level" != "green";
         toilet -t -f mono9 ALERT LEVEL $level
     else
-        display $argv Alert Level $level
+        display Alert Level $level
     end
 end
 #ps aux|grep -v grep|grep -v root|grep -q vmstat; or nohup bash -c 'touch /tmp/cpu; ( vmstat 2|stdbuf -oL awk \'{print 100-$15}\'|while read line; do echo "$line"|tee /tmp/cpu ;done)& disown' > /dev/null &
 function login_message
 	if test -t 0
 		/usr/bin/clear
+        # ghetto as fuck, just check if there's a defeault route
+        if route|grep -iq default;
+            set online true
+        else
+            set online false
+        end
 		# Print cpu usage
 		#printf '%s ' (cat /tmp/cpu)
 		# print ram usage
@@ -100,8 +114,7 @@ function login_message
 		who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }'|while read line; printf "%s" "$line"; end; echo
 		set temp (head -n 1 ~/Documents/todo/todo.txt 2>/dev/null)
         set line 0
-        display $line $temp
-        set line (math $line + 1)
+        display $temp
 		# If the date has changed since the last login
 		if not test -e /tmp/date; touch /tmp/date; end
 		if not test -e /tmp/hour; touch /tmp/hour; end
@@ -116,14 +129,12 @@ function login_message
         set lastalert (cat /tmp/alert)
         set alerted false
         if test "$lastalert" != "green";
-            alert $line
-            set line (math $line + 1)
+            alert
             set alerted true
         end
         if test "$newhour" = "true";
             if test "$alerted" = "false"; 
-                alert $line
-                set line (math $line + 1)
+                alert
                 mv /tmp/newhour /tmp/hour
             end
         end
@@ -131,8 +142,7 @@ function login_message
             weather
             mv /tmp/newdate /tmp/date
         end
-        cat /etc/resolv.conf|grep -v 127.0.0.1|grep -v '^#.*'|grep -iq nameserver; and display $line NON-LOCAL NAMESERVERS
-        set line (math $line + 1)
+        cat /etc/resolv.conf|grep -v 127.0.0.1|grep -v '^#.*'|grep -iq nameserver; and display NON-LOCAL NAMESERVERS
 	end
 end
 login_message
