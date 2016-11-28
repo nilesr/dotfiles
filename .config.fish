@@ -1,7 +1,5 @@
 # Prompt
 alias grep=/usr/bin/env\ grep\ -P\ --color=always
-set line 0
-set online true
 if test -t 0
 	function fish_prompt
 	  env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) STATUS=$status bash ~/.shell_prompt.sh left
@@ -93,6 +91,9 @@ function alert
     end
 end
 #ps aux|grep -v grep|grep -v root|grep -q vmstat; or nohup bash -c 'touch /tmp/cpu; ( vmstat 2|stdbuf -oL awk \'{print 100-$15}\'|while read line; do echo "$line"|tee /tmp/cpu ;done)& disown' > /dev/null &
+# make these global
+set line 0
+set online true
 function login_message
 	if test -t 0
 		/usr/bin/clear
@@ -118,29 +119,30 @@ function login_message
 		# If the date has changed since the last login
 		if not test -e /tmp/date; touch /tmp/date; end
 		if not test -e /tmp/hour; touch /tmp/hour; end
-        date +%H > /tmp/newhour
-		date +%x > /tmp/newdate
-		# Print the current weather
-		diff /tmp/hour /tmp/newhour > /dev/null; or set newhour true;
-		diff /tmp/date /tmp/newdate > /dev/null; or set newday true;
-		chmod 777 /tmp/date
-        touch /tmp/alert
-        #if test x(cat /tmp/alert) != x"green"; # THIS DOESN'T WORK IF /tmp/alert IS EMPTY BECAUSE FISH SUCKS. It works in bash
-        set lastalert (cat /tmp/alert)
+		if not test -e /tmp/alert; touch /tmp/alert; end
+		chmod 777 /tmp/date /tmp/hour /tmp/alert
+        set newdate false
+        set newhour false
+        if not test (date +%x) = (cat /tmp/date) ^/dev/null
+            set newdate true
+            date +%x > /tmp/date
+        end
+        if not test (date +%H) = (cat /tmp/hour) ^/dev/null
+            set newhour true
+            date +%H > /tmp/hour
+        end
         set alerted false
-        if test "$lastalert" != "green";
+        if not test green = (cat /tmp/alert) ^/dev/null
             alert
             set alerted true
         end
         if test "$newhour" = "true";
             if test "$alerted" = "false"; 
                 alert
-                mv /tmp/newhour /tmp/hour
             end
         end
         if test "$newday" = "true"; 
             weather
-            mv /tmp/newdate /tmp/date
         end
         cat /etc/resolv.conf|grep -v 127.0.0.1|grep -v '^#.*'|grep -iq nameserver; and display NON-LOCAL NAMESERVERS
 	end
