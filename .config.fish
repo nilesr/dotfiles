@@ -73,8 +73,8 @@ function weather
     if test "$online" = "false"
         return
     end
-    #curl -s wttr.in/24061|head -n 17
-    curl -s wttr.in|head -n 17
+    curl -s wttr.in/24061|head -n 17
+    #curl -s wttr.in|head -n 17
 end
 function alert
     if test "$online" = "false"
@@ -141,7 +141,7 @@ function login_message
                 alert
             end
         end
-        if test "$newday" = "true"; 
+        if test "$newdate" = "true"; 
             weather
         end
         cat /etc/resolv.conf|grep -v 127.0.0.1|grep -v '^#.*'|grep -iq nameserver; and display NON-LOCAL NAMESERVERS
@@ -266,7 +266,7 @@ function destroy
         echo "Safety kicking in, not recursively shredding the current working directory. Please specify path(s) as arguments"
         return
     end
-    echo "This will permenantly erase files. Press enter to confirm"
+    echo "This will permenantly erase files. Press enter to confirm, or Ctrl+C to cancel"
     read nothing
     find "$argv" -type f -print0|xargs -0 shred -vfuz
     /usr/bin/env rm -rf "$argv"
@@ -274,6 +274,10 @@ end
 
 alias watch='watch --color'
 alias promise='watch -g'
+
+function timestamp
+    eval $argv|while read line; printf "%s " (date); echo $line; end
+end
 
 # NILES THIS FIXES LYX DON'T FUCKING TOUCH IT
 set -x --global QT_QPA_PLATFORMTHEME qt5ct
