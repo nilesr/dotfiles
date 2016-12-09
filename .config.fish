@@ -1,3 +1,5 @@
+# Machine specific instructions, not on dotfiles repo
+test -f "$HOME"/.fishrc; and source "$HOME"/.fishrc
 # Prompt
 alias grep=/usr/bin/env\ grep\ -P\ --color=always
 if test -t 0
@@ -160,15 +162,7 @@ alias tmux tmux\ -2
 alias sbcl "rlwrap sbcl --noinform --load ~/.quicklisp/setup.lisp"
 # Never put single quotes around names with spaces in them
 #alias ls='ls --quoting-style=literal'
-# Machine specific instructions, not on dotfiles repo
-test -f "$HOME"/.fishrc; and source "$HOME"/.fishrc
 
-set -x GOROOT /usr/lib/go
-set -x GOPATH ~/.gocode
-set -x GOBIN $GOPATH/bin
-set -x PATH $PATH $GOROOT/bin $GOPATH/bin
-
-set -x PATH $PATH ~/.bin
 
 function fuck-resolvconf
 	command nmcli n off
