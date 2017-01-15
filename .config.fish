@@ -66,6 +66,7 @@ function color
 end
 function display
     tput setaf (color)
+    #tput cup $line (math (tput cols) - (echo "$argv"|python3 -c 'import sys; print(len(sys.stdin.read()))') + 1)
     tput cup $line (math (tput cols) - (echo "$argv"|wc -c) + 1)
     echo $argv
     tput sgr0
@@ -75,8 +76,12 @@ function weather
     if test "$online" = "false"
         return
     end
-    curl -s wttr.in/24061|head -n 17
-    #curl -s wttr.in|head -n 17
+    #set destination ""
+    set destination "24061" # Blacksburg
+    if test (echo "$argv" | wc -c) -gt 1;
+        set destination $argv
+    end
+    curl -s wttr.in/$destination|head -n 17
 end
 function alert
     if test "$online" = "false"
@@ -100,7 +105,8 @@ function login_message
 	if test -t 0
 		/usr/bin/clear
         # ghetto as fuck, just check if there's a defeault route
-        if route|grep -iq default;
+        #if route|grep -iq default;
+        if route -n|grep -q '^0.0.0.0'
             set online true
         else
             set online false
@@ -110,11 +116,11 @@ function login_message
 		# print ram usage
 		set total (free|grep Mem|awk '{print $2}')
 		set used (free|grep Mem|awk '{print $3}')
-		printf '%s ' (echo 100\*$used/$total|bc)
+		printf '%s ' (math 100\*$used/$total)
 		# Print disk usage
-		printf "%s " ( df -h / /home|grep --color=never -P '/$|/home$'|sort|awk '{print $5}'|tr -d '%')
+		printf "%s " ( df -h / /home|tail -n -2|awk '{print $5}'|tr -d '%')
 		# Display users on login
-		who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }'|while read line; printf "%s" "$line"; end; echo
+		printf "%s " (who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }')
 		set temp (head -n 1 ~/Documents/todo/todo.txt 2>/dev/null)
         set line 0
         display $temp
@@ -264,6 +270,35 @@ function destroy
     read nothing
     find "$argv" -type f -print0|xargs -0 shred -vfuz
     /usr/bin/env rm -rf "$argv"
+end
+
+function viopen
+    sudo vi /etc/NetworkManager/system-connections/open
+    echo "Restart network manager? Enter to continue"
+    read nothing
+    sudo systemctl restart NetworkManager
+    echo "Bring connection open up? Enter to continue"
+    read nothing
+    nmcli n on; nmcli c up open
+    echo "Up, waiting for default route"
+    set online false
+    while test "$online" = "false"; 
+        sleep 1
+        sudo route -n|grep -q '^0.0.0.0'; and set online true
+    end
+    echo "default route acquired, attempting to resolve hosts"
+    # if we can resolve names and ping out, we're done
+    host -W 2 niles.xyz; and return
+    echo "We were unable to resolve a host, can we ping out?"
+    ping -c 1 -W 2 8.8.8.8; and return
+    echo "We can't ping out. Probably need to accept terms and conditions on the router"
+    echo "Swap dnscrypt for dnsmasq? Enter to continue"
+    read nothing
+    sudo systemctl stop dnscrypt; sudo systemctl start dnsmasq
+    echo "Swap back after authenticating? Enter to continue"
+    read nothing
+    sudo systemctl stop dnsmasq; sudo systemctl start dnscrypt
+    
 end
 
 alias watch='watch --color'
