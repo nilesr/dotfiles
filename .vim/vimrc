@@ -583,3 +583,7 @@ function! Settings_vim()
 endfunction
 
 endif "autocmd
+
+dig XO 8853 " xor digraph
+dig TF 8756 " therefore
+

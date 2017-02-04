@@ -45,7 +45,6 @@ setenv LS_COLORS 'no=00;38;5;244:rs=0:di=00;38;5;33:ln=00;38;5;37:mh=00:pi=48;5;
 
 # Ignore duplicate commands and commands starting with a space
 set HISTCONTROL 'ignoreboth'
-# Display todo item
 function irc
 	toilet --gay -t -f mono9 --irc $argv|head -n 6|tail -n 5|xsel -b
 	echo copied "$argv" to clipboard, 5 lines
@@ -66,8 +65,10 @@ function color
 end
 function display
     tput setaf (color)
+    set cols (tput cols)
+    if test $cols -eq 80; set cols 151 ; end # temporary fix, I have no reason why this randomly broke. It used to work with just tput cols
     #tput cup $line (math (tput cols) - (echo "$argv"|python3 -c 'import sys; print(len(sys.stdin.read()))') + 1)
-    tput cup $line (math (tput cols) - (echo "$argv"|wc -c) + 1)
+    tput cup $line (math $cols - (echo "$argv"|wc -c) + 1)
     echo $argv
     tput sgr0
     set line (math $line + 1)
@@ -121,9 +122,22 @@ function login_message
 		printf "%s " ( df -h / /home|tail -n -2|awk '{print $5}'|tr -d '%')
 		# Display users on login
 		printf "%s " (who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }')
-		set temp (head -n 1 ~/Documents/todo/todo.txt 2>/dev/null)
+        # Display first line of todo list on login if it exists
+        set todo $HOME"/Documents/todo/todo.txt"
+        if test -e $todo;
+            set temp (head -n 1 $todo 2>/dev/null)
+        else
+            set temp (hostname)
+        end
         set line 0
         display $temp
+        test -e .image.txt; or touch .image.txt .noimage
+        if not test -e .noimage
+            set temp (math (stat .image.txt |grep Modify|cut -d " " -f 2|cut -d "-" -f 3) - (date +%d)|tr -d '-')
+            if test $temp -ge 3
+                display (cat .image.txt)
+            end
+        end
 		# If the date has changed since the last login
 		if not test -e /tmp/date; touch /tmp/date; end
 		if not test -e /tmp/hour; touch /tmp/hour; end
@@ -149,10 +163,10 @@ function login_message
                 alert
             end
         end
+        cat /etc/resolv.conf|grep -v 127.0.0.1|grep -v '^#.*'|grep -iq nameserver; and display NON-LOCAL NAMESERVERS
         if test "$newdate" = "true"; 
             weather
         end
-        cat /etc/resolv.conf|grep -v 127.0.0.1|grep -v '^#.*'|grep -iq nameserver; and display NON-LOCAL NAMESERVERS
 	end
 end
 login_message
@@ -238,13 +252,15 @@ end
 alias putty=~/.putty.sh
 alias proxy=~/.proxy.sh
 alias :q exit
+alias vim="vim -X" # This fixes the XMSP Init bug (_IceTransSocketINETConnect() no usable address for _______)
+# Unfortunately it also breaks vim yank/paste using the X11 keyboard
 alias :e vim
 alias vi=vim
 
 function image
     set count (find ~/Pictures -maxdepth 1 -type f|wc -l)
     set count (math (random) '%' $count)
-    find ~/Pictures -maxdepth 1 -type f|head -n $count|tail -n 1 | tee ~/.image.txt
+    find ~/Pictures -maxdepth 1 -type f|head -n $count|tail -n 1 | cut -d "/" -f 5 |tee ~/.image.txt
 end
 
 function commit
@@ -295,9 +311,12 @@ function viopen
     echo "Swap dnscrypt for dnsmasq? Enter to continue"
     read nothing
     sudo systemctl stop dnscrypt; sudo systemctl start dnsmasq
+    echo nameserver (route -n|grep '^0.0.0.0'|awk '{print $2}') | sudo tee /etc/resolv.conf
+    echo nameserver 8.8.8.8 | sudo tee -a /etc/resolv.conf > /dev/null # -a for append
     echo "Swap back after authenticating? Enter to continue"
     read nothing
     sudo systemctl stop dnsmasq; sudo systemctl start dnscrypt
+    echo nameserver 127.0.0.1 | sudo tee /etc/resolv.conf # no -a to overwrite the file
     
 end
 
@@ -310,3 +329,13 @@ end
 
 # NILES THIS FIXES LYX DON'T FUCKING TOUCH IT
 set -x --global QT_QPA_PLATFORMTHEME qt5ct
+
+function kssh # even .2 seconds is somethimes still to short
+    kopen; sleep .2; ssh $argv
+end
+function kopen # open ssh port on niles.xyz via port knocking
+    knock 104.223.59.77 {(cat ~/.ssh/open)} -d 10
+end
+function pingw # ping gateway -> ping gw -> pingw
+    route -n|grep '^0\.0\.0\.0'|awk '{print $2}'|xargs ping
+end
