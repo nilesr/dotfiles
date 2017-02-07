@@ -24,6 +24,10 @@ ln -s "$PWD/.gitconfig" ~/.gitconfig
 ln -s "$PWD/.shell_prompt.sh" ~/.shell_prompt.sh
 ln -s "$PWD/.tmux.conf" ~/.tmux.conf
 ln -s "$PWD/.tmux_theme" ~/.tmux_theme
+ln -s "$PWD/.tmux_theme.insert" ~/.tmux_theme.insert
+ln -s "$PWD/.tmux_theme.normal" ~/.tmux_theme.normal
+ln -s "$PWD/.tmux_theme.visual" ~/.tmux_theme.visual
+ln -s "$PWD/.tmux_theme.replace" ~/.tmux_theme.replace
 ln -s "$PWD/.tmux" ~/.tmux
 ln -s "$PWD/.putty.sh" ~/.putty.sh
 echo Enabling apt progress bar
