@@ -8,7 +8,7 @@ test -f "$PWD"/.config.fish || (echo "Please run this inside the dotfiles direct
 
 # Remove all dotfiles from the home directory if present.
 echo Removing any existing dotfiles from your home directory.
-rm -rf ~/.vim ~/.vimrc ~/.bashrc ~/.bash_profile ~/.inputrc ~/.gitconfig ~/.shell_prompt.sh ~/.tmux.conf ~/.tmux_theme ~/.tmux ~/.config/fish/config.fish ~/.putty.sh
+rm -rf ~/.vim ~/.vimrc ~/.bashrc ~/.bash_profile ~/.inputrc ~/.gitconfig ~/.shell_prompt.sh ~/.tmux.conf ~/.tmux_theme ~/.tmux ~/.config/fish/config.fish ~/.putty.sh ~/.tmux_plugins.conf ~/.tmux_theme.insert ~/.tmux_theme.normal ~/.tmux_theme.replace ~/.tmux_theme.visual
 
 # Initialize symlinks.
 echo Creating symlinks in your home directory that point to this dotfiles repository.
@@ -31,7 +31,7 @@ ln -s "$PWD/.tmux_theme.visual" ~/.tmux_theme.visual
 ln -s "$PWD/.tmux_theme.replace" ~/.tmux_theme.replace
 ln -s "$PWD/.tmux" ~/.tmux
 ln -s "$PWD/.putty.sh" ~/.putty.sh
-echo Enabling apt progress bar
+echo "Enabling apt progress bar (don't worry, if you're not on debian/ubuntu it won't hurt you anyways)"
 echo 'Dpkg::Progress-Fancy "1";' | sudo tee /etc/apt/apt.conf.d/99progressbar
 echo Changing lightline vim theme
 sed -i 's/107/108/' "$PWD/.vim/bundle/lightline.vim/autoload/lightline/colorscheme/jellybeans.vim"
