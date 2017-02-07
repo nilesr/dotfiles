@@ -598,8 +598,10 @@ dig TF 8756 " therefore
 function! SetCursorLineNrColorInsert(mode)
     if a:mode == "i"
 		Tmuxline lightline_insert
+		call tmuxline#snapshot("~/.tmux_theme.insert", 0)
     elseif a:mode == "r"
 		Tmuxline lightline_replace
+		call tmuxline#snapshot("~/.tmux_theme.replace", 0)
     endif
 
 endfunction
@@ -608,6 +610,7 @@ endfunction
 function! SetCursorLineNrColorVisual()
 	set updatetime=0
 	Tmuxline lightline_visual
+	call tmuxline#snapshot("~/.tmux_theme.visual", 0)
 	return ''
 endfunction
 
@@ -615,6 +618,7 @@ endfunction
 function! ResetCursorLineNrColor()
 	set updatetime=4000
 	Tmuxline lightline
+	call tmuxline#snapshot("~/.tmux_theme.normal", 0)
 endfunction
 
 
