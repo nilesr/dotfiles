@@ -33,7 +33,7 @@ sed -i 's/107/108/' "$PWD/.vim/bundle/lightline.vim/autoload/lightline/colorsche
 
 echo Fixing tmuxline config
 cp "$PWD/.vim/bundle/tmuxline.vim/autoload/tmuxline/themes/lightline_visual.vim" "$PWD/.vim/bundle/tmuxline.vim/autoload/tmuxline/themes/lightline_replace.vim"
-sed -i 's/insert/replace/g' "$PWD/.vim/bundle/tmuxline.vim/autoload/tmuxline/themes/lightline_replace.vim"
+sed -i 's/visual/replace/g' "$PWD/.vim/bundle/tmuxline.vim/autoload/tmuxline/themes/lightline_replace.vim"
 
 echo Fixing nautilus
 gsettings set org.gnome.nautilus.preferences enable-interactive-search true
