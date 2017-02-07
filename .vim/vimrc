@@ -587,3 +587,51 @@ endif "autocmd
 dig XO 8853 " xor digraph
 dig TF 8756 " therefore
 
+
+
+
+
+
+"https://stackoverflow.com/questions/15561132/run-command-when-vim-enters-visual-mode
+" Colorize line numbers in insert and visual modes
+" ------------------------------------------------
+function! SetCursorLineNrColorInsert(mode)
+    if a:mode == "i"
+		Tmuxline lightline_insert
+    elseif a:mode == "r"
+		Tmuxline lightline_replace
+    endif
+
+endfunction
+
+
+function! SetCursorLineNrColorVisual()
+	set updatetime=0
+	Tmuxline lightline_visual
+	return ''
+endfunction
+
+
+function! ResetCursorLineNrColor()
+	set updatetime=4000
+	Tmuxline lightline
+endfunction
+
+
+vnoremap <silent> <expr> <SID>SetCursorLineNrColorVisual SetCursorLineNrColorVisual()
+nnoremap <silent> <script> v v<SID>SetCursorLineNrColorVisual<left><right>
+nnoremap <silent> <script> V V<SID>SetCursorLineNrColorVisual<left><right>
+nnoremap <silent> <script> <C-v> <C-v><SID>SetCursorLineNrColorVisual<left><right>
+
+function! TmuxReset()
+    call system("tmux source ~/.tmux_theme")
+endfunction
+
+augroup CursorLineNrColorSwap
+    autocmd!
+    autocmd InsertEnter * call SetCursorLineNrColorInsert(v:insertmode)
+    autocmd InsertLeave * call ResetCursorLineNrColor()
+    autocmd CursorHold * call ResetCursorLineNrColor()
+	autocmd VimLeavePre * call TmuxReset();
+augroup END
+

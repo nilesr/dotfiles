@@ -131,11 +131,11 @@ function login_message
         end
         set line 0
         display $temp
-        test -e .image.txt; or touch .image.txt .noimage
+        test -e ~/.image.txt; or touch ~/.image.txt ~/.noimage
         if not test -e .noimage
-            set temp (math (stat .image.txt |grep Modify|cut -d " " -f 2|cut -d "-" -f 3) - (date +%d)|tr -d '-')
+            set temp (math (stat ~/.image.txt |grep Modify|cut -d " " -f 2|cut -d "-" -f 3) - (date +%d)|tr -d '-')
             if test $temp -ge 3
-                display (cat .image.txt)
+                display (cat ~/.image.txt)
             end
         end
 		# If the date has changed since the last login
@@ -252,7 +252,7 @@ end
 alias putty=~/.putty.sh
 alias proxy=~/.proxy.sh
 alias :q exit
-alias vim="vim -X" # This fixes the XMSP Init bug (_IceTransSocketINETConnect() no usable address for _______)
+#alias vim="vim -X" # This fixes the XMSP Init bug (_IceTransSocketINETConnect() no usable address for _______)
 # Unfortunately it also breaks vim yank/paste using the X11 keyboard
 alias :e vim
 alias vi=vim
@@ -337,5 +337,10 @@ function kopen # open ssh port on niles.xyz via port knocking
     knock 104.223.59.77 {(cat ~/.ssh/open)} -d 10
 end
 function pingw # ping gateway -> ping gw -> pingw
-    route -n|grep '^0\.0\.0\.0'|awk '{print $2}'|xargs ping
+    set gw (route -n|grep '^0\.0\.0\.0'|awk '{print $2}')
+    if test "$gw" = "";
+        echo "No gateway"
+        return
+    end
+    ping "$gw"
 end
