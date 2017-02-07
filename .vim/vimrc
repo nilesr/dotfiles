@@ -597,11 +597,13 @@ dig TF 8756 " therefore
 " ------------------------------------------------
 function! SetCursorLineNrColorInsert(mode)
     if a:mode == "i"
-		Tmuxline lightline_insert
-		call tmuxline#snapshot("~/.tmux_theme.insert", 0)
+		"Tmuxline lightline_insert
+		"call tmuxline#snapshot("~/.tmux_theme.insert", 0)
+		call system("tmux source ~/.tmux_theme.insert")
     elseif a:mode == "r"
-		Tmuxline lightline_replace
-		call tmuxline#snapshot("~/.tmux_theme.replace", 0)
+		"Tmuxline lightline_replace
+		"call tmuxline#snapshot("~/.tmux_theme.replace", 0)
+		call system("tmux source ~/.tmux_theme.replace")
     endif
 
 endfunction
@@ -609,16 +611,18 @@ endfunction
 
 function! SetCursorLineNrColorVisual()
 	set updatetime=0
-	Tmuxline lightline_visual
-	call tmuxline#snapshot("~/.tmux_theme.visual", 0)
+	"Tmuxline lightline_visual
+	"call tmuxline#snapshot("~/.tmux_theme.visual", 0)
+	call system("tmux source ~/.tmux_theme.visual")
 	return ''
 endfunction
 
 
 function! ResetCursorLineNrColor()
 	set updatetime=4000
-	Tmuxline lightline
-	call tmuxline#snapshot("~/.tmux_theme.normal", 0)
+	"Tmuxline lightline
+	"call tmuxline#snapshot("~/.tmux_theme.normal", 0)
+	call system("tmux source ~/.tmux_theme.normal")
 endfunction
 
 
@@ -627,6 +631,8 @@ nnoremap <silent> <script> v v<SID>SetCursorLineNrColorVisual<left><right>
 nnoremap <silent> <script> V V<SID>SetCursorLineNrColorVisual<left><right>
 nnoremap <silent> <script> <C-v> <C-v><SID>SetCursorLineNrColorVisual<left><right>
 
+" Set to normal mode on start, reset to old defaults on exit
+call system("tmux source ~/.tmux_theme.normal")
 function! TmuxReset()
     call system("tmux source ~/.tmux_theme")
 endfunction
