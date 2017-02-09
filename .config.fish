@@ -344,3 +344,7 @@ function pingw # ping gateway -> ping gw -> pingw
     end
     ping "$gw"
 end
+
+# for the occasional times where my mouse won't work
+alias m="xdotool mousemove"
+alias mr="xdotool mousemove_relative"
