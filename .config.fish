@@ -91,7 +91,6 @@ function alert
     # We need all these headers because otherwise it comes out garbled, some encoding error or something. We probably only need the Accept header because that specifies latin 1 or utf-8 as valid encodings, but I'm keeping them all just in case
     set level (curl -s 'https://isc.sans.edu/infocon.txt' -H 'Host: isc.sans.edu' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0' -H 'Accept: text/html, */* ISO-8859-1,utf-8;q=0.7,*;q=0.7 gzip,deflate en- us,en;q=0.5' -H 'Accept-Language: en' --compressed -H 'Referer: https://isc.sans.edu/infocon.html' -H 'Connection: close' -H 'Upgrade-Insecure-Requests: 1'); or return
     echo "$level" > /tmp/alert
-    chmod 777 /tmp/alert
     if not test -z "$level"; and test "$level" != "green";
         toilet -t -f mono9 ALERT LEVEL $level
     else
@@ -139,10 +138,12 @@ function login_message
             end
         end
 		# If the date has changed since the last login
-		if not test -e /tmp/date; touch /tmp/date; end
-		if not test -e /tmp/hour; touch /tmp/hour; end
-		if not test -e /tmp/alert; touch /tmp/alert; end
-		chmod 777 /tmp/date /tmp/hour /tmp/alert
+        for file in date hour alert;
+            if not test -e /tmp/$file; 
+                touch /tmp/$file
+                chmod 777 /tmp/$file ^/dev/null
+            end
+        end
         set newdate false
         set newhour false
         if not test (date +%x) = (cat /tmp/date) ^/dev/null
@@ -348,3 +349,13 @@ end
 # for the occasional times where my mouse won't work
 alias m="xdotool mousemove"
 alias mr="xdotool mousemove_relative"
+
+if test -d /bedrock
+    for strata in (bri -L)
+        if test -z (bri -c $strata init)
+            #it's not a *real* strata
+            continue
+        end
+        alias $strata "brc $strata"
+    end
+end

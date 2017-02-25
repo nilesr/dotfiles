@@ -92,6 +92,9 @@ function __promptline_left_prompt {
 	#__promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print %n; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$USER@$(hostname)"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
 	# test "$STATUS" -ne 0 && __promptline_wrapper "$STATUS" "$slice_prefix" "$slice_suffix"
 	__promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print $(hostname); elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$(hostname)"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+	if test -d /bedrock; then
+		__promptline_wrapper "$(bri -n)" "$slice_prefix" "$slice_suffix"
+	fi
 	__promptline_wrapper "$(whoami)" "$slice_prefix" "$slice_suffix"
 
 
