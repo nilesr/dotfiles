@@ -63,15 +63,28 @@ function color
 	set len (echo $colors|wc -w)
 	echo $colors |awk '{print $'(bash -c 'echo $(($(($RANDOM%'$len'))+1))')'}'
 end
+function str_repeat
+    for i in (seq $argv[2])
+        set result "$result""$argv[1]"
+    end
+    echo -n "$result"
+end
 function display
+    if test (count $argv) -gt 1
+        tput sc
+    end
     tput setaf (color)
     set cols (tput cols)
-    if test $cols -eq 80; set cols 151 ; end # temporary fix, I have no reason why this randomly broke. It used to work with just tput cols
     #tput cup $line (math (tput cols) - (echo "$argv"|python3 -c 'import sys; print(len(sys.stdin.read()))') + 1)
-    tput cup $line (math $cols - (echo "$argv"|wc -c) + 1)
-    echo $argv
+    #tput cup $line (math $cols - (echo "$argv"|wc -c) + 1)
+    str_repeat " " (math $cols - (echo "$argv[1]"|wc -c) + 1)
+    echo $argv[1]
     tput sgr0
-    set line (math $line + 1)
+    if test (count $argv) -gt 1
+        tput rc
+        echo "$argv[2]"
+    end
+    #set line (math $line + 1)
 end
 function weather
     if test "$online" = "false"
@@ -94,16 +107,15 @@ function alert
     if not test -z "$level"; and test "$level" != "green";
         toilet -t -f mono9 ALERT LEVEL $level
     else
-        display Alert Level $level
+        display "Alert Level $level"
     end
 end
 #ps aux|grep -v grep|grep -v root|grep -q vmstat; or nohup bash -c 'touch /tmp/cpu; ( vmstat 2|stdbuf -oL awk \'{print 100-$15}\'|while read line; do echo "$line"|tee /tmp/cpu ;done)& disown' > /dev/null &
 # make these global
-set line 0
+#set line 0
 set online true
 function login_message
 	if test -t 0
-		/usr/bin/clear
         # ghetto as fuck, just check if there's a defeault route
         #if route|grep -iq default;
         if route -n|grep -q '^0.0.0.0'
@@ -114,13 +126,11 @@ function login_message
 		# Print cpu usage
 		#printf '%s ' (cat /tmp/cpu)
 		# print ram usage
-		set total (free|grep Mem|awk '{print $2}')
-		set used (free|grep Mem|awk '{print $3}')
-		printf '%s ' (math 100\*$used/$total)
+		set statline (math (free|grep Mem|awk '{print "100*"$3"/"$2}'))
 		# Print disk usage
-		printf "%s " ( df -h / /home|tail -n -2|awk '{print $5}'|tr -d '%')
+		set statline "$statline "( df -h / /home|tail -n 2|awk '{print $5}'|tr -d '%')
 		# Display users on login
-		printf "%s " (who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }')
+		set statline "$statline "(who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }')
         # Display first line of todo list on login if it exists
         set todo $HOME"/Documents/todo/todo.txt"
         if test -e $todo;
@@ -128,13 +138,14 @@ function login_message
         else
             set temp (hostname)
         end
-        set line 0
-        display $temp
+        #set line 0
+        display "$temp" "$statline"
         test -e ~/.image.txt; or touch ~/.image.txt ~/.noimage
         if not test -e .noimage
             set temp (math (stat ~/.image.txt |grep Modify|cut -d " " -f 2|cut -d "-" -f 3) - (date +%d)|tr -d '-')
             if test $temp -ge 3
-                display (cat ~/.image.txt)
+                set image (cat ~/.image.txt)
+                display "$image"
             end
         end
 		# If the date has changed since the last login
@@ -164,13 +175,17 @@ function login_message
                 alert
             end
         end
-        cat /etc/resolv.conf|grep -v 127.0.0.1|grep -v '^#.*'|grep -iq nameserver; and display NON-LOCAL NAMESERVERS
+        cat /etc/resolv.conf|grep -v 127.0.0.1|grep -v '^#.*'|grep -iq nameserver; and display "NON-LOCAL NAMESERVERS"
         if test "$newdate" = "true"; 
             weather
         end
 	end
 end
-login_message
+
+if status --is-interactive
+    login_message
+end
+
 # Set locale, workaround for arch linux
 set --global --export LANG en_US.UTF-8
 # Remove the "friendly" (dumb) fish greeting
@@ -350,12 +365,22 @@ end
 alias m="xdotool mousemove"
 alias mr="xdotool mousemove_relative"
 
+function brc-wrap
+    if test (echo "$argv" | wc -w) -le 1
+        brc $argv fish
+    else
+        brc $argv
+    end
+end
+
 if test -d /bedrock
     for strata in (bri -L)
         if test -z (bri -c $strata init)
             #it's not a *real* strata
             continue
         end
-        alias $strata "brc $strata"
+        alias $strata "brc-wrap $strata"
     end
 end
+
+alias open xdg-open
