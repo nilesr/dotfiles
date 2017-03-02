@@ -50,65 +50,66 @@ function irc
 	echo copied "$argv" to clipboard, 5 lines
 end
 function bigtwitch
-    toilet -t -f mono9 "$argv"|head -n 6|sed 's/ /░/g;'|head -n 6
-    toilet -t -f mono9 "$argv"|head -n 6|sed 's/ /░/g;'|head -n 6|xsel -b
+	toilet -t -f mono9 "$argv"|head -n 6|sed 's/ /░/g;'|head -n 6
+	toilet -t -f mono9 "$argv"|head -n 6|sed 's/ /░/g;'|head -n 6|xsel -b
 end
 function twitch
-    echo (toilet -t -f pagga "$argv"|head -n 1|sed 's/./░/g;'|head -n 6) (toilet -t -f pagga "$argv"|sed 's/ /░/g;'|head -n 6)|xsel -b
-    echo (toilet -t -f pagga "$argv"|head -n 1|sed 's/./░/g;'|head -n 6) (toilet -t -f pagga "$argv"|sed 's/ /░/g;'|head -n 6)|tr ' ' '\n'
+	echo (toilet -t -f pagga "$argv"|head -n 1|sed 's/./░/g;'|head -n 6) (toilet -t -f pagga "$argv"|sed 's/ /░/g;'|head -n 6)|xsel -b
+	echo (toilet -t -f pagga "$argv"|head -n 1|sed 's/./░/g;'|head -n 6) (toilet -t -f pagga "$argv"|sed 's/ /░/g;'|head -n 6)|tr ' ' '\n'
 end
 
 function color
 	set colors "110 192 190 180 140 65 10 25 30 95 105 135 210 225"
 	set len (echo $colors|wc -w)
-	echo $colors |awk '{print $'(bash -c 'echo $(($(($RANDOM%'$len'))+1))')'}'
+	echo $colors | cut -d ' ' -f (math (math (random) \% $len) + 1)
 end
 function str_repeat
-    for i in (seq $argv[2])
-        set result "$result""$argv[1]"
-    end
-    echo -n "$result"
+	for i in (seq $argv[2])
+		set result "$result""$argv[1]"
+	end
+	echo -n "$result"
 end
 function display
-    if test (count $argv) -gt 1
-        tput sc
-    end
-    tput setaf (color)
-    set cols (tput cols)
-    #tput cup $line (math (tput cols) - (echo "$argv"|python3 -c 'import sys; print(len(sys.stdin.read()))') + 1)
-    #tput cup $line (math $cols - (echo "$argv"|wc -c) + 1)
-    str_repeat " " (math $cols - (echo "$argv[1]"|wc -c) + 1)
-    echo $argv[1]
-    tput sgr0
-    if test (count $argv) -gt 1
-        tput rc
-        echo "$argv[2]"
-    end
-    #set line (math $line + 1)
+	if test (count $argv) -gt 1
+		tput sc
+	end
+	tput setaf (color)
+	set cols (tput cols)
+	#tput cup $line (math (tput cols) - (echo "$argv"|python3 -c 'import sys; print(len(sys.stdin.read()))') + 1)
+	#tput cup $line (math $cols - (echo "$argv"|wc -c) + 1)
+	str_repeat " " (math $cols - (echo "$argv[1]"|wc -c) + 1)
+	echo $argv[1]
+	tput sgr0
+	if test (count $argv) -gt 1
+		tput rc
+		echo "$argv[2]"
+	end
+	#set line (math $line + 1)
 end
 function weather
-    if test "$online" = "false"
-        return
-    end
-    #set destination ""
-    set destination "24061" # Blacksburg
-    if test (echo "$argv" | wc -c) -gt 1;
-        set destination $argv
-    end
-    curl -s wttr.in/$destination|head -n 17
+	if test "$online" = "false"
+		return
+	end
+	#set destination ""
+	set destination "24061" # Blacksburg
+	#if test (echo "$argv" | wc -c) -gt 1;
+	if not test -z "$argv[1]";
+		set destination $argv
+	end
+	curl -s wttr.in/$destination|head -n 17
 end
 function alert
-    if test "$online" = "false"
-        return
-    end
-    # We need all these headers because otherwise it comes out garbled, some encoding error or something. We probably only need the Accept header because that specifies latin 1 or utf-8 as valid encodings, but I'm keeping them all just in case
-    set level (curl -s 'https://isc.sans.edu/infocon.txt' -H 'Host: isc.sans.edu' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0' -H 'Accept: text/html, */* ISO-8859-1,utf-8;q=0.7,*;q=0.7 gzip,deflate en- us,en;q=0.5' -H 'Accept-Language: en' --compressed -H 'Referer: https://isc.sans.edu/infocon.html' -H 'Connection: close' -H 'Upgrade-Insecure-Requests: 1'); or return
-    echo "$level" > /tmp/alert
-    if not test -z "$level"; and test "$level" != "green";
-        toilet -t -f mono9 ALERT LEVEL $level
-    else
-        display "Alert Level $level"
-    end
+	if test "$online" = "false"
+		return
+	end
+	# We need all these headers because otherwise it comes out garbled, some encoding error or something. We probably only need the Accept header because that specifies latin 1 or utf-8 as valid encodings, but I'm keeping them all just in case
+	set level (curl -s 'https://isc.sans.edu/infocon.txt' -H 'Host: isc.sans.edu' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0' -H 'Accept: text/html, */* ISO-8859-1,utf-8;q=0.7,*;q=0.7 gzip,deflate en- us,en;q=0.5' -H 'Accept-Language: en' --compressed -H 'Referer: https://isc.sans.edu/infocon.html' -H 'Connection: close' -H 'Upgrade-Insecure-Requests: 1'); or return
+	echo "$level" > /tmp/alert
+	if not test -z "$level"; and test "$level" != "green";
+		toilet -t -f mono9 ALERT LEVEL $level
+	else
+		display "Alert Level $level"
+	end
 end
 #ps aux|grep -v grep|grep -v root|grep -q vmstat; or nohup bash -c 'touch /tmp/cpu; ( vmstat 2|stdbuf -oL awk \'{print 100-$15}\'|while read line; do echo "$line"|tee /tmp/cpu ;done)& disown' > /dev/null &
 # make these global
@@ -116,13 +117,13 @@ end
 set online true
 function login_message
 	if test -t 0
-        # ghetto as fuck, just check if there's a defeault route
-        #if route|grep -iq default;
-        if route -n|grep -q '^0.0.0.0'
-            set online true
-        else
-            set online false
-        end
+		# ghetto as fuck, just check if there's a defeault route
+		#if route|grep -iq default;
+		if route -n|grep -q '^0.0.0.0'
+			set online true
+		else
+			set online false
+		end
 		# Print cpu usage
 		#printf '%s ' (cat /tmp/cpu)
 		# print ram usage
@@ -131,59 +132,59 @@ function login_message
 		set statline "$statline "( df -h / /home|tail -n 2|awk '{print $5}'|tr -d '%')
 		# Display users on login
 		set statline "$statline "(who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }')
-        # Display first line of todo list on login if it exists
-        set todo $HOME"/Documents/todo/todo.txt"
-        if test -e $todo;
-            set temp (head -n 1 $todo 2>/dev/null)
-        else
-            set temp (hostname)
-        end
-        #set line 0
-        display "$temp" "$statline"
-        test -e ~/.image.txt; or touch ~/.image.txt ~/.noimage
-        if not test -e .noimage
-            set temp (math (stat ~/.image.txt |grep Modify|cut -d " " -f 2|cut -d "-" -f 3) - (date +%d)|tr -d '-')
-            if test $temp -ge 3
-                set image (cat ~/.image.txt)
-                display "$image"
-            end
-        end
+		# Display first line of todo list on login if it exists
+		set todo $HOME"/Documents/todo/todo.txt"
+		if test -e $todo;
+			set temp (head -n 1 $todo 2>/dev/null)
+		else
+			set temp (hostname)
+		end
+		#set line 0
+		display "$temp" "$statline"
+		test -e ~/.image.txt; or touch ~/.image.txt ~/.noimage
+		if not test -e .noimage
+			set temp (math (stat ~/.image.txt |grep Modify|cut -d " " -f 2|cut -d "-" -f 3) - (date +%d)|tr -d '-')
+			if test $temp -ge 3
+				set image (cat ~/.image.txt)
+				display "$image"
+			end
+		end
 		# If the date has changed since the last login
-        for file in date hour alert;
-            if not test -e /tmp/$file; 
-                touch /tmp/$file
-                chmod 777 /tmp/$file ^/dev/null
-            end
-        end
-        set newdate false
-        set newhour false
-        if not test (date +%x) = (cat /tmp/date) ^/dev/null
-            set newdate true
-            date +%x > /tmp/date
-        end
-        if not test (date +%H) = (cat /tmp/hour) ^/dev/null
-            set newhour true
-            date +%H > /tmp/hour
-        end
-        set alerted false
-        if not test green = (cat /tmp/alert) ^/dev/null
-            alert
-            set alerted true
-        end
-        if test "$newhour" = "true";
-            if test "$alerted" = "false"; 
-                alert
-            end
-        end
-        cat /etc/resolv.conf|grep -v 127.0.0.1|grep -v '^#.*'|grep -iq nameserver; and display "NON-LOCAL NAMESERVERS"
-        if test "$newdate" = "true"; 
-            weather
-        end
+		for file in date hour alert;
+			if not test -e /tmp/$file; 
+				touch /tmp/$file
+				chmod 777 /tmp/$file ^/dev/null
+			end
+		end
+		set newdate false
+		set newhour false
+		if not test (date +%x) = (cat /tmp/date) ^/dev/null
+			set newdate true
+			date +%x > /tmp/date
+		end
+		if not test (date +%H) = (cat /tmp/hour) ^/dev/null
+			set newhour true
+			date +%H > /tmp/hour
+		end
+		set alerted false
+		if not test green = (cat /tmp/alert) ^/dev/null
+			alert
+			set alerted true
+		end
+		if test "$newhour" = "true";
+			if test "$alerted" = "false"; 
+				alert
+			end
+		end
+		cat /etc/resolv.conf|grep -v 127.0.0.1|grep -v '^#.*'|grep -iq nameserver; and display "NON-LOCAL NAMESERVERS"
+		if test "$newdate" = "true"; 
+			weather
+		end
 	end
 end
 
 if status --is-interactive
-    login_message
+	login_message
 end
 
 # Set locale, workaround for arch linux
@@ -249,13 +250,13 @@ alias ping=ping\ -s\ 8
 alias clear='/usr/bin/clear; login_message'
 function read_confirm
   while true
-    read -p 'echo "This will delete a source file. Sure? (y/n):"' -l confirm
-    switch $confirm
-      case Y y
-        return 0
-      case '' N n
-        return 1
-    end
+	read -p 'echo "This will delete a source file. Sure? (y/n):"' -l confirm
+	switch $confirm
+	  case Y y
+		return 0
+	  case '' N n
+		return 1
+	end
   end
 end
 function rm
@@ -274,91 +275,91 @@ alias :e vim
 alias vi=vim
 
 function image
-    set count (find ~/Pictures -maxdepth 1 -type f|wc -l)
-    set count (math (random) '%' $count)
-    find ~/Pictures -maxdepth 1 -type f|head -n $count|tail -n 1 | cut -d "/" -f 5 |tee ~/.image.txt
+	set count (find ~/Pictures -maxdepth 1 -type f|wc -l)
+	set count (math (random) '%' $count)
+	find ~/Pictures -maxdepth 1 -type f|head -n $count|tail -n 1 | cut -d "/" -f 5 |tee ~/.image.txt
 end
 
 function commit
-    git add -A
-    git commit -am "$argv"
+	git add -A
+	git commit -am "$argv"
 end
 function rb
-    if test "$argv" = "root"
-        git rebase --interactive --root
-    else if not test -z "$argv"
-        git rebase --interactive HEAD~"$argv"
-    else
-        git rebase --interactive HEAD~3
-    end
+	if test "$argv" = "root"
+		git rebase --interactive --root
+	else if not test -z "$argv"
+		git rebase --interactive HEAD~"$argv"
+	else
+		git rebase --interactive HEAD~3
+	end
 end
 alias todo "vi ~/Documents/todo/todo.txt"
 function destroy
-    if test -z "$argv"
-        echo "Safety kicking in, not recursively shredding the current working directory. Please specify path(s) as arguments"
-        return
-    end
-    echo "This will permenantly erase files. Press enter to confirm, or Ctrl+C to cancel"
-    read nothing
-    find "$argv" -type f -print0|xargs -0 shred -vfuz
-    /usr/bin/env rm -rf "$argv"
+	if test -z "$argv"
+		echo "Safety kicking in, not recursively shredding the current working directory. Please specify path(s) as arguments"
+		return
+	end
+	echo "This will permenantly erase files. Press enter to confirm, or Ctrl+C to cancel"
+	read nothing
+	find "$argv" -type f -print0|xargs -0 shred -vfuz
+	/usr/bin/env rm -rf "$argv"
 end
 
 function viopen
-    sudo vi /etc/NetworkManager/system-connections/open
-    echo "Restart network manager? Enter to continue"
-    read nothing
-    sudo systemctl restart NetworkManager
-    echo "Bring connection open up? Enter to continue"
-    read nothing
-    nmcli n on; nmcli c up open
-    echo "Up, waiting for default route"
-    set online false
-    while test "$online" = "false"; 
-        sleep 1
-        sudo route -n|grep -q '^0.0.0.0'; and set online true
-    end
-    echo "default route acquired, attempting to resolve hosts"
-    # if we can resolve names and ping out, we're done
-    host -W 2 niles.xyz; and return
-    echo "We were unable to resolve a host, can we ping out?"
-    ping -c 1 -W 2 8.8.8.8; and return
-    echo "We can't ping out. Probably need to accept terms and conditions on the router"
-    echo "Swap dnscrypt for dnsmasq? Enter to continue"
-    read nothing
-    sudo systemctl stop dnscrypt; sudo systemctl start dnsmasq
-    echo nameserver (route -n|grep '^0.0.0.0'|awk '{print $2}') | sudo tee /etc/resolv.conf
-    echo nameserver 8.8.8.8 | sudo tee -a /etc/resolv.conf > /dev/null # -a for append
-    echo "Swap back after authenticating? Enter to continue"
-    read nothing
-    sudo systemctl stop dnsmasq; sudo systemctl start dnscrypt
-    echo nameserver 127.0.0.1 | sudo tee /etc/resolv.conf # no -a to overwrite the file
-    
+	sudo vi /etc/NetworkManager/system-connections/open
+	echo "Restart network manager? Enter to continue"
+	read nothing
+	sudo systemctl restart NetworkManager
+	echo "Bring connection open up? Enter to continue"
+	read nothing
+	nmcli n on; nmcli c up open
+	echo "Up, waiting for default route"
+	set online false
+	while test "$online" = "false"; 
+		sleep 1
+		sudo route -n|grep -q '^0.0.0.0'; and set online true
+	end
+	echo "default route acquired, attempting to resolve hosts"
+	# if we can resolve names and ping out, we're done
+	host -W 2 niles.xyz; and return
+	echo "We were unable to resolve a host, can we ping out?"
+	ping -c 1 -W 2 8.8.8.8; and return
+	echo "We can't ping out. Probably need to accept terms and conditions on the router"
+	echo "Swap dnscrypt for dnsmasq? Enter to continue"
+	read nothing
+	sudo systemctl stop dnscrypt; sudo systemctl start dnsmasq
+	echo nameserver (route -n|grep '^0.0.0.0'|awk '{print $2}') | sudo tee /etc/resolv.conf
+	echo nameserver 8.8.8.8 | sudo tee -a /etc/resolv.conf > /dev/null # -a for append
+	echo "Swap back after authenticating? Enter to continue"
+	read nothing
+	sudo systemctl stop dnsmasq; sudo systemctl start dnscrypt
+	echo nameserver 127.0.0.1 | sudo tee /etc/resolv.conf # no -a to overwrite the file
+	
 end
 
 alias watch='watch --color'
 alias promise='watch -g'
 
 function timestamp
-    eval $argv|while read line; printf "%s " (date); echo $line; end
+	eval $argv|while read line; printf "%s " (date); echo $line; end
 end
 
 # NILES THIS FIXES LYX DON'T FUCKING TOUCH IT
 set -x --global QT_QPA_PLATFORMTHEME qt5ct
 
 function kssh # even .2 seconds is somethimes still to short
-    kopen; sleep .2; ssh $argv
+	kopen; sleep .2; ssh $argv
 end
 function kopen # open ssh port on niles.xyz via port knocking
-    knock 104.223.59.77 {(cat ~/.ssh/open)} -d 10
+	knock 104.223.59.77 {(cat ~/.ssh/open)} -d 10
 end
 function pingw # ping gateway -> ping gw -> pingw
-    set gw (route -n|grep '^0\.0\.0\.0'|awk '{print $2}')
-    if test "$gw" = "";
-        echo "No gateway"
-        return
-    end
-    ping "$gw"
+	set gw (route -n|grep '^0\.0\.0\.0'|awk '{print $2}')
+	if test "$gw" = "";
+		echo "No gateway"
+		return
+	end
+	ping "$gw"
 end
 
 # for the occasional times where my mouse won't work
@@ -366,21 +367,21 @@ alias m="xdotool mousemove"
 alias mr="xdotool mousemove_relative"
 
 function brc-wrap
-    if test (echo "$argv" | wc -w) -le 1
-        brc $argv fish
-    else
-        brc $argv
-    end
+	if test (count $argv) -le 1
+		brc $argv[1] fish
+	else
+		brc $argv
+	end
 end
 
 if test -d /bedrock
-    for strata in (bri -L)
-        if test -z (bri -c $strata init)
-            #it's not a *real* strata
-            continue
-        end
-        alias $strata "brc-wrap $strata"
-    end
+	for strata in (bri -L)
+		if test -z (bri -c $strata init)
+			#it's not a *real* strata
+			continue
+		end
+		alias $strata "brc-wrap $strata"
+	end
 end
 
 alias open xdg-open
