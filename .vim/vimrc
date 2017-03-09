@@ -23,6 +23,8 @@ set autochdir
 " Enable syntax highlighting.
 syntax on
 
+let g:seoul256_background = 237
+let g:seoul256_srgb = 1
 colorscheme seoul256
 " Set startup colorscheme.
 if has("gui_running")
@@ -288,6 +290,7 @@ let g:indent_guides_start_level = 1
 let g:indent_guides_guide_size = 4
 
 " Tell indent-guides to startup with VIM.
+"let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_enable_on_vim_startup = 1
 
 " Set background colors manually since I rarely change my color scheme.
@@ -644,3 +647,5 @@ if !has("gui_running")
 		autocmd VimLeavePre * call TmuxReset()
 	augroup END
 endif
+
+

@@ -129,9 +129,9 @@ function login_message
 		# print ram usage
 		set statline (math (free|grep Mem|awk '{print "100*"$3"/"$2}'))
 		# Print disk usage
-		set statline "$statline "( df -h / /home|tail -n 2|awk '{print $5}'|tr -d '%')
+		set statline "$statline "( df -h / /home|tail -n 2|awk '{print $5}'|tr -d '%'|tr '\n' ' ')
 		# Display users on login
-		set statline "$statline "(who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }')
+		set statline "$statline"(who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }' | tr '\n' ' ')
 		# Display first line of todo list on login if it exists
 		set todo $HOME"/Documents/todo/todo.txt"
 		if test -e $todo;
