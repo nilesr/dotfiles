@@ -70,15 +70,15 @@ function __promptline_cwd {
 
 		[[ $part_count -eq $dir_limit ]] && first_char="$truncation" && break
 	done
-	mu="μ"
-	lambda="λ"
-	if test "$EUID" = 0; then
-		shell_char="$lambda"
-	else
-		shell_char="$mu"
-	fi
-	shell_char="$shell_char$dir_sep"
-	printf "%s" "$shell_char"
+	#mu="μ"
+	#lambda="λ"
+	#if test "$EUID" = 0; then
+		#shell_char="$lambda"
+	#else
+		#shell_char="$mu"
+	#fi
+	#shell_char="$shell_char$dir_sep"
+	#printf "%s" "$shell_char"
 	printf "%s" "$first_char$formatted_cwd"
 }
 function __promptline_left_prompt {

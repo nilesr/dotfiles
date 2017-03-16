@@ -330,6 +330,8 @@ function viopen
 	sudo systemctl stop dnscrypt; sudo systemctl start dnsmasq
 	echo nameserver (route -n|grep '^0.0.0.0'|awk '{print $2}') | sudo tee /etc/resolv.conf
 	echo nameserver 8.8.8.8 | sudo tee -a /etc/resolv.conf > /dev/null # -a for append
+	echo nameserver 127.0.0.1 | sudo tee -a /etc/resolv.conf > /dev/null # use freenic via dnsmasq if all else fails
+    open http://gstatic.com/generate_204
 	echo "Swap back after authenticating? Enter to continue"
 	read nothing
 	sudo systemctl stop dnsmasq; sudo systemctl start dnscrypt
