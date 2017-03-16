@@ -1,2 +1,4 @@
 .tmux/resurrect/*
 Session.vim
+.vim/eclim
+.vim/plugin
