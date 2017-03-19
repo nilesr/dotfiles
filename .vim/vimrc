@@ -590,7 +590,7 @@ endif "autocmd
 dig XO 8853 " xor digraph
 dig TF 8756 " therefore
 
-
+dig xx 215
 
 
 if !has("gui_running")
@@ -649,3 +649,10 @@ if !has("gui_running")
 endif
 
 
+" either of these two sets work, but one only requires one bind
+" C-r 0 pastes, C-r C-w inserts word under cursor
+
+"vnoremap <C-s> y:!aspell -a <<< <C-r>0<Home><right>
+"nmap <C-s> viw<C-s><CR>
+
+nmap <C-s> :!aspell -a <<< <C-r><C-w><CR>
