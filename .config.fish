@@ -260,7 +260,7 @@ function read_confirm
   end
 end
 function rm
-	if echo $argv | grep -Piq '.*\.py|.*\.c|.*\.java|.*\.rb|.*\.html|.*\.css|.*\.js|.*\.pl'
+	if echo $argv | grep -Piq '.*\.sh|.*\.py|.*\.c|.*\.h|.*\.java|.*\.rb|.*\.html|.*\.css|.*\.js|.*\.pl'
 		read_confirm; and /usr/bin/env rm -iv $argv
 	else
 		/usr/bin/env rm $argv
@@ -387,3 +387,9 @@ if test -d /bedrock
 end
 
 alias open xdg-open
+
+function push
+    for server in (git remote)
+        git push "$server" (git branch --color=never|grep --color=never '^\*'|cut -c 3-)
+	end
+end
