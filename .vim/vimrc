@@ -245,16 +245,16 @@ function! MyFileencoding()
 	return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
 endfunction
 function! MyMode()
-  let fname = expand('%:t')
-  return fname == '__Tagbar__' ? 'Tagbar' :
-        \ fname == 'ControlP' ? 'CtrlP' :
-        \ fname == '__Gundo__' ? 'Gundo' :
-        \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
-        \ fname =~ 'NERD_tree' ? 'NERDTree' :
-        \ &ft == 'unite' ? 'Unite' :
-        \ &ft == 'vimfiler' ? 'VimFiler' :
-        \ &ft == 'vimshell' ? 'VimShell' :
-        \ winwidth(0) > 60 ? lightline#mode() : ''
+	let fname = expand('%:t')
+	return fname == '__Tagbar__' ? 'Tagbar' :
+				\ fname == 'ControlP' ? 'CtrlP' :
+				\ fname == '__Gundo__' ? 'Gundo' :
+				\ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
+				\ fname =~ 'NERD_tree' ? 'NERDTree' :
+				\ &ft == 'unite' ? 'Unite' :
+				\ &ft == 'vimfiler' ? 'VimFiler' :
+				\ &ft == 'vimshell' ? 'VimShell' :
+				\ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
 function! CtrlPStatusFunc_2(str)
@@ -290,7 +290,6 @@ let g:indent_guides_start_level = 1
 let g:indent_guides_guide_size = 4
 
 " Tell indent-guides to startup with VIM.
-"let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_enable_on_vim_startup = 1
 
 " Set background colors manually since I rarely change my color scheme.
@@ -308,7 +307,7 @@ imap  <C-W>
 set smartindent
 
 let CoVim_default_name = "Niles"
-let CoVim_default_port = "8802"  
+let CoVim_default_port = "8802"
 
 " Map backslash + backslash to last file
 nnoremap <leader><leader> <c-^>
@@ -402,188 +401,188 @@ set wildmode=list:longest,full
 
 
 if has("autocmd")
-	
-"always use rust instead of hercules
-autocmd BufNewFile,BufRead *.rs set filetype=rust
 
-"always use LaTeX
-autocmd BufNewFile,BufRead *.tex set filetype=tex
+	"always use rust instead of hercules
+	autocmd BufNewFile,BufRead *.rs set filetype=rust
 
-"other filetype-specific settings. i can't figure out how to stick all
-"the FileTypes in one dict (mostly because i have no idea what i'm
-"doing with viml), so separate lines it is.
-autocmd FileType asm     call Settings_asm()
-autocmd FileType bash    call Settings_script()
-autocmd FileType c       call Settings_c()
-autocmd FileType coffee  call Settings_coffee()
-autocmd FileType conf    call Settings_conf()
-autocmd FileType cpp     call Settings_c()
-autocmd FileType css     call Settings_css()
-autocmd FileType d       call Settings_c()
-autocmd FileType elixir  call Settings_elixir()
-autocmd FileType tex     call Settings_tex()
-autocmd FileType haskell call Settings_haskell()
-autocmd FileType html    call Settings_html()
-autocmd FileType xhtml   call Settings_html()
-autocmd FileType make    call Settings_script()
-autocmd FileType matlab  call Settings_matlab()
-autocmd FileType mkd     call Settings_text()
-autocmd FileType nim     call Settings_nim()
-autocmd FileType perl    call Settings_script()
-autocmd FileType php     call Settings_html()
-autocmd FileType python  call Settings_script()
-autocmd FileType ruby    call Settings_script()
-autocmd FileType rust    call Settings_rust()
-autocmd FileType scss    call Settings_css()
-autocmd FileType sh      call Settings_script()
-autocmd FileType text    call Settings_text()
-autocmd FileType vim     call Settings_vim()
-autocmd FileType zsh     call Settings_script()
+	"always use LaTeX
+	autocmd BufNewFile,BufRead *.tex set filetype=tex
 
-function! Settings_asm()
-	"settings
-	setlocal foldmethod=syntax
-	"mappings
-	nnoremap <buffer> -- A<Tab>;<Space>
-endfunction
+	"other filetype-specific settings. i can't figure out how to stick all
+	"the FileTypes in one dict (mostly because i have no idea what i'm
+	"doing with viml), so separate lines it is.
+	autocmd FileType asm     call Settings_asm()
+	autocmd FileType bash    call Settings_script()
+	autocmd FileType c       call Settings_c()
+	autocmd FileType coffee  call Settings_coffee()
+	autocmd FileType conf    call Settings_conf()
+	autocmd FileType cpp     call Settings_c()
+	autocmd FileType css     call Settings_css()
+	autocmd FileType d       call Settings_c()
+	autocmd FileType elixir  call Settings_elixir()
+	autocmd FileType tex     call Settings_tex()
+	autocmd FileType haskell call Settings_haskell()
+	autocmd FileType html    call Settings_html()
+	autocmd FileType xhtml   call Settings_html()
+	autocmd FileType make    call Settings_script()
+	autocmd FileType matlab  call Settings_matlab()
+	autocmd FileType mkd     call Settings_text()
+	autocmd FileType nim     call Settings_nim()
+	autocmd FileType perl    call Settings_script()
+	autocmd FileType php     call Settings_html()
+	autocmd FileType python  call Settings_script()
+	autocmd FileType ruby    call Settings_script()
+	autocmd FileType rust    call Settings_rust()
+	autocmd FileType scss    call Settings_css()
+	autocmd FileType sh      call Settings_script()
+	autocmd FileType text    call Settings_text()
+	autocmd FileType vim     call Settings_vim()
+	autocmd FileType zsh     call Settings_script()
 
-function! Settings_c()
-	"settings
-	setlocal foldmethod=syntax
-	setlocal shiftwidth=4
-	setlocal tabstop=4
-	setlocal softtabstop=4
-	"mappings
-	nnoremap <buffer> -- O<Space>*/<Esc>hhi/*<Space>
-endfunction
-
-function! Settings_coffee()
-	"settings
-	setlocal foldmethod=syntax
-	setlocal shiftwidth=2
-	setlocal tabstop=2
-	setlocal softtabstop=2
-	"mappings
-	nnoremap <buffer> -- O#<Space>
-endfunction
-
-function! Settings_conf()
-	call Settings_script()
-	setlocal expandtab
-endfunction
-
-function! Settings_css()
-	call Settings_c()
-	"settings
-	setlocal shiftwidth=2
-	setlocal tabstop=2
-	setlocal softtabstop=2
-	"mappings
-endfunction
-
-function! Settings_elixir()
-	"settings
-	setlocal shiftwidth=2
-	setlocal tabstop=2
-	setlocal softtabstop=2
-	"mappings
-	nnoremap <buffer> -- O#<Space>
-endfunction
-
-function! Settings_haskell()
-	"settings
-	setlocal shiftwidth=4
-	setlocal tabstop=4
-	setlocal softtabstop=4
-	setlocal expandtab
-	"mappings
-	nnoremap <buffer> -- O--<Space>
-endfunction
-
-function! Settings_html()
-	"settings
-	setlocal foldmethod=syntax
-	setlocal shiftwidth=4
-	setlocal tabstop=4
-	setlocal softtabstop=4
-	"mappings
-	nnoremap <buffer> -- O<Space>--><Esc>hhhi<!--<Space>
-endfunction
-
-function! Settings_matlab()
-	"settings
-	"mappings
-	nnoremap <buffer> -- O%<Space>
-endfunction
-
-function! Settings_nim()
-	call Settings_script()
-	function! JumpToDef()
-		if exists("*GotoDefinition_" . &filetype)
-			call GotoDefinition_{&filetype}()
-		else
-			execute "norm! <C-]>"
-		endif
+	function! Settings_asm()
+		"settings
+		setlocal foldmethod=syntax
+		"mappings
+		nnoremap <buffer> -- A<Tab>;<Space>
 	endfunction
-	"mappings
-	nnoremap <buffer> <M-g> :call JumpToDef()<cr>
-	inoremap <buffer> <M-g> <esc>:call JumpToDef()<cr>i
-	nnoremap <buffer> -_ O##<Space>
-endfunction
 
-function! Settings_python()
-	call Settings_script()
-	"settings
-	setlocal expandtab
-	"mappings
-endfunction
+	function! Settings_c()
+		"settings
+		setlocal foldmethod=syntax
+		setlocal shiftwidth=4
+		setlocal tabstop=4
+		setlocal softtabstop=4
+		"mappings
+		nnoremap <buffer> -- O<Space>*/<Esc>hhi/*<Space>
+	endfunction
 
-function! Settings_script()
-	"settings
-	setlocal shiftwidth=4
-	setlocal tabstop=4
-	setlocal softtabstop=4
-	"mappings
-	nnoremap <buffer> -- O#<Space>
-endfunction
+	function! Settings_coffee()
+		"settings
+		setlocal foldmethod=syntax
+		setlocal shiftwidth=2
+		setlocal tabstop=2
+		setlocal softtabstop=2
+		"mappings
+		nnoremap <buffer> -- O#<Space>
+	endfunction
 
-function! Settings_rust()
-	call Settings_c()
-	nnoremap <buffer> -_ O///<Space>
-endfunction
+	function! Settings_conf()
+		call Settings_script()
+		setlocal expandtab
+	endfunction
 
-function! Settings_tex()
-	"settings
-	setlocal noautoindent
-	setlocal nocindent
-	setlocal nosmartindent
-	setlocal shiftwidth=4
-	setlocal tabstop=4
-	setlocal softtabstop=4
-	"mappings
-	nnoremap <buffer> -- O%<Space>
-	nnoremap <buffer> <Leader>c :!latex -output-format=pdf "%"<CR><CR>
-	nnoremap <buffer> <Leader>C :!latex -output-format=pdf "%"<CR>
-endfunction
+	function! Settings_css()
+		call Settings_c()
+		"settings
+		setlocal shiftwidth=2
+		setlocal tabstop=2
+		setlocal softtabstop=2
+		"mappings
+	endfunction
 
-function! Settings_text()
-	"setlocal formatoptions+=ta
-	setlocal noautoindent
-	setlocal nocindent
-	setlocal nosmartindent
-	setlocal tabstop=4
-	setlocal softtabstop=4
-	setlocal spell
-endfunction
+	function! Settings_elixir()
+		"settings
+		setlocal shiftwidth=2
+		setlocal tabstop=2
+		setlocal softtabstop=2
+		"mappings
+		nnoremap <buffer> -- O#<Space>
+	endfunction
 
-function! Settings_vim()
-	"settings
-	setlocal shiftwidth=4
-	setlocal tabstop=4
-	setlocal softtabstop=4
-	"mappings
-	nnoremap <buffer> -- O"
-endfunction
+	function! Settings_haskell()
+		"settings
+		setlocal shiftwidth=4
+		setlocal tabstop=4
+		setlocal softtabstop=4
+		setlocal expandtab
+		"mappings
+		nnoremap <buffer> -- O--<Space>
+	endfunction
+
+	function! Settings_html()
+		"settings
+		setlocal foldmethod=syntax
+		setlocal shiftwidth=4
+		setlocal tabstop=4
+		setlocal softtabstop=4
+		"mappings
+		nnoremap <buffer> -- O<Space>--><Esc>hhhi<!--<Space>
+	endfunction
+
+	function! Settings_matlab()
+		"settings
+		"mappings
+		nnoremap <buffer> -- O%<Space>
+	endfunction
+
+	function! Settings_nim()
+		call Settings_script()
+		function! JumpToDef()
+			if exists("*GotoDefinition_" . &filetype)
+				call GotoDefinition_{&filetype}()
+			else
+				execute "norm! <C-]>"
+			endif
+		endfunction
+		"mappings
+		nnoremap <buffer> <M-g> :call JumpToDef()<cr>
+		inoremap <buffer> <M-g> <esc>:call JumpToDef()<cr>i
+		nnoremap <buffer> -_ O##<Space>
+	endfunction
+
+	function! Settings_python()
+		call Settings_script()
+		"settings
+		setlocal expandtab
+		"mappings
+	endfunction
+
+	function! Settings_script()
+		"settings
+		setlocal shiftwidth=4
+		setlocal tabstop=4
+		setlocal softtabstop=4
+		"mappings
+		nnoremap <buffer> -- O#<Space>
+	endfunction
+
+	function! Settings_rust()
+		call Settings_c()
+		nnoremap <buffer> -_ O///<Space>
+	endfunction
+
+	function! Settings_tex()
+		"settings
+		setlocal noautoindent
+		setlocal nocindent
+		setlocal nosmartindent
+		setlocal shiftwidth=4
+		setlocal tabstop=4
+		setlocal softtabstop=4
+		"mappings
+		nnoremap <buffer> -- O%<Space>
+		nnoremap <buffer> <Leader>c :!latex -output-format=pdf "%"<CR><CR>
+		nnoremap <buffer> <Leader>C :!latex -output-format=pdf "%"<CR>
+	endfunction
+
+	function! Settings_text()
+		"setlocal formatoptions+=ta
+		setlocal noautoindent
+		setlocal nocindent
+		setlocal nosmartindent
+		setlocal tabstop=4
+		setlocal softtabstop=4
+		setlocal spell
+	endfunction
+
+	function! Settings_vim()
+		"settings
+		setlocal shiftwidth=4
+		setlocal tabstop=4
+		setlocal softtabstop=4
+		"mappings
+		nnoremap <buffer> -- O"
+	endfunction
 
 endif "autocmd
 
@@ -618,7 +617,6 @@ if !has("gui_running")
 		call system("tmux source ~/.tmux_theme.visual")
 		return ''
 	endfunction
-
 
 	function! ResetCursorLineNrColor()
 		set updatetime=4000
@@ -656,3 +654,11 @@ endif
 "nmap <C-s> viw<C-s><CR>
 
 nmap <C-s> :!aspell -a <<< <C-r><C-w><CR>
+
+
+function! Toggle()
+	set invcursorline
+	call indent_guides#toggle()
+endfunction
+
+nmap <Leader>q :call Toggle()<CR>

@@ -260,7 +260,7 @@ function read_confirm
   end
 end
 function rm
-	if echo $argv | grep -Piq '.*\.sh|.*\.py|.*\.c|.*\.h|.*\.java|.*\.rb|.*\.html|.*\.css|.*\.js|.*\.pl'
+	if echo $argv | grep -Piq '.*\.sh|.*\.py|.*\.c|.*\.h|.*\.java|.*\.rb|.*\.html|.*\.css|.*\.js|.*\.pl|.*\.erl'
 		read_confirm; and /usr/bin/env rm -iv $argv
 	else
 		/usr/bin/env rm $argv
