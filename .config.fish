@@ -353,7 +353,7 @@ function kssh # even .2 seconds is somethimes still to short
 	kopen; sleep .2; ssh $argv
 end
 function kopen # open ssh port on niles.xyz via port knocking
-	knock 104.223.59.77 {(cat ~/.ssh/open)} -d 10
+	knock niles.xyz {(cat ~/.ssh/open)} -d 10
 end
 function pingw # ping gateway -> ping gw -> pingw
 	set gw (route -n|grep '^0\.0\.0\.0'|awk '{print $2}')
@@ -390,6 +390,7 @@ alias open xdg-open
 
 function push
     for server in (git remote)
-        git push "$server" (git branch --color=never|grep --color=never '^\*'|cut -c 3-)
-	end
+        #git push "$server" (git branch --color=never|grep --color=never '^\*'|cut -c 3-)
+        git push --all "$server"
+    end
 end

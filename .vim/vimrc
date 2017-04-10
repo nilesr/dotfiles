@@ -52,8 +52,6 @@ filetype on
 " Allow vim to load plugins related to the detected file type.
 filetype plugin on
 
-" Allow vim to maintain a file's indent file as you edit it.
-filetype indent on
 
 " Highlight all results of a search within the file.
 set hlsearch
@@ -70,14 +68,18 @@ if has("gui_macvim")
 endif
 
 
-set softtabstop=4
 
+" no idea
+"set smartindent
+set autoindent
+filetype indent on
+"set softtabstop=4
 set shiftwidth=4
-
 set tabstop=4
-
 "set expandtab
 set noexpandtab
+
+autocmd FileType python setlocal shiftwidth=4 tabstop=4 noexpandtab
 
 " Show statusline always.
 set laststatus=2
@@ -299,7 +301,6 @@ set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
 imap <C-BS> <C-W>
 imap  <C-W>
 
-set smartindent
 
 let CoVim_default_name = "Niles"
 let CoVim_default_port = "8802"
@@ -396,6 +397,7 @@ set wildmode=list:longest,full
 
 dig XO 8853 " xor digraph
 dig TF 8756 " therefore
+dig RE 8477
 
 dig xx 215
 
@@ -470,3 +472,10 @@ function! Toggle()
 endfunction
 
 nmap <Leader>q :call Toggle()<CR>
+
+
+let g:mustache_abbreviations = 1
+
+" might disable later if it gets annoying
+"au BufWrite * :Autoformat
+" it got annoying

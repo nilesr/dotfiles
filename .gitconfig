@@ -43,3 +43,7 @@
 	required = true
 [commit]
 	gpgsign = true
+[credential]
+  helper = "store --file=/home/niles/.ssh/.git-credentials"
+[credential "https://git.fuwafuwa.moe"]
+  username = nilesrogoff
