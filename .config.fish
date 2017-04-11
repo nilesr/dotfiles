@@ -281,6 +281,9 @@ function image
 end
 
 function commit
+	if not test -d ~/.ssh/.gnupg
+		msd
+	end
 	git add -A
 	git commit -am "$argv"
 end
