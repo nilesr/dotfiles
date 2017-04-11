@@ -4,14 +4,14 @@ test -f "$HOME"/.fishrc; and source "$HOME"/.fishrc
 alias grep=/usr/bin/env\ grep\ -P\ --color=always
 if test -t 0
 	function fish_prompt
-	  env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) STATUS=$status bash ~/.shell_prompt.sh left
+		env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) STATUS=$status bash ~/.shell_prompt.sh left
 	end
 	function fish_right_prompt
-	  env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status bash ~/.shell_prompt.sh right
+		env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status bash ~/.shell_prompt.sh right
 	end
 	function moron # For use in public. Combine with a white theme with non-monospaced black text background
 		function fish_prompt
-		  env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) STATUS=$status bash ~/.shell_prompt.sh moron
+			env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) STATUS=$status bash ~/.shell_prompt.sh moron
 		end
 		function fish_right_prompt
 		end
@@ -249,15 +249,15 @@ set -x LC_ALL en_US.UTF-8
 alias ping=ping\ -s\ 8
 alias clear='/usr/bin/clear; login_message'
 function read_confirm
-  while true
-	read -p 'echo "This will delete a source file. Sure? (y/n):"' -l confirm
-	switch $confirm
-	  case Y y
-		return 0
-	  case '' N n
-		return 1
+	while true
+		read -p 'echo "This will delete a source file. Sure? (y/n):"' -l confirm
+		switch $confirm
+			case Y y
+				return 0
+			case '' N n
+				return 1
+		end
 	end
-  end
 end
 function rm
 	if echo $argv | grep -Piq '.*\.sh|.*\.py|.*\.c|.*\.h|.*\.java|.*\.rb|.*\.html|.*\.css|.*\.js|.*\.pl|.*\.erl'
@@ -331,7 +331,7 @@ function viopen
 	echo nameserver (route -n|grep '^0.0.0.0'|awk '{print $2}') | sudo tee /etc/resolv.conf
 	echo nameserver 8.8.8.8 | sudo tee -a /etc/resolv.conf > /dev/null # -a for append
 	echo nameserver 127.0.0.1 | sudo tee -a /etc/resolv.conf > /dev/null # use freenic via dnsmasq if all else fails
-    open http://gstatic.com/generate_204
+	open http://gstatic.com/generate_204
 	echo "Swap back after authenticating? Enter to continue"
 	read nothing
 	sudo systemctl stop dnsmasq; sudo systemctl start dnscrypt
@@ -389,8 +389,8 @@ end
 alias open xdg-open
 
 function push
-    for server in (git remote)
-        #git push "$server" (git branch --color=never|grep --color=never '^\*'|cut -c 3-)
-        git push --all "$server"
-    end
+	for server in (git remote)
+		#git push "$server" (git branch --color=never|grep --color=never '^\*'|cut -c 3-)
+		git push --all "$server"
+	end
 end

@@ -2,7 +2,7 @@
 
 # Initialize and update all submodules.
 echo Initializing git submodules.
-git submodule init && git submodule update
+(git submodule init && git submodule update || exit 1) || (echo "Failed to init submodules"; exit 1) || exit 1
 
 test -f "$PWD"/.config.fish || (echo "Please run this inside the dotfiles directory"; exit 1) || exit 1
 
