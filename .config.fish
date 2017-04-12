@@ -357,10 +357,10 @@ end
 set -x --global QT_QPA_PLATFORMTHEME qt5ct
 
 function kssh # even .2 seconds is somethimes still to short
-	ensure_msd
 	kopen; sleep .2; ssh $argv
 end
 function kopen # open ssh port on niles.xyz via port knocking
+	ensure_msd
 	knock niles.xyz {(cat ~/.ssh/open)} -d 10
 end
 function pingw # ping gateway -> ping gw -> pingw
