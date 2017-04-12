@@ -280,10 +280,14 @@ function image
 	find ~/Pictures -maxdepth 1 -type f|head -n $count|tail -n 1 | cut -d "/" -f 5 |tee ~/.image.txt
 end
 
-function commit
+function ensure_msd
 	if not test -d ~/.ssh/.gnupg
-		msd
+		test -e ~/.bin/msd; and msd
 	end
+end
+
+function commit
+	ensure_msd
 	git add -A
 	git commit -am "$argv"
 end
@@ -353,6 +357,7 @@ end
 set -x --global QT_QPA_PLATFORMTHEME qt5ct
 
 function kssh # even .2 seconds is somethimes still to short
+	ensure_msd
 	kopen; sleep .2; ssh $argv
 end
 function kopen # open ssh port on niles.xyz via port knocking
