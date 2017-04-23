@@ -93,10 +93,12 @@ function __promptline_left_prompt {
 	# test "$STATUS" -ne 0 && __promptline_wrapper "$STATUS" "$slice_prefix" "$slice_suffix"
 	__promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print $(hostname); elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$(hostname)"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
 	if test -d /bedrock; then
-		upper() {
-			echo "$@"|python3 -c "import sys;x=sys.stdin.read();print(x[0].upper()+x[1:],end='')"
-		}
-		__promptline_wrapper "$(upper "$(bri -n)")" "$slice_prefix" "$slice_suffix"
+		if test "$(bri -p 1|awk '{print $3}')" != '('"$(bri -n)"')'; then
+			upper() {
+				echo "$@"|python3 -c "import sys;x=sys.stdin.read();print(x[0].upper()+x[1:],end='')"
+			}
+			__promptline_wrapper "$(upper "$(bri -n)")" "$slice_prefix" "$slice_suffix"
+		fi
 	fi
 	__promptline_wrapper "$(whoami)" "$slice_prefix" "$slice_suffix"
 

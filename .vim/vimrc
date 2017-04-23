@@ -341,7 +341,7 @@ function! RemoveFancyCharacters()
 	let typo["…"] = '...'
 	:exe ":%s/".join(keys(typo), '\|').'/\=typo[submatch(0)]/ge'
 endfunction
-command! RemoveFancyCharacters :call RemoveFancyCharacters()
+command! Fixchars :call RemoveFancyCharacters()
 
 
 filetype plugin on
@@ -395,11 +395,13 @@ set wildmode=list:longest,full
 
 
 
-dig XO 8853 " xor digraph
-dig TF 8756 " therefore
-dig RE 8477
+dig XO 8853 " xor A ⊕ B
+dig TF 8756 " therefore ∴
+dig RE 8477 " set of real numbers ℝ
 
-dig xx 215
+dig xx 215 " cross product A × B
+
+dig AF 8728 " after, f ∘ g, read f after g
 
 
 if !has("gui_running")
@@ -409,11 +411,9 @@ if !has("gui_running")
 	function! SetCursorLineNrColorInsert(mode)
 		if a:mode == "i"
 			"Tmuxline lightline_insert
-			"call tmuxline#snapshot("~/.tmux_theme.insert", 0)
 			call system("tmux source ~/.tmux_theme.insert")
 		elseif a:mode == "r"
 			"Tmuxline lightline_replace
-			"call tmuxline#snapshot("~/.tmux_theme.replace", 0)
 			call system("tmux source ~/.tmux_theme.replace")
 		endif
 
@@ -423,7 +423,6 @@ if !has("gui_running")
 	function! SetCursorLineNrColorVisual()
 		set updatetime=0
 		"Tmuxline lightline_visual
-		"call tmuxline#snapshot("~/.tmux_theme.visual", 0)
 		call system("tmux source ~/.tmux_theme.visual")
 		return ''
 	endfunction
@@ -431,10 +430,8 @@ if !has("gui_running")
 	function! ResetCursorLineNrColor()
 		set updatetime=4000
 		"Tmuxline lightline
-		"call tmuxline#snapshot("~/.tmux_theme.normal", 0)
 		call system("tmux source ~/.tmux_theme.normal")
 	endfunction
-
 
 	vnoremap <silent> <expr> <SID>SetCursorLineNrColorVisual SetCursorLineNrColorVisual()
 	nnoremap <silent> <script> v v<SID>SetCursorLineNrColorVisual<left><right>

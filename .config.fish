@@ -269,8 +269,10 @@ end
 alias putty=~/.putty.sh
 alias proxy=~/.proxy.sh
 alias :q exit
-#alias vim="vim -X" # This fixes the XMSP Init bug (_IceTransSocketINETConnect() no usable address for _______)
-# Unfortunately it also breaks vim yank/paste using the X11 keyboard
+if test -f /tmp/brokevim
+	alias vim="vim -X" # This fixes the XMSP Init bug (_IceTransSocketINETConnect() no usable address for _______)
+	# Unfortunately it also breaks vim yank/paste using the X11 keyboard
+end
 alias :e vim
 alias vi=vim
 
@@ -288,7 +290,7 @@ end
 
 function commit
 	ensure_msd
-	git add -A
+	git add -A :/
 	git commit -am "$argv"
 end
 function rb
@@ -402,3 +404,8 @@ function push
 		git push --all "$server"
 	end
 end
+function brokevim
+	touch /tmp/brokevim
+	alias vim="vim -X"
+end
+alias htop "env TERM=screen htop"
