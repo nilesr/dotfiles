@@ -476,3 +476,6 @@ let g:mustache_abbreviations = 1
 " might disable later if it gets annoying
 "au BufWrite * :Autoformat
 " it got annoying
+
+
+let g:syntastic_c_compiler_options = '-std=gnu11 -fms-extensions '|". system('python3-config --includes')

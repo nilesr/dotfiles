@@ -91,7 +91,8 @@ function weather
 		return
 	end
 	#set destination ""
-	set destination "24061" # Blacksburg
+	#set destination "24061" # Blacksburg
+	set destination "seattle"
 	#if test (echo "$argv" | wc -c) -gt 1;
 	if not test -z "$argv[1]";
 		set destination $argv
@@ -393,7 +394,11 @@ if test -d /bedrock
 			continue
 		end
 		alias $strata "brc-wrap $strata"
+		# so "jessie gcc --version" becomes "brc-wrap jessie gcc --version" which becomes "brc jessie gcc --version"
+		# but "jessie" becomes "brc-wrap jessie" which becomes "brc jessie fish"
 	end
+
+	set -x PATH $PATH /bedrock/bin /bedrock/sbin /bedrock/brpath/pin/bin /bedrock/brpath/pin/sbin /bedrock/brpath/bin /bedrock/brpath/sbin
 end
 
 alias open xdg-open
@@ -409,3 +414,19 @@ function brokevim
 	alias vim="vim -X"
 end
 alias htop "env TERM=screen htop"
+
+set -x PATH $PATH /sbin /usr/sbin /usr/local/sbin /usr/local/bin
+
+alias jsc "rlwrap jsc"
+
+set -x --global EDITOR vim
+
+function disown
+	bash -c "($argv) "'&>/dev/null & disown'
+end
+
+function nov6
+	sudo sysctl -w net.ipv6.conf.all.disable_ipv6="$argv"
+	sudo sysctl -w net.ipv6.conf.default.disable_ipv6="$argv"
+end
+alias no6 nov6
