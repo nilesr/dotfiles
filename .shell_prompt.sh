@@ -73,9 +73,9 @@ function __promptline_cwd {
 	#mu="μ"
 	#lambda="λ"
 	#if test "$EUID" = 0; then
-		#shell_char="$lambda"
+	#shell_char="$lambda"
 	#else
-		#shell_char="$mu"
+	#shell_char="$mu"
 	#fi
 	#shell_char="$shell_char$dir_sep"
 	#printf "%s" "$shell_char"
@@ -91,16 +91,30 @@ function __promptline_left_prompt {
 	# section "a" slices
 	#__promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print %n; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$USER@$(hostname)"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
 	# test "$STATUS" -ne 0 && __promptline_wrapper "$STATUS" "$slice_prefix" "$slice_suffix"
-	__promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print $(hostname); elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$(hostname)"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+	upper() {
+		echo "$@"|python3 -c "import sys;x=sys.stdin.read();print(x[0].upper()+x[1:],end='')"
+	}
+	local hostname=$(hostname)
+	# www.something.com -> something
+	# opensub00.umiacs.umd.edu -> opensub00
+	if test "$(echo $hostname|cut -d . -f 1)" = "www"; then
+		hostname="$(echo $hostname|cut -d . -f 2)"
+	else
+		hostname="$(echo $hostname|cut -d . -f 1)"
+	fi
+	# uppercase it
+	hostname=$(upper $hostname)
+	__promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print $hostname; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$hostname"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
 	if test -d /bedrock; then
 		if test "$(bri -p 1|awk '{print $3}')" != '('"$(bri -n)"')'; then
-			upper() {
-				echo "$@"|python3 -c "import sys;x=sys.stdin.read();print(x[0].upper()+x[1:],end='')"
-			}
 			__promptline_wrapper "$(upper "$(bri -n)")" "$slice_prefix" "$slice_suffix"
 		fi
 	fi
 	__promptline_wrapper "$(whoami)" "$slice_prefix" "$slice_suffix"
+	if test -d "/fs/ftp/incoming/$(whoami)" && test $(ls -1 /fs/ftp/incoming/"$(whoami)"|wc -l) -ne 0; then
+		__promptline_wrapper "Dropped files waiting" "$slice_prefix" "$slice_suffix"
+	fi
+
 
 
 	# section "d" header
@@ -190,9 +204,9 @@ function __promptline_git_status {
 	done < <(git diff --name-status)
 
 	#while read line; do
-		#case "$line" in
-			#*) added_count=$(( $added_count + 1 )) ;;
-		#esac
+	#case "$line" in
+	#*) added_count=$(( $added_count + 1 )) ;;
+	#esac
 	#done < <(git diff --name-status --cached)
 	added_count=$(git diff --name-status --cached|wc -l)
 
