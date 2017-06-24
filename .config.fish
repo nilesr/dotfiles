@@ -2,43 +2,6 @@
 test -f "$HOME"/.fishrc; and source "$HOME"/.fishrc
 # Prompt
 alias grep=/usr/bin/env\ grep\ -P\ --color=always
-if test -t 0
-	function fish_prompt
-		env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) STATUS=$status bash ~/.shell_prompt.sh left
-	end
-	function fish_right_prompt
-		env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status bash ~/.shell_prompt.sh right
-	end
-	function moron # For use in public. Combine with a white theme with non-monospaced black text background
-		function fish_prompt
-			env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) STATUS=$status bash ~/.shell_prompt.sh moron
-		end
-		function fish_right_prompt
-		end
-		set -x fish_color_error black
-		set -x fish_color_param black
-		set -x fish_color_comment black
-		set -x fish_color_match black
-		set -x fish_color_search_match black
-		set -x fish_color_operator black
-		set -x fish_color_escape black
-		set -x fish_color_cwd black
-		set -x fish_pager_color_prefix black
-		set -x fish_pager_color_completion black
-		set -x fish_pager_color_description black
-		set -x fish_pager_color_progress black
-		set -x fish_pager_color_secondary ""
-		alias ls=ls\ --color=never
-		function clear
-			/usr/bin/env clear
-		end
-		function login_message
-			clear
-		end
-		clear
-	end
-
-end
 
 # Solarized Dark 256 dircolors
 setenv LS_COLORS 'no=00;38;5;244:rs=0:di=00;38;5;33:ln=00;38;5;37:mh=00:pi=48;5;230;38;5;136;01:so=48;5;230;38;5;136;01:do=48;5;230;38;5;136;01:bd=48;5;230;38;5;244;01:cd=48;5;230;38;5;244;01:or=48;5;235;38;5;160:su=48;5;160;38;5;230:sg=48;5;136;38;5;230:ca=30;41:tw=48;5;64;38;5;230:ow=48;5;235;38;5;33:st=48;5;33;38;5;230:ex=00;38;5;64:*.tar=00;38;5;61:*.tgz=00;38;5;61:*.arj=00;38;5;61:*.taz=00;38;5;61:*.lzh=00;38;5;61:*.lzma=00;38;5;61:*.tlz=00;38;5;61:*.txz=00;38;5;61:*.zip=00;38;5;61:*.z=00;38;5;61:*.Z=00;38;5;61:*.dz=00;38;5;61:*.gz=00;38;5;61:*.lz=00;38;5;61:*.xz=00;38;5;61:*.bz2=00;38;5;61:*.bz=00;38;5;61:*.tbz=00;38;5;61:*.tbz2=00;38;5;61:*.tz=00;38;5;61:*.deb=00;38;5;61:*.rpm=00;38;5;61:*.jar=00;38;5;61:*.rar=00;38;5;61:*.ace=00;38;5;61:*.zoo=00;38;5;61:*.cpio=00;38;5;61:*.7z=00;38;5;61:*.rz=00;38;5;61:*.apk=00;38;5;61:*.gem=00;38;5;61:*.jpg=00;38;5;136:*.JPG=00;38;5;136:*.jpeg=00;38;5;136:*.gif=00;38;5;136:*.bmp=00;38;5;136:*.pbm=00;38;5;136:*.pgm=00;38;5;136:*.ppm=00;38;5;136:*.tga=00;38;5;136:*.xbm=00;38;5;136:*.xpm=00;38;5;136:*.tif=00;38;5;136:*.tiff=00;38;5;136:*.png=00;38;5;136:*.PNG=00;38;5;136:*.svg=00;38;5;136:*.svgz=00;38;5;136:*.mng=00;38;5;136:*.pcx=00;38;5;136:*.dl=00;38;5;136:*.xcf=00;38;5;136:*.xwd=00;38;5;136:*.yuv=00;38;5;136:*.cgm=00;38;5;136:*.emf=00;38;5;136:*.eps=00;38;5;136:*.CR2=00;38;5;136:*.ico=00;38;5;136:*.tex=00;38;5;245:*.rdf=00;38;5;245:*.owl=00;38;5;245:*.n3=00;38;5;245:*.ttl=00;38;5;245:*.nt=00;38;5;245:*.torrent=00;38;5;245:*.xml=00;38;5;245:*Makefile=00;38;5;245:*Rakefile=00;38;5;245:*Dockerfile=00;38;5;245:*build.xml=00;38;5;245:*rc=00;38;5;245:*1=00;38;5;245:*.nfo=00;38;5;245:*README=00;38;5;245:*README.txt=00;38;5;245:*readme.txt=00;38;5;245:*.md=00;38;5;245:*README.markdown=00;38;5;245:*.ini=00;38;5;245:*.yml=00;38;5;245:*.cfg=00;38;5;245:*.conf=00;38;5;245:*.c=00;38;5;245:*.cpp=00;38;5;245:*.cc=00;38;5;245:*.sqlite=00;38;5;245:*.go=00;38;5;245:*.log=00;38;5;240:*.bak=00;38;5;240:*.aux=00;38;5;240:*.lof=00;38;5;240:*.lol=00;38;5;240:*.lot=00;38;5;240:*.out=00;38;5;240:*.toc=00;38;5;240:*.bbl=00;38;5;240:*.blg=00;38;5;240:*~=00;38;5;240:*#=00;38;5;240:*.part=00;38;5;240:*.incomplete=00;38;5;240:*.swp=00;38;5;240:*.tmp=00;38;5;240:*.temp=00;38;5;240:*.o=00;38;5;240:*.pyc=00;38;5;240:*.class=00;38;5;240:*.cache=00;38;5;240:*.aac=00;38;5;166:*.au=00;38;5;166:*.flac=00;38;5;166:*.mid=00;38;5;166:*.midi=00;38;5;166:*.mka=00;38;5;166:*.mp3=00;38;5;166:*.mpc=00;38;5;166:*.ogg=00;38;5;166:*.ra=00;38;5;166:*.wav=00;38;5;166:*.m4a=00;38;5;166:*.axa=00;38;5;166:*.oga=00;38;5;166:*.spx=00;38;5;166:*.xspf=00;38;5;166:*.mov=00;38;5;166:*.MOV=00;38;5;166:*.mpg=00;38;5;166:*.mpeg=00;38;5;166:*.m2v=00;38;5;166:*.mkv=00;38;5;166:*.ogm=00;38;5;166:*.mp4=00;38;5;166:*.m4v=00;38;5;166:*.mp4v=00;38;5;166:*.vob=00;38;5;166:*.qt=00;38;5;166:*.nuv=00;38;5;166:*.wmv=00;38;5;166:*.asf=00;38;5;166:*.rm=00;38;5;166:*.rmvb=00;38;5;166:*.flc=00;38;5;166:*.avi=00;38;5;166:*.fli=00;38;5;166:*.flv=00;38;5;166:*.gl=00;38;5;166:*.m2ts=00;38;5;166:*.divx=00;38;5;166:*.webm=00;38;5;166:*.axv=00;38;5;166:*.anx=00;38;5;166:*.ogv=00;38;5;166:*.ogx=00;38;5;166:'
@@ -117,75 +80,69 @@ end
 #set line 0
 set online true
 function login_message
-	if test -t 0
-		# ghetto as fuck, just check if there's a defeault route
-		#if route|grep -iq default;
-		if route -n|grep -q '^0.0.0.0'
-			set online true
-		else
-			set online false
-		end
-		# Print cpu usage
-		#printf '%s ' (cat /tmp/cpu)
-		# print ram usage
-		set statline (math (free|grep Mem|awk '{print "100*"$3"/"$2}'))
-		# Print disk usage
-		set statline "$statline "( df -h / /home|tail -n 2|awk '{print $5}'|tr -d '%'|tr '\n' ' ')
-		# Display users on login
-		set statline "$statline"(who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }' | tr '\n' ' ')
-		# Display first line of todo list on login if it exists
-		set todo $HOME"/Documents/todo/todo.txt"
-		if test -e $todo;
-			set temp (head -n 1 $todo 2>/dev/null)
-		else
-			set temp (hostname)
-		end
-		#set line 0
-		display "$temp" "$statline"
-		test -e ~/.image.txt; or touch ~/.image.txt ~/.noimage
-		if not test -e .noimage
-			set temp (math (stat ~/.image.txt |grep Modify|cut -d " " -f 2|cut -d "-" -f 3) - (date +%d)|tr -d '-')
-			if test $temp -ge 3
-				set image (cat ~/.image.txt)
-				display "$image"
-			end
-		end
-		# If the date has changed since the last login
-		for file in date hour alert;
-			if not test -e /tmp/$file; 
-				touch /tmp/$file
-				chmod 777 /tmp/$file ^/dev/null
-			end
-		end
-		set newdate false
-		set newhour false
-		if not test (date +%x) = (cat /tmp/date) ^/dev/null
-			set newdate true
-			date +%x > /tmp/date
-		end
-		if not test (date +%H) = (cat /tmp/hour) ^/dev/null
-			set newhour true
-			date +%H > /tmp/hour
-		end
-		set alerted false
-		if not test green = (cat /tmp/alert) ^/dev/null
-			alert
-			set alerted true
-		end
-		if test "$newhour" = "true";
-			if test "$alerted" = "false"; 
-				alert
-			end
-		end
-		cat /etc/resolv.conf|grep -v 127.0.0.1|grep -v '^#.*'|grep -iq nameserver; and display "NON-LOCAL NAMESERVERS"
-		if test "$newdate" = "true"; 
-			weather
+	# ghetto as fuck, just check if there's a defeault route
+	#if route|grep -iq default;
+	if route -n|grep -q '^0.0.0.0'
+		set online true
+	else
+		set online false
+	end
+	# Print cpu usage
+	#printf '%s ' (cat /tmp/cpu)
+	# print ram usage
+	set statline (math (free|grep Mem|awk '{print "100*"$3"/"$2}'))
+	# Print disk usage
+	set statline "$statline "( df -h / /home|tail -n 2|awk '{print $5}'|tr -d '%'|tr '\n' ' ')
+	# Display users on login
+	set statline "$statline"(who -q|head -n 1|tr ' ' '\n'|sort|uniq -c|awk '{print $2 ": " $1 " " }' | tr '\n' ' ')
+	# Display first line of todo list on login if it exists
+	set todo $HOME"/Documents/todo/todo.txt"
+	if test -e $todo;
+		set temp (head -n 1 $todo 2>/dev/null)
+	else
+		set temp (hostname)
+	end
+	#set line 0
+	display "$temp" "$statline"
+	test -e ~/.image.txt; or touch ~/.image.txt ~/.noimage
+	if not test -e .noimage
+		set temp (math (stat ~/.image.txt |grep Modify|cut -d " " -f 2|cut -d "-" -f 3) - (date +%d)|tr -d '-')
+		if test $temp -ge 3
+			set image (cat ~/.image.txt)
+			display "$image"
 		end
 	end
-end
-
-if status --is-interactive
-	login_message
+	# If the date has changed since the last login
+	for file in date hour alert;
+		if not test -e /tmp/$file; 
+			touch /tmp/$file
+			chmod 777 /tmp/$file ^/dev/null
+		end
+	end
+	set newdate false
+	set newhour false
+	if not test (date +%x) = (cat /tmp/date) ^/dev/null
+		set newdate true
+		date +%x > /tmp/date
+	end
+	if not test (date +%H) = (cat /tmp/hour) ^/dev/null
+		set newhour true
+		date +%H > /tmp/hour
+	end
+	set alerted false
+	if not test green = (cat /tmp/alert) ^/dev/null
+		alert
+		set alerted true
+	end
+	if test "$newhour" = "true";
+		if test "$alerted" = "false"; 
+			alert
+		end
+	end
+	cat /etc/resolv.conf|grep -v 127.0.0.1|grep -v '^#.*'|grep -iq nameserver; and display "NON-LOCAL NAMESERVERS"
+	if test "$newdate" = "true"; 
+		weather
+	end
 end
 
 # Set locale, workaround for arch linux
@@ -248,7 +205,6 @@ set -x LC_ALL en_US.UTF-8
 
 
 alias ping=ping\ -s\ 8
-alias clear='/usr/bin/clear; login_message'
 function read_confirm
 	while true
 		read -p 'echo "This will delete a source file. Sure? (y/n):"' -l confirm
@@ -413,6 +369,10 @@ function brokevim
 	touch /tmp/brokevim
 	alias vim="vim -X"
 end
+function brokeadb
+	sudo adb kill-server
+	sudo adb start-server
+end
 alias htop "env TERM=screen htop"
 
 set -x PATH $PATH /sbin /usr/sbin /usr/local/sbin /usr/local/bin
@@ -430,3 +390,49 @@ function nov6
 	sudo sysctl -w net.ipv6.conf.default.disable_ipv6="$argv"
 end
 alias no6 nov6
+
+
+
+
+
+if test -t 0
+	if status --is-interactive
+		alias clear='/usr/bin/clear; login_message'
+		function fish_prompt
+			env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) STATUS=$status bash ~/.shell_prompt.sh left
+		end
+		function fish_right_prompt
+			env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status bash ~/.shell_prompt.sh right
+		end
+		function moron # For use in public. Combine with a white theme with non-monospaced black text background
+			function fish_prompt
+				env FISH_VERSION=$FISH_VERSION PROMPTLINE_LAST_EXIT_CODE=$status JOBS=(jobs|wc -l) STATUS=$status bash ~/.shell_prompt.sh moron
+			end
+			function fish_right_prompt
+			end
+			set -x fish_color_error black
+			set -x fish_color_param black
+			set -x fish_color_comment black
+			set -x fish_color_match black
+			set -x fish_color_search_match black
+			set -x fish_color_operator black
+			set -x fish_color_escape black
+			set -x fish_color_cwd black
+			set -x fish_pager_color_prefix black
+			set -x fish_pager_color_completion black
+			set -x fish_pager_color_description black
+			set -x fish_pager_color_progress black
+			set -x fish_pager_color_secondary ""
+			alias ls=ls\ --color=never
+			function clear
+				/usr/bin/env clear
+			end
+			function login_message
+				clear
+			end
+			clear
+		end
+		login_message
+	end
+end
+
