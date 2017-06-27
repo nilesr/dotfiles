@@ -379,6 +379,7 @@ function push
 		git push --all "$server"
 	end
 end
+alias pull git\ pull
 function brokevim
 	touch /tmp/brokevim
 	alias vim="vim -X"
@@ -394,18 +395,32 @@ set -x PATH $PATH /sbin /usr/sbin /usr/local/sbin /usr/local/bin
 alias jsc "rlwrap jsc"
 
 set -x --global EDITOR vim
+set -x --global EDIT vim
 
 function disown
 	bash -c "($argv) "'&>/dev/null & disown'
 end
 
+# `no6 1` to disable ipv6, no6 0 to go back
 function nov6
 	sudo sysctl -w net.ipv6.conf.all.disable_ipv6="$argv"
 	sudo sysctl -w net.ipv6.conf.default.disable_ipv6="$argv"
 end
 alias no6 nov6
 
-
+function brokedns
+	if not host google.com 8.8.8.8 > /dev/null
+		echo "No internet connection"
+		return
+	end
+	set resolvers d0wn-us-ns1 d0wn-us-ns2 d0wn-us-ns4 fvz-anytwo
+	set resolver (random choice $resolvers)
+	echo "Setting resolver to $resolver"
+	sudo sed -i 's/ResolverName .*/ResolverName '"$resolver"'/g' /etc/dnscrypt-proxy.conf
+	sudo systemctl restart dnscrypt
+	host google.com localhost; or brokedns
+	echo Done
+end
 
 
 
