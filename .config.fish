@@ -300,7 +300,9 @@ function viopen
 	end
 	echo "default route acquired, attempting to resolve hosts"
 	# if we can resolve names and ping out, we're done
+	iptables -D OUTPUT --proto udp --dport 53 -j DROP
 	host -W 2 niles.xyz; and return
+	iptables -A OUTPUT --proto udp --dport 53 -j DROP
 	echo "We were unable to resolve a host, can we ping out?"
 	ping -c 1 -W 2 8.8.8.8; and return
 	echo "We can't ping out. Probably need to accept terms and conditions on the router"
@@ -346,8 +348,8 @@ function pingw # ping gateway -> ping gw -> pingw
 end
 
 # for the occasional times where my mouse won't work
-alias m="xdotool mousemove"
-alias mr="xdotool mousemove_relative"
+alias m="xdotool mousemove --"
+alias mr="xdotool mousemove_relative --"
 
 function brc-wrap
 	if test (count $argv) -le 1
@@ -374,9 +376,14 @@ end
 alias open xdg-open
 
 function push
-	for server in (git remote)
-		#git push "$server" (git branch --color=never|grep --color=never '^\*'|cut -c 3-)
-		git push --all "$server"
+	if pwd|grep -qi odk\|tables\|services\|survey\|android\|app-designer
+		echo "In ODK folder, only pushing to origin"
+		git push --all origin
+	else
+		for server in (git remote)
+			#git push "$server" (git branch --color=never|grep --color=never '^\*'|cut -c 3-)
+			git push --all "$server"
+		end
 	end
 end
 alias pull git\ pull
@@ -408,18 +415,23 @@ function nov6
 end
 alias no6 nov6
 
+#function brokedns
+	#if not ping -c 1 8.8.8.8 > /dev/null
+		#echo "No internet connection"
+		#return
+	#end
+	#set resolvers d0wn-us-ns1 d0wn-us-ns2 d0wn-us-ns4 fvz-anytwo
+	#set resolver (random choice $resolvers)
+	#echo "Setting resolver to $resolver"
+	#sudo sed -i 's/ResolverName .*/ResolverName '"$resolver"'/g' /etc/dnscrypt-proxy.conf
+	#sudo systemctl restart dnscrypt
+	#host google.com localhost; or brokedns
+	#echo Done
+#end
 function brokedns
-	if not host google.com 8.8.8.8 > /dev/null
-		echo "No internet connection"
-		return
+	for service in unbound "dnscrypt@1" "dnscrypt@2" "dnscrypt@3" "dnscrypt@4"
+		sudo systemctl restart "$service"
 	end
-	set resolvers d0wn-us-ns1 d0wn-us-ns2 d0wn-us-ns4 fvz-anytwo
-	set resolver (random choice $resolvers)
-	echo "Setting resolver to $resolver"
-	sudo sed -i 's/ResolverName .*/ResolverName '"$resolver"'/g' /etc/dnscrypt-proxy.conf
-	sudo systemctl restart dnscrypt
-	host google.com localhost; or brokedns
-	echo Done
 end
 
 
@@ -464,4 +476,6 @@ if test -t 0
 		login_message
 	end
 end
+alias journalctl "env SYSTEMD_PAGER=less journalctl"
+alias systemctl  "env SYSTEMD_PAGER=cat  systemctl --no-pager -l"
 
