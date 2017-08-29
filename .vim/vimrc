@@ -479,3 +479,11 @@ let g:mustache_abbreviations = 1
 
 
 let g:syntastic_c_compiler_options = '-std=gnu11 -fms-extensions '|". system('python3-config --includes')
+
+dig NI 8713 " not in, ∉
+dig BR 8477 " Blackboard bold R ℝ
+dig BQ 8474 " Blackboard bold Q ℚ
+dig BN 8469 " Blackboard bold N ℕ
+dig BC 8450 " Blackboard bold C ℂ
+dig BZ 8484 " Blackboard bold Z ℤ
+dig AP 8776 " Approximately equal to ≈

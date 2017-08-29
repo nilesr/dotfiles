@@ -74,9 +74,9 @@ function alert
 	set level (curl -s 'https://isc.sans.edu/infocon.txt' -H 'Host: isc.sans.edu' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0' -H 'Accept: text/html, */* ISO-8859-1,utf-8;q=0.7,*;q=0.7 gzip,deflate en- us,en;q=0.5' -H 'Accept-Language: en' --compressed -H 'Referer: https://isc.sans.edu/infocon.html' -H 'Connection: close' -H 'Upgrade-Insecure-Requests: 1'); or return
 	echo "$level" > /tmp/alert
 	if not test -z "$level"; and test "$level" != "green";
-		toilet -t -f mono9 ALERT LEVEL $level
+		toilet -t -f mono9 Infocon $level
 	else
-		display "Alert Level $level"
+		display "ISC $level"
 	end
 end
 #ps aux|grep -v grep|grep -v root|grep -q vmstat; or nohup bash -c 'touch /tmp/cpu; ( vmstat 2|stdbuf -oL awk \'{print 100-$15}\'|while read line; do echo "$line"|tee /tmp/cpu ;done)& disown' > /dev/null &
@@ -121,8 +121,8 @@ function login_message
 	if not test -e .noimage
 		set temp (math (stat ~/.image.txt |grep Modify|cut -d " " -f 2|cut -d "-" -f 3) - (date +%d)|tr -d '-')
 		if test $temp -ge 3
-			set image (cat ~/.image.txt)
-			display "$image"
+			#set image (cat ~/.image.txt)
+			#display "$image"
 		end
 	end
 	# If the date has changed since the last login
@@ -156,6 +156,7 @@ function login_message
 	if test "$newdate" = "true"; 
 		weather
 	end
+	sudo iptables -nL OUTPUT|grep "udp dpt:53"|grep -q "DROP"; or display "IPTABLES RULES INCORRECT"
 end
 
 # Set locale, workaround for arch linux
@@ -300,9 +301,9 @@ function viopen
 	end
 	echo "default route acquired, attempting to resolve hosts"
 	# if we can resolve names and ping out, we're done
-	iptables -D OUTPUT --proto udp --dport 53 -j DROP
+	sudo iptables -D OUTPUT --proto udp --dport 53 -j DROP
 	host -W 2 niles.xyz; and return
-	iptables -A OUTPUT --proto udp --dport 53 -j DROP
+	sudo iptables -A OUTPUT --proto udp --dport 53 -j DROP
 	echo "We were unable to resolve a host, can we ping out?"
 	ping -c 1 -W 2 8.8.8.8; and return
 	echo "We can't ping out. Probably need to accept terms and conditions on the router"
@@ -344,7 +345,7 @@ function pingw # ping gateway -> ping gw -> pingw
 		echo "No gateway"
 		return
 	end
-	ping "$gw"
+	ping "$gw" $argv
 end
 
 # for the occasional times where my mouse won't work
@@ -479,3 +480,5 @@ end
 alias journalctl "env SYSTEMD_PAGER=less journalctl"
 alias systemctl  "env SYSTEMD_PAGER=cat  systemctl --no-pager -l"
 
+set -x --global RUBYOPT "-w"
+alias rerun "env RUBYOPT=-w rerun"
