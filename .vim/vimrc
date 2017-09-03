@@ -487,3 +487,5 @@ dig BN 8469 " Blackboard bold N ℕ
 dig BC 8450 " Blackboard bold C ℂ
 dig BZ 8484 " Blackboard bold Z ℤ
 dig AP 8776 " Approximately equal to ≈
+let g:syntastic_cobol_compiler_options = '-Wall'
+"let g:syntastic_debug = 1

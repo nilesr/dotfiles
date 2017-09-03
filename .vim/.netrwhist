@@ -1,11 +1,2 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =9
-let g:netrw_dirhist_1='/home/niles'
-let g:netrw_dirhist_2='/home/niles/Media'
-let g:netrw_dirhist_3='/home/niles/cython practice/python_in_c'
-let g:netrw_dirhist_4='/home/niles/plot'
-let g:netrw_dirhist_5='/home/niles/Documents/odk/formgen'
-let g:netrw_dirhist_6='/home/niles/test'
-let g:netrw_dirhist_7='/home/niles/Documents/odk/tables/tables_app/build'
-let g:netrw_dirhist_8='/home/niles/Documents/odk/app-designer/app/config/assets/userjs'
-let g:netrw_dirhist_9='/home/niles/awoo/src/routes'
+let g:netrw_dirhist_cnt =0
