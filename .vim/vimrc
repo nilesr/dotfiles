@@ -489,3 +489,4 @@ dig BZ 8484 " Blackboard bold Z ℤ
 dig AP 8776 " Approximately equal to ≈
 let g:syntastic_cobol_compiler_options = '-Wall'
 "let g:syntastic_debug = 1
+"
