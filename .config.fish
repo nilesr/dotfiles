@@ -323,7 +323,17 @@ function viopen
 end
 
 alias watch='watch --color'
-alias promise='watch -g'
+function promise
+	eval $argv
+	set ret $status
+	while true
+		sleep 1
+		eval $argv
+		if not test $status = $ret
+			break
+		end
+	end
+end
 
 function timestamp
 	eval $argv|while read line; printf "%s " (date); echo $line; end

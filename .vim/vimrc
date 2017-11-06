@@ -492,6 +492,6 @@ let g:syntastic_cobol_compiler_options = '-Wall'
 
 set ignorecase
 set infercase
-set complete=k~/.vim/ocreserved.lis
+"set complete=k~/.vim/ocreserved.lis
 
 autocmd BufNewFile *.cob 0r ~/.vim/template.cob
