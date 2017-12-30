@@ -1,9 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/home/niles/Documents/School/2017-18 Fall/Physics/Notes'
-let g:netrw_dirhist_2='/home/niles/.dotfiles/.vim/spell'
-let g:netrw_dirhist_3='/home/niles/Documents/School/2016-17 Spring/Discrete'
-let g:netrw_dirhist_4='/home/niles/Documents/School/2017-18 Fall/Seminar'
-let g:netrw_dirhist_5='/home/niles/temp'
-let g:netrw_dirhist_6='/home/niles/.zsh'
-let g:netrw_dirhist_7='/home/niles/markov-bot'
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/home/niles/Documents/todo'
+let g:netrw_dirhist_2='/home/niles/Documents'
+let g:netrw_dirhist_3='/home/niles/.ssh'
+let g:netrw_dirhist_4='/home/niles/Documents/projects/C++'
+let g:netrw_dirhist_5='/home/niles/Documents/projects/C++/project5'
+let g:netrw_dirhist_6='/home/niles/Documents/Books'

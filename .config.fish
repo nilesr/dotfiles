@@ -307,17 +307,21 @@ function viopen
 	echo "We were unable to resolve a host, can we ping out?"
 	ping -c 1 -W 2 8.8.8.8; and return
 	echo "We can't ping out. Probably need to accept terms and conditions on the router"
-	echo "Swap dnscrypt for dnsmasq? Enter to continue"
+	echo "Swap dnscrypt for 8.8.8.8 and default route? Enter to continue"
 	read nothing
-	sudo systemctl stop dnscrypt; sudo systemctl start dnsmasq
+	#sudo systemctl stop dnscrypt; sudo systemctl start dnsmasq
 	# this doesn't work on mac beacuse it uses BSD route instead of the normal one, but there's no NetworkManager on mac so who cares
 	echo nameserver (route -n|grep '^0.0.0.0'|awk '{print $2}') | sudo tee /etc/resolv.conf
 	echo nameserver 8.8.8.8 | sudo tee -a /etc/resolv.conf > /dev/null # -a for append
-	echo nameserver 127.0.0.1 | sudo tee -a /etc/resolv.conf > /dev/null # use freenic via dnsmasq if all else fails
-	open http://gstatic.com/generate_204
+	echo nameserver 127.0.0.1 | sudo tee -a /etc/resolv.conf > /dev/null # this is useless now because I don't use dnsmasq anymore
+	sudo iptables -F OUTPUT
+	open http://gstatic.com/generate_204 >/dev/null ^/dev/null
 	echo "Swap back after authenticating? Enter to continue"
 	read nothing
-	sudo systemctl stop dnsmasq; sudo systemctl start dnscrypt
+	sudo systemctl stop dnsmasq
+	brokedns # will start dnscrypt@{1..4}, unbound
+	sudo iptables -I OUTPUT --dest 127.0.0.1 -j ACCEPT
+	sudo iptables -A OUTPUT --proto udp --dport 53 -j DROP
 	echo nameserver 127.0.0.1 | sudo tee /etc/resolv.conf # no -a to overwrite the file
 	
 end
