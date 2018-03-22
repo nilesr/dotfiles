@@ -496,3 +496,8 @@ alias systemctl  "env SYSTEMD_PAGER=cat  systemctl --no-pager -l"
 
 set -x --global RUBYOPT "-w"
 alias rerun "env RUBYOPT=-w rerun"
+function lm2
+	cd ~/Documents/projects/js/lainmod
+	python3 lm2.py
+	cd -
+end
