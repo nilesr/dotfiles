@@ -125,3 +125,6 @@
 	path = .vim/bundle/vim-sleuth
 	url = git://github.com/tpope/vim-sleuth.git
 
+[submodule ".vim/bundle/DrawIt"]
+	path = .vim/bundle/DrawIt
+	url = https://github.com/vim-scripts/DrawIt

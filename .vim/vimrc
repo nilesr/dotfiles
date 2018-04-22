@@ -495,3 +495,8 @@ set infercase
 "set complete=k~/.vim/ocreserved.lis
 
 autocmd BufNewFile *.cob 0r ~/.vim/template.cob
+
+" tell DrawIt to default to unicode characters
+"call DrawIt#SetMode('S')
+"unmap <Leader>di
+"map <Leader>di :call DrawIt#SetMode('S')
