@@ -111,7 +111,7 @@ function login_message
 	# Display first line of todo list on login if it exists
 	set todo $HOME"/Documents/todo/todo.txt"
 	if test -e $todo;
-		set temp (head -n 1 $todo 2>/dev/null)
+		set temp (head -n 1 $todo ^/dev/null)
 	else
 		set temp (hostname)
 	end
@@ -501,3 +501,4 @@ function lm2
 	python3 lm2.py
 	cd -
 end
+alias tcl "rlwrap tclsh"

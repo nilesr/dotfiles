@@ -1,49 +1,25 @@
 [user]
-	email = me@niles.xyz
+  email = me@niles.xyz
   name = Niles Rogoff
-	signingkey = niles@rogoff.xyz
+  signingkey = niles@rogoff.xyz
 [alias]
   st = status -sb
-  ci = commit
   br = branch
   co = checkout
-  df = diff
-  ready = rebase -i @{u}
-  lg = log --no-merges --pretty=format:'%Cred%h%Creset -%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
-  standup = log --pretty=format:'%Cred%h%Creset -%Creset %s %Cgreen(%cD) %C(bold blue)<%an>%Creset' --since yesterday --author Alex
-  purr = pull --rebase
-	permission-reset = "!git diff -p | grep -E \"^(diff|old mode|new mode)\" | sed -e \"s/^old/NEW/;s/^new/old/;s/^NEW/new/\" | git apply"
+  rb = rebase
+  lg = log --no-merges --pretty=format:'%Cred%h%Creset -%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --graph --all
+  standup = log --pretty=format:'%Cred%h%Creset -%Creset %s %Cgreen(%cD) %C(bold blue)<%an>%Creset' --since yesterday --author Niles
+  permission-reset = "!git diff -p | grep -E \"^(diff|old mode|new mode)\" | sed -e \"s/^old/NEW/;s/^new/old/;s/^NEW/new/\" | git apply"
 [push]
   default = simple
-[diff]
-  tool = bc4
-[difftool]
-  prompt = false
-[difftool "bc4"]
-  trustExitCode = true
-  cmd = `/usr/local/bin/bcomp $LOCAL $REMOTE`
-[merge]
-  tool = bc4
-[mergetool]
-  prompt = false
-[mergetool "bc4"]
-  trustExitCode = true
-  cmd = `/usr/local/bin/bcomp $LOCAL $REMOTE $BASE $MERGED`
-[core]
-  editor = vim
-  excludesfile = /Users/chev/.gitignore_global
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
+[pull]
+  rebase = true
 [filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
-	required = true
+  clean = git-lfs clean %f
+  smudge = git-lfs smudge %f
+  required = true
 [commit]
-	gpgsign = true
+  gpgsign = true
 [credential]
   helper = "store --file=/home/niles/.ssh/.git-credentials"
 [credential "https://git.fuwafuwa.moe"]
