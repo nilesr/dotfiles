@@ -174,8 +174,8 @@ alias sbcl "rlwrap sbcl --noinform --load ~/.quicklisp/setup.lisp"
 
 
 function fuck-resolvconf
-	command nmcli n off
-	command nmcli n on
+	nmcli n off
+	nmcli n on
 end
 
 alias ptpy="ptpython --vi"
@@ -423,7 +423,7 @@ function disown
 	bash -c "($argv) "'&>/dev/null & disown'
 end
 
-# `no6 1` to disable ipv6, no6 0 to go back
+# ``no6 1'' to disable ipv6, no6 0 to go back
 function nov6
 	sudo sysctl -w net.ipv6.conf.all.disable_ipv6="$argv"
 	sudo sysctl -w net.ipv6.conf.default.disable_ipv6="$argv"
@@ -492,13 +492,26 @@ if test -t 0
 	end
 end
 alias journalctl "env SYSTEMD_PAGER=less journalctl"
-alias systemctl  "env SYSTEMD_PAGER=cat  systemctl --no-pager -l"
+alias systemctl  "env SYSTEMD_PAGER=cat systemctl --no-pager -l"
 
 set -x --global RUBYOPT "-w"
-alias rerun "env RUBYOPT=-w rerun"
+alias rerun "env RUBYOPT=-w rerun" # TODO is this still needed?
 function lm2
+	# depends on lm2.json being in the cwd
 	cd ~/Documents/projects/js/lainmod
 	python3 lm2.py
 	cd -
 end
 alias tcl "rlwrap tclsh"
+
+if test -e ~/Documents/projects/Python/vote.py
+	set last 0
+	if test -e ~/.last_vote
+		set last (cat ~/.last_vote|cut -d . -f 1)
+	end
+	set now (date +%s)
+	if test (math $now - $last) -gt (math '60 * 60 * 24')
+		display "Invoking vote.py in the background"
+		bash -c 'python3 ~/Documents/projects/Python/vote.py &> /tmp/vote.log & disown'
+	end
+end
