@@ -218,7 +218,7 @@ set -x LC_IDENTIFICATION en_US.UTF-8
 set -x LC_ALL en_US.UTF-8
 
 
-alias ping=ping\ -s\ 8
+alias ping=ping\ -s\ 8\ -i.2
 function read_confirm
 	while true
 		read -p 'echo "This will delete a source file. Sure? (y/n):"' -l confirm
@@ -373,16 +373,29 @@ function brc-wrap
 		brc $argv
 	end
 end
+function strat-wrap # brc was renamed to strat in Bedrock Linux 0.7 Poki
+	if test (count $argv) -le 1
+		strat $argv[1] fish
+	else
+		strat $argv
+	end
+end
 
 if test -d /bedrock
-	for strata in (bri -L)
-		if test -z (bri -c $strata init)
-			#it's not a *real* strata
-			continue
+	if test -e /bedrock/sbin/brn; and grep -qi nyla /bedrock/sbin/brn; # Bedrock Linux 1.0beta2 Nyla
+		for strata in (bri -L)
+			if test -z (bri -c $strata init)
+				#it's not a *real* strata
+				continue
+			end
+			alias $strata "brc-wrap $strata"
+			# so "jessie gcc --version" becomes "brc-wrap jessie gcc --version" which becomes "brc jessie gcc --version"
+			# but "jessie" becomes "brc-wrap jessie" which becomes "brc jessie fish"
 		end
-		alias $strata "brc-wrap $strata"
-		# so "jessie gcc --version" becomes "brc-wrap jessie gcc --version" which becomes "brc jessie gcc --version"
-		# but "jessie" becomes "brc-wrap jessie" which becomes "brc jessie fish"
+	else # Bedrock Linux 0.7 Poki or higher
+		for strata in /bedrock/run/enabled_strata/*
+			alias $strata "strat-wrap $strata"
+		end
 	end
 
 	set -x PATH $PATH /bedrock/bin /bedrock/sbin /bedrock/brpath/pin/bin /bedrock/brpath/pin/sbin /bedrock/brpath/bin /bedrock/brpath/sbin
