@@ -267,6 +267,8 @@ endfunction
 
 augroup AutoSyntastic
 	autocmd!
+	" set ft=text if no filetype, so syntastic will run proselint
+	autocmd BufWritePre * if &filetype == "" | setlocal ft=text | endif
 	autocmd BufWritePost *.c,*.cpp call s:syntastic()
 augroup END
 function! s:syntastic()
@@ -488,7 +490,18 @@ dig BC 8450 " Blackboard bold C ℂ
 dig BZ 8484 " Blackboard bold Z ℤ
 dig AP 8776 " Approximately equal to ≈
 let g:syntastic_cobol_compiler_options = '-Wall'
-"let g:syntastic_debug = 1
+"let g:syntastic_debug = 33
+let g:syntastic_texinfo_checkers = ['proselint']
+let g:syntastic_help_checkers = ['proselint']
+let g:syntastic_tex_checkers = ['proselint']
+let g:syntastic_nroff_checkers = ['proselint']
+let g:syntastic_markdown_checkers = ['proselint']
+let g:syntastic_asciidoc_checkers = ['proselint']
+let g:syntastic_xhtml_checkers = ['proselint']
+let g:syntastic_html_checkers = ['proselint']
+let g:syntastic_text_checkers = ['proselint']
+let g:syntastic_rst_checkers = ['proselint']
+let g:syntastic_pod_checkers = ['proselint']
 
 set ignorecase
 set infercase
