@@ -157,6 +157,13 @@ function login_message
 		weather
 	end
 	sudo iptables -nL OUTPUT|grep "udp dpt:53"|grep -q "DROP"; or display "IPTABLES RULES INCORRECT"
+	if test -d ~/.local/share/rr
+		set size_in_kb (du -s ~/.local/share/rr | cut -f 1)
+		if test "$size_in_kb" -ge 10240 # 10.0MB I think
+			set hrsize (du -sh ~/.local/share/rr | cut -f 1)
+			display "~/.local/share/rr now taking up $hrsize"
+		end
+	end
 end
 
 # Set locale, workaround for arch linux
@@ -304,8 +311,8 @@ function viopen
 	sudo iptables -D OUTPUT --proto udp --dport 53 -j DROP
 	host -W 2 niles.xyz; and return
 	sudo iptables -A OUTPUT --proto udp --dport 53 -j DROP
-	echo "We were unable to resolve a host, can we ping out?"
-	ping -c 1 -W 2 8.8.8.8; and return
+	#echo "We were unable to resolve a host, can we ping out?"
+	#ping -c 1 -W 2 8.8.8.8; and return
 	echo "We can't ping out. Probably need to accept terms and conditions on the router"
 	echo "Swap dnscrypt for 8.8.8.8 and default route? Enter to continue"
 	read nothing
@@ -523,8 +530,13 @@ if test -e ~/Documents/projects/Python/vote.py
 		set last (cat ~/.last_vote|cut -d . -f 1)
 	end
 	set now (date +%s)
-	if test (math $now - $last) -gt (math '60 * 60 * 24')
+	if test (math $now - $last) -gt (math '60 * 60 * 12')
 		display "Invoking vote.py in the background"
 		bash -c 'python3 ~/Documents/projects/Python/vote.py &> /tmp/vote.log & disown'
+	else
+		#set nextvote (math $last + (math '60 * 60 * 12') - $now)
+		#set hrs (math (math $nextvote / 60) / 60)
+		#set mins (math (math $nextvote / 60) '%' 60)
+		#display "Next vote in $hrs:$mins"
 	end
 end

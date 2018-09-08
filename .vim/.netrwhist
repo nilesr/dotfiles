@@ -1,2 +1,10 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =0
+let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_1='/home/niles/Documents/projects/ruby/awoo/src/routes/utils'
+let g:netrw_dirhist_2='/home/niles/Documents/todo'
+let g:netrw_dirhist_3='/home/niles/Documents'
+let g:netrw_dirhist_4='/home/niles'
+let g:netrw_dirhist_5='/home'
+let g:netrw_dirhist_6='/home/niles/Documents'
+let g:netrw_dirhist_7='/home/niles/politics/politics'
+let g:netrw_dirhist_8='/home/niles/Documents/projects/Java/NHeap/.git'
