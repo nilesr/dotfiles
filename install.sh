@@ -6,9 +6,15 @@ echo Initializing git submodules.
 
 test -f "$PWD"/.config.fish || (echo "Please run this inside the dotfiles directory"; exit 1) || exit 1
 
+if ! test -d "$HOME"/.config/proselint; then
+	mkdir "$HOME"/.config/proselint
+fi
+
 # Remove all dotfiles from the home directory if present.
 echo Removing any existing dotfiles from your home directory.
-rm -rf ~/.vim ~/.vimrc ~/.bashrc ~/.bash_profile ~/.inputrc ~/.gitconfig ~/.shell_prompt.sh ~/.tmux.conf ~/.tmux_theme ~/.tmux ~/.config/fish/config.fish ~/.putty.sh ~/.tmux_plugins.conf ~/.tmux_theme.insert ~/.tmux_theme.normal ~/.tmux_theme.replace ~/.tmux_theme.visual
+for config_file in ~/.vim ~/.vimrc ~/.bashrc ~/.bash_profile ~/.inputrc ~/.gitconfig ~/.shell_prompt.sh ~/.tmux.conf ~/.tmux_theme ~/.tmux ~/.config/fish/config.fish ~/.putty.sh ~/.tmux_plugins.conf ~/.tmux_theme.insert ~/.tmux_theme.normal ~/.tmux_theme.replace ~/.tmux_theme.visual ~/.config/proselint/config; do
+	mv "$f" "$f".bak
+done
 
 # Initialize symlinks.
 echo Creating symlinks in your home directory that point to this dotfiles repository.
@@ -31,6 +37,7 @@ ln -s "$PWD/.tmux_theme.visual" ~/.tmux_theme.visual
 ln -s "$PWD/.tmux_theme.replace" ~/.tmux_theme.replace
 ln -s "$PWD/.tmux" ~/.tmux
 ln -s "$PWD/.putty.sh" ~/.putty.sh
+ln -s "$PWD/.proselint.config" ~/.config/proselint/config
 echo "Compiling c extension for command-t"
 cd "$HOME/.vim/bundle/command-t/ruby/command-t"
 ruby extconf.rb
