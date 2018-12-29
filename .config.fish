@@ -405,7 +405,11 @@ if test -d /bedrock
 		end
 	end
 
-	set -x PATH $PATH /bedrock/bin /bedrock/sbin /bedrock/brpath/pin/bin /bedrock/brpath/pin/sbin /bedrock/brpath/bin /bedrock/brpath/sbin
+	if test -e /bedrock/sbin/brn; and grep -qi nyla /bedrock/sbin/brn; # Bedrock Linux 1.0beta2 Nyla
+		set -x PATH $PATH /bedrock/bin /bedrock/sbin /bedrock/brpath/pin/bin /bedrock/brpath/pin/sbin /bedrock/brpath/bin /bedrock/brpath/sbin
+	else # Bedrock Linux 0.7 Poki or higher
+		set -x PATH $PATH /bedrock/bin /bedrock/cross/pin/bin /bedrock/cross/bin
+	end
 end
 
 alias open xdg-open

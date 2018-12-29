@@ -111,7 +111,7 @@ function __promptline_left_prompt {
 				__promptline_wrapper "$(upper "$(bri -n)")" "$slice_prefix" "$slice_suffix"
 			fi
 		else
-			if test "$(basename $(readlink /bedrock/run/init-alias))" != "$(brl which)"; then
+			if test "$(brl deref init)" != "$(brl which)"; then
 				__promptline_wrapper "$(upper "$(brl which)")" "$slice_prefix" "$slice_suffix"
 			fi
 		fi
