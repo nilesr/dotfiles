@@ -106,8 +106,14 @@ function __promptline_left_prompt {
 	hostname=$(upper $hostname)
 	__promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print $hostname; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$hostname"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
 	if test -d /bedrock; then
-		if test "$(bri -p 1|awk '{print $3}')" != '('"$(bri -n)"')'; then
-			__promptline_wrapper "$(upper "$(bri -n)")" "$slice_prefix" "$slice_suffix"
+		if test -e /bedrock/sbin/brn && grep -qi nyla /bedrock/sbin/brn; then # Bedrock Linux 1.0beta2 Nyla
+			if test "$(bri -p 1|awk '{print $3}')" != '('"$(bri -n)"')'; then
+				__promptline_wrapper "$(upper "$(bri -n)")" "$slice_prefix" "$slice_suffix"
+			fi
+		else
+			if test "$(basename $(readlink /bedrock/run/init-alias))" != "$(brl which)"; then
+				__promptline_wrapper "$(upper "$(brl which)")" "$slice_prefix" "$slice_suffix"
+			fi
 		fi
 	fi
 	__promptline_wrapper "$(whoami)" "$slice_prefix" "$slice_suffix"

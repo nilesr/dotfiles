@@ -261,13 +261,13 @@ function image
 end
 
 function ensure_msd
-	if not test -d ~/.ssh/.gnupg
+	if not test -f ~/.ssh/id_rsa
 		test -e ~/.bin/msd; and msd
 	end
 end
 
 function commit
-	ensure_msd
+	#ensure_msd
 	git add -A :/
 	git commit -am "$argv"
 end
@@ -401,7 +401,7 @@ if test -d /bedrock
 		end
 	else # Bedrock Linux 0.7 Poki or higher
 		for strata in /bedrock/run/enabled_strata/*
-			alias $strata "strat-wrap $strata"
+			alias (basename $strata) "strat-wrap $strata"
 		end
 	end
 
