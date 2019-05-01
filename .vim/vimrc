@@ -118,27 +118,6 @@ map <C-k> 10k
 " When pressing enter it will also run :noh to turn off highlights from previous search.
 nnoremap <CR> :noh<CR>
 
-""""" I feel like the following key mappings are a brute force way of navigating the document
-""""" without using your eyes so I've temporarily commented them out while I try to learn some
-""""" additional buffer movement and cursor movement commands in an attempt to phase the need
-""""" for these "macro keys" out.
-
-" Map uppercase movement keys to macro versions of themselves in normal and visual mode.
-"nnoremap J 15j
-"vnoremap J 15j
-"nnoremap K 15k
-"vnoremap K 15k
-"nnoremap H 10h
-"vnoremap H 10h
-"nnoremap L 10l
-"vnoremap L 10l
-
-" Remap uppercase movement key functions to g+movement key.
-"nnoremap gj J
-"nnoremap gk K
-"nnoremap gh H
-"nnoremap gl L
-
 " F2 will use the current tab settings to retab the whole file.
 noremap <F2> :retab!<CR>
 
@@ -153,8 +132,8 @@ execute pathogen#infect()
 
 "-=-=-= localvimrc =-=-=-
 
-" Don't ask when sourcing .lvimrc files.
-let g:localvimrc_ask = 0
+" Ask when sourcing .lvimrc files.
+let g:localvimrc_ask = 1
 
 "-=-=-= AIRLINE/LIGHTLINE/PROMPTLINE =-=-=-
 
@@ -303,9 +282,6 @@ set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
 imap <C-BS> <C-W>
 imap  <C-W>
 
-
-let CoVim_default_name = "Niles"
-let CoVim_default_port = "8802"
 
 " Map backslash + backslash to last file
 nnoremap <leader><leader> <c-^>
@@ -466,8 +442,11 @@ nmap <C-s> :!aspell -a <<< <C-r><C-w><CR>
 
 
 function! Toggle()
-	set invcursorline
+	"set invcursorline
 	call indent_guides#toggle()
+	Limelight!! 0.7
+	"Goyo
+	Goyo 60%x80%
 endfunction
 
 nmap <Leader>q :call Toggle()<CR>
@@ -480,7 +459,8 @@ let g:mustache_abbreviations = 1
 " it got annoying
 
 
-let g:syntastic_c_compiler_options = '-std=gnu11 -fms-extensions '|". system('python3-config --includes')
+"let g:syntastic_c_compiler_options = '-std=gnu11 -fms-extensions -D_GNU_SOURCE '|". system('python3-config --includes')
+let g:syntastic_c_compiler_options = '-std=gnu11 -fms-extensions -D_GNU_SOURCE -I../..'
 
 dig NI 8713 " not in, ∉
 dig BR 8477 " Blackboard bold R ℝ
@@ -508,8 +488,15 @@ set infercase
 "set complete=k~/.vim/ocreserved.lis
 
 autocmd BufNewFile *.cob 0r ~/.vim/template.cob
+autocmd BufNewFile *.c 0r ~/.vim/template.c
+autocmd BufNewFile *.py 0r ~/.vim/template.py
 
 " tell DrawIt to default to unicode characters
 "call DrawIt#SetMode('S')
 "unmap <Leader>di
 "map <Leader>di :call DrawIt#SetMode('S')
+
+set listchars=eol:¬,tab:»\ ,space:·
+
+dig OV 773 " Combining overbar  ̅, for stuff like x̅
+dig HA 770 " Combining hat  ̂, for stuff like θ̂

@@ -1,7 +1,10 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_cnt =8
 let g:netrw_dirhist_1='/home/niles/Documents/School/2018-19 Fall/3114/AirControl/.git'
 let g:netrw_dirhist_2='/home/niles/Documents/School/2018-19 Fall/Cloud/DiveCloud/web/userPasswordChange'
 let g:netrw_dirhist_3='/home/niles/Documents/School/2018-19 Fall/Cloud/DiveCloud/web/diveRegistration'
 let g:netrw_dirhist_4='/home/niles/Documents/todo'
 let g:netrw_dirhist_5='/home/niles/Documents/honors_application'
+let g:netrw_dirhist_6='/home/niles/Documents/todo'
+let g:netrw_dirhist_7='/home/niles/Media/index'
+let g:netrw_dirhist_8='/home/niles/cr/test/aio_switch_count'

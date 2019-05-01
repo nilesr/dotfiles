@@ -102,7 +102,7 @@ function login_message
 	#printf '%s ' (cat /tmp/cpu)
 	# print ram usage
 	if which free >/dev/null ^/dev/null # mac doesn't have the free command
-		set statline (math (free|grep Mem|awk '{print "100*"$3"/"$2}'))
+		set statline (echo (math (free|grep Mem|awk '{print "100*"$3"/"$2}')) | cut -d . -f 1)
 	end
 	# Print disk usage
 	set statline "$statline "( df -h / /home|tail -n 2|awk '{print $5}'|tr -d '%'|tr '\n' ' ')
@@ -401,8 +401,9 @@ if test -d /bedrock
 		end
 	else # Bedrock Linux 0.7 Poki or higher
 		for strata in /bedrock/run/enabled_strata/*
-			alias (basename $strata) "strat-wrap $strata"
+			alias (basename $strata) "strat-wrap "(basename $strata)
 		end
+		alias brw "brl which"
 	end
 
 	if test -e /bedrock/sbin/brn; and grep -qi nyla /bedrock/sbin/brn; # Bedrock Linux 1.0beta2 Nyla
@@ -536,7 +537,7 @@ if test -e ~/Documents/projects/Python/vote.py
 	set now (date +%s)
 	if test (math $now - $last) -gt (math '60 * 60 * 12')
 		display "Invoking vote.py in the background"
-		bash -c 'python3 ~/Documents/projects/Python/vote.py &> /tmp/vote.log & disown'
+		#bash -c 'python3 ~/Documents/projects/Python/vote.py &> /tmp/vote.log & disown'
 	else
 		#set nextvote (math $last + (math '60 * 60 * 12') - $now)
 		#set hrs (math (math $nextvote / 60) / 60)
