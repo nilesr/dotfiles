@@ -528,20 +528,3 @@ function lm2
 	cd -
 end
 alias tcl "rlwrap tclsh"
-
-if test -e ~/Documents/projects/Python/vote.py
-	set last 0
-	if test -e ~/.last_vote
-		set last (cat ~/.last_vote|cut -d . -f 1)
-	end
-	set now (date +%s)
-	if test (math $now - $last) -gt (math '60 * 60 * 12')
-		display "Invoking vote.py in the background"
-		#bash -c 'python3 ~/Documents/projects/Python/vote.py &> /tmp/vote.log & disown'
-	else
-		#set nextvote (math $last + (math '60 * 60 * 12') - $now)
-		#set hrs (math (math $nextvote / 60) / 60)
-		#set mins (math (math $nextvote / 60) '%' 60)
-		#display "Next vote in $hrs:$mins"
-	end
-end

@@ -79,7 +79,7 @@ set tabstop=4
 "set expandtab
 set noexpandtab
 
-autocmd FileType python setlocal shiftwidth=4 tabstop=4 noexpandtab
+autocmd FileType python setlocal shiftwidth=2 softtabstop=2 tabstop=2 noexpandtab
 
 " Show statusline always.
 set laststatus=2
@@ -440,13 +440,19 @@ endif
 
 nmap <C-s> :!aspell -a <<< <C-r><C-w><CR>
 
+let g:toggle_state = 0
 
 function! Toggle()
+	let g:toggle_state = !g:toggle_state
 	"set invcursorline
 	call indent_guides#toggle()
 	Limelight!! 0.7
 	"Goyo
-	Goyo 60%x80%
+	if g:toggle_state
+		Goyo 60%x80%
+	else
+		Goyo!
+	endif
 endfunction
 
 nmap <Leader>q :call Toggle()<CR>
@@ -500,3 +506,9 @@ set listchars=eol:¬,tab:»\ ,space:·
 
 dig OV 773 " Combining overbar  ̅, for stuff like x̅
 dig HA 770 " Combining hat  ̂, for stuff like θ̂
+dig IN 10178 " Independent, like X ⟂ Y
+
+dig TS 7488 " transpose, like Aᵀ
+dig si 7522 " subscript i, like vᵢ
+dig DS 7472 " superscript D, like ℝᴰ
+dig sj 11388 " subscript j, like vⱼ

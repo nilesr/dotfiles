@@ -3,3 +3,6 @@ set show-mode-in-prompt on
 
 set keymap vi-insert
 Control-l: clear-screen
+
+"\e[A": history-search-backward
+"\e[B": history-search-forward
