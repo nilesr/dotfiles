@@ -128,3 +128,10 @@
 [submodule ".vim/bundle/DrawIt"]
 	path = .vim/bundle/DrawIt
 	url = https://github.com/vim-scripts/DrawIt
+[submodule ".vim/bundle/goyo"]
+	path = .vim/bundle/goyo
+	url = git://github.com/junegunn/goyo.git
+[submodule ".vim/bundle/limelight"]
+	path = .vim/bundle/limelight
+	url = git://github.com/junegunn/limelight.git
+
