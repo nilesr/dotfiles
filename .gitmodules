@@ -129,9 +129,9 @@
 	path = .vim/bundle/DrawIt
 	url = https://github.com/vim-scripts/DrawIt
 [submodule ".vim/bundle/goyo"]
-	path = .vim/bundle/goyo
+	path = .vim/bundle/goyo.vim
 	url = git://github.com/junegunn/goyo.git
 [submodule ".vim/bundle/limelight"]
-	path = .vim/bundle/limelight
+	path = .vim/bundle/limelight.vim
 	url = git://github.com/junegunn/limelight.git
 
