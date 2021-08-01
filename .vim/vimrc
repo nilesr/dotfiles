@@ -465,8 +465,9 @@ let g:mustache_abbreviations = 1
 " it got annoying
 
 
-"let g:syntastic_c_compiler_options = '-std=gnu11 -fms-extensions -D_GNU_SOURCE '|". system('python3-config --includes')
-let g:syntastic_c_compiler_options = '-std=gnu11 -fms-extensions -D_GNU_SOURCE -I../..'
+let g:syntastic_c_compiler_options = '-std=gnu11 -fms-extensions -D_GNU_SOURCE '|". system('python3-config --includes')
+let g:syntastic_cpp_compiler_options = '-std=gnu++17 -x c++'
+"let g:syntastic_c_compiler_options = '-std=gnu11 -fms-extensions -D_GNU_SOURCE -I../..'
 
 dig NI 8713 " not in, ∉
 dig BR 8477 " Blackboard bold R ℝ

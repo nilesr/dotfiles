@@ -1,6 +1,6 @@
 # Machine specific instructions, not on dotfiles repo
 test -f "$HOME"/.fishrc; and source "$HOME"/.fishrc
-if grep --version|grep -q 'GNU grep' ^/dev/null
+if grep --version|grep -q 'GNU grep' 2>/dev/null
 	alias grep="grep -P --color=always"
 else
 	# BSD grep doesn't like -P
@@ -64,14 +64,14 @@ function weather
 	if not test -z "$argv[1]";
 		set destination $argv
 	end
-	curl -s wttr.in/$destination|head -n 17
+	timeout 2 curl -s wttr.in/$destination|head -n 17
 end
 function alert
 	if test "$online" = "false"
 		return
 	end
 	# We need all these headers because otherwise it comes out garbled, some encoding error or something. We probably only need the Accept header because that specifies latin 1 or utf-8 as valid encodings, but I'm keeping them all just in case
-	set level (curl -s 'https://isc.sans.edu/infocon.txt' -H 'Host: isc.sans.edu' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0' -H 'Accept: text/html, */* ISO-8859-1,utf-8;q=0.7,*;q=0.7 gzip,deflate en- us,en;q=0.5' -H 'Accept-Language: en' --compressed -H 'Referer: https://isc.sans.edu/infocon.html' -H 'Connection: close' -H 'Upgrade-Insecure-Requests: 1'); or return
+	set level (timeout 2 curl -s 'https://isc.sans.edu/infocon.txt' -H 'Host: isc.sans.edu' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0' -H 'Accept: text/html, */* ISO-8859-1,utf-8;q=0.7,*;q=0.7 gzip,deflate en- us,en;q=0.5' -H 'Accept-Language: en' --compressed -H 'Referer: https://isc.sans.edu/infocon.html' -H 'Connection: close' -H 'Upgrade-Insecure-Requests: 1'); or return
 	echo "$level" > /tmp/alert
 	if not test -z "$level"; and test "$level" != "green";
 		toilet -t -f mono9 Infocon $level
@@ -90,6 +90,17 @@ function has_default_route
 		route -n|grep -q '^0.0.0.0'
 	end
 end
+function showbigfolder
+	set folder "$argv[1]"
+	set min_size_kb "$argv[2]"
+	if test -e "$folder"
+		set size_in_kb (du -s "$folder" | cut -f 1)
+		if test "$size_in_kb" -ge "$min_size_kb"
+			set hrsize (du -sh "$folder" | cut -f 1)
+			display "$folder now taking up $hrsize"
+		end
+	end
+end
 function login_message
 	# ghetto as fuck, just check if there's a defeault route
 	#if route|grep -iq default;
@@ -101,7 +112,7 @@ function login_message
 	# Print cpu usage
 	#printf '%s ' (cat /tmp/cpu)
 	# print ram usage
-	if which free >/dev/null ^/dev/null # mac doesn't have the free command
+	if which free &>/dev/null # mac doesn't have the free command
 		set statline (echo (math (free|grep Mem|awk '{print "100*"$3"/"$2}')) | cut -d . -f 1)
 	end
 	# Print disk usage
@@ -111,40 +122,32 @@ function login_message
 	# Display first line of todo list on login if it exists
 	set todo $HOME"/Documents/todo/todo.txt"
 	if test -e $todo;
-		set temp (head -n 1 $todo ^/dev/null)
+		set temp (head -n 1 $todo 2>/dev/null)
 	else
 		set temp (hostname)
 	end
 	#set line 0
 	display "$temp" "$statline"
-	test -e ~/.image.txt; or touch ~/.image.txt ~/.noimage
-	if not test -e .noimage
-		set temp (math (stat ~/.image.txt |grep Modify|cut -d " " -f 2|cut -d "-" -f 3) - (date +%d)|tr -d '-')
-		if test $temp -ge 3
-			#set image (cat ~/.image.txt)
-			#display "$image"
-		end
-	end
 	# If the date has changed since the last login
 	for file in date hour alert;
 		if not test -e /tmp/$file; 
 			touch /tmp/$file
-			chmod 777 /tmp/$file ^/dev/null
+			chmod 777 /tmp/$file 2>/dev/null
 		end
 	end
 	set newdate false
 	set newhour false
-	if not test (date +%x) = (cat /tmp/date) ^/dev/null
+	if not test (date +%x) = (cat /tmp/date) 2>/dev/null
 		set newdate true
 		date +%x > /tmp/date
 	end
-	if not test (date +%H) = (cat /tmp/hour) ^/dev/null
+	if not test (date +%H) = (cat /tmp/hour) 2>/dev/null
 		set newhour true
 		date +%H > /tmp/hour
 	end
 	set alerted false
-	if not test green = (cat /tmp/alert) ^/dev/null
-		alert
+	if not test green = (cat /tmp/alert) 2>/dev/null
+		alert &
 		set alerted true
 	end
 	if test "$newhour" = "true";
@@ -157,13 +160,7 @@ function login_message
 		weather
 	end
 	sudo iptables -nL OUTPUT|grep "udp dpt:53"|grep -q "DROP"; or display "IPTABLES RULES INCORRECT"
-	if test -d ~/.local/share/rr
-		set size_in_kb (du -s ~/.local/share/rr | cut -f 1)
-		if test "$size_in_kb" -ge 10240 # 10.0MB I think
-			set hrsize (du -sh ~/.local/share/rr | cut -f 1)
-			display "~/.local/share/rr now taking up $hrsize"
-		end
-	end
+	showbigfolder ~/.local/share/rr 10240
 end
 
 # Set locale, workaround for arch linux
@@ -322,7 +319,7 @@ function viopen
 	echo nameserver 8.8.8.8 | sudo tee -a /etc/resolv.conf > /dev/null # -a for append
 	echo nameserver 127.0.0.1 | sudo tee -a /etc/resolv.conf > /dev/null # this is useless now because I don't use dnsmasq anymore
 	sudo iptables -F OUTPUT
-	open http://gstatic.com/generate_204 >/dev/null ^/dev/null
+	open http://gstatic.com/generate_204 &>/dev/null
 	echo "Swap back after authenticating? Enter to continue"
 	read nothing
 	sudo systemctl stop dnsmasq
@@ -520,7 +517,7 @@ alias journalctl "env SYSTEMD_PAGER=less journalctl"
 alias systemctl  "env SYSTEMD_PAGER=cat systemctl --no-pager -l"
 
 set -x --global RUBYOPT "-w"
-alias rerun "env RUBYOPT=-w rerun" # TODO is this still needed?
+alias rerun /home/niles/.gem/ruby/2.7.0/bin/rerun
 function lm2
 	# depends on lm2.json being in the cwd
 	cd ~/Documents/projects/js/lainmod
@@ -528,3 +525,5 @@ function lm2
 	cd -
 end
 alias tcl "rlwrap tclsh"
+
+set -x --global DO_NOT_TRACK 1 # https://consoledonottrack.com/ , probably not adopted by most things lmao
