@@ -38,11 +38,6 @@ ln -s "$PWD/.tmux_theme.replace" ~/.tmux_theme.replace
 ln -s "$PWD/.tmux" ~/.tmux
 ln -s "$PWD/.putty.sh" ~/.putty.sh
 ln -s "$PWD/.proselint.config" ~/.config/proselint/config
-echo "Compiling c extension for command-t"
-cd "$HOME/.vim/bundle/command-t/ruby/command-t"
-ruby extconf.rb
-make
-cd -
 echo "Enabling apt progress bar (don't worry, if you're not on debian/ubuntu it won't hurt you anyways)"
 echo 'Dpkg::Progress-Fancy "1";' | sudo tee /etc/apt/apt.conf.d/99progressbar
 echo Changing lightline vim theme
