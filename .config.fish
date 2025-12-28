@@ -57,9 +57,7 @@ function weather
 	if test "$online" = "false"
 		return
 	end
-	#set destination ""
-	#set destination "24061" # Blacksburg
-	set destination "seattle"
+	set destination "Suffolk, VA"
 	#if test (echo "$argv" | wc -c) -gt 1;
 	if not test -z "$argv[1]";
 		set destination $argv
@@ -290,44 +288,14 @@ function destroy
 end
 
 function viopen
-	sudo vi /etc/NetworkManager/system-connections/open
-	echo "Restart network manager? Enter to continue"
-	read nothing
+	true | sudo tee /etc/NetworkManager/NetworkManager.conf
 	sudo systemctl restart NetworkManager
-	echo "Bring connection open up? Enter to continue"
-	read nothing
-	nmcli n on; nmcli c up open
-	echo "Up, waiting for default route"
-	set online false
-	while test "$online" = "false"; 
-		sleep 1
-		has_default_route; and set online true
-	end
-	echo "default route acquired, attempting to resolve hosts"
-	# if we can resolve names and ping out, we're done
 	sudo iptables -D OUTPUT --proto udp --dport 53 -j DROP
-	host -W 2 niles.xyz; and return
-	sudo iptables -A OUTPUT --proto udp --dport 53 -j DROP
-	#echo "We were unable to resolve a host, can we ping out?"
-	#ping -c 1 -W 2 8.8.8.8; and return
-	echo "We can't ping out. Probably need to accept terms and conditions on the router"
-	echo "Swap dnscrypt for 8.8.8.8 and default route? Enter to continue"
-	read nothing
-	#sudo systemctl stop dnscrypt; sudo systemctl start dnsmasq
-	# this doesn't work on mac beacuse it uses BSD route instead of the normal one, but there's no NetworkManager on mac so who cares
-	echo nameserver (route -n|grep '^0.0.0.0'|awk '{print $2}') | sudo tee /etc/resolv.conf
-	echo nameserver 8.8.8.8 | sudo tee -a /etc/resolv.conf > /dev/null # -a for append
-	echo nameserver 127.0.0.1 | sudo tee -a /etc/resolv.conf > /dev/null # this is useless now because I don't use dnsmasq anymore
-	sudo iptables -F OUTPUT
-	open http://gstatic.com/generate_204 &>/dev/null
-	echo "Swap back after authenticating? Enter to continue"
-	read nothing
-	sudo systemctl stop dnsmasq
-	brokedns # will start dnscrypt@{1..4}, unbound
-	sudo iptables -I OUTPUT --dest 127.0.0.1 -j ACCEPT
-	sudo iptables -A OUTPUT --proto udp --dport 53 -j DROP
-	echo nameserver 127.0.0.1 | sudo tee /etc/resolv.conf # no -a to overwrite the file
-	
+	read -P "Press enter again to clean up: " nothing
+	printf "# Reset by your viopen. Docs in \"man 5 NetworkManager.conf\"\n[main]\ndns=none\n" | sudo tee /etc/NetworkManager/NetworkManager.conf
+	sudo systemctl restart NetworkManager
+	sudo iptables-restore /etc/iptables/iptables.rules
+	echo nameserver 127.0.0.1 | sudo tee /etc/resolv.conf
 end
 
 alias watch='watch --color'
@@ -350,12 +318,12 @@ end
 # NILES THIS FIXES LYX DON'T FUCKING TOUCH IT
 set -x --global QT_QPA_PLATFORMTHEME qt5ct
 
-function kssh # even .2 seconds is somethimes still to short
+function kssh
 	kopen; sleep .2; ssh $argv
 end
-function kopen # open ssh port on niles.xyz via port knocking
+function kopen
 	ensure_msd
-	knock niles.xyz {(cat ~/.ssh/open)} -d 10
+	~/.ssh/kopen
 end
 function pingw # ping gateway -> ping gw -> pingw
 	set gw (route -n|grep '^0\.0\.0\.0'|awk '{print $2}')
@@ -517,7 +485,7 @@ alias journalctl "env SYSTEMD_PAGER=less journalctl"
 alias systemctl  "env SYSTEMD_PAGER=cat systemctl --no-pager -l"
 
 set -x --global RUBYOPT "-w"
-alias rerun /home/niles/.gem/ruby/2.7.0/bin/rerun
+alias rerun /home/niles/.gem/ruby/3.4.0/bin/rerun
 function lm2
 	# depends on lm2.json being in the cwd
 	cd ~/Documents/projects/js/lainmod
